@@ -1,7 +1,7 @@
 // Meeting area: appointment details, meeting link and transcript placeholders,
 // and the internal-only agent notes. Notes typed here live in page memory only.
 // Actions (handled by the page): data-action="meet-link" | "add-note"
-import { html, fmtDate, futureTag, emptyState, pill } from '../core/ui.js';
+import { html, fmtDate, futureTag, emptyState, pill, visibility } from '../core/ui.js';
 
 export function renderMeeting(m) {
   const rows = [
@@ -24,7 +24,7 @@ export function renderMeeting(m) {
       </div>
     </section>
     <section class="card" aria-labelledby="tr-h">
-      <div class="card-head"><h2 id="tr-h" class="card-title">Meeting transcript</h2>${futureTag('Transcript capture')}<span class="internal-badge">Internal</span></div>
+      <div class="card-head"><h2 id="tr-h" class="card-title">Meeting transcript</h2>${visibility('internal')}${futureTag('Transcript capture')}</div>
       ${m.transcript ? html`<pre class="transcript">${m.transcript}</pre>` : emptyState({ icon: 'doc', title: 'No transcript captured', body: 'Transcript capture is a later module. When connected, the private meeting transcript will appear here for the agency only.' })}
     </section>`;
 }
@@ -32,7 +32,7 @@ export function renderMeeting(m) {
 export function renderAgentNotes(notes) {
   return html`
     <section class="card card-internal" aria-labelledby="notes-h">
-      <div class="card-head"><h2 id="notes-h" class="card-title">Agent notes</h2><span class="internal-badge">Internal only · never shown to the couple</span></div>
+      <div class="card-head"><h2 id="notes-h" class="card-title">Agent notes</h2>${visibility('internal', 'Internal only · never shown to the couple')}</div>
       <form class="note-form" data-form="add-note">
         <label class="field">
           <span class="field-label">Add a note</span>

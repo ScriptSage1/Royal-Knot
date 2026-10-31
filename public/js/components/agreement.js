@@ -1,6 +1,6 @@
 // Service agreement: status track, document preview, signing state, attached file.
 // Actions: data-action="agreement-advance" (agent, mock) | "agreement-sign" (couple) | "agreement-download"
-import { html, fmtDate, futureTag, pill, emptyState } from '../core/ui.js';
+import { html, fmtDate, futureTag, pill, emptyState, visibility } from '../core/ui.js';
 
 export const AGREEMENT_FLOW = ['Draft', 'Sent', 'Viewed', 'Signed'];
 
@@ -18,7 +18,7 @@ export function renderAgreement(a, { audience = 'agent' } = {}) {
       <div class="card-head">
         <h2 id="agr-h" class="card-title">${a.title}</h2>
         ${pill(signed ? 'Signed' : a.status === 'Sent' || a.status === 'Viewed' ? 'Awaiting signature' : a.status)}
-        ${futureTag('Digital signing')}
+        ${audience === 'agent' ? visibility('shared') : ''}${futureTag('Digital signing')}
       </div>
 
       <ol class="status-track" aria-label="Agreement status">

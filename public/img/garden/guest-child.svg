@@ -1,39 +1,41 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 250" style="--skin:#E0B08E;--skin-shade:#BF8C6A;--hair:#5A3A26;--outfit:#E3A86B;--outfit-mid:#EFC08A;--outfit-shade:#C4874E;--accent:#FFF3DC;--bloom:#F2AFC0;--leaf:#6C8C66;--blush:#E8907E">
-  <!-- The Royal Knot · Shared Garden · Young guest raising a flower.
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 250" style="--skin:#C48A64;--skin-shade:#A26C4A;--hair:#1E1512;--outfit:#D98A3D;--outfit-mid:#E9A65A;--outfit-shade:#B26B28;--choli:#2E5E4E;--zari:#F3DCA2;--bloom:#F2B36A;--leaf:#4E7A52;--blush:#E0866E">
+  <!-- The Royal Knot · Shared Garden · Young guest in a little lehenga, raising a flower.
        Recoloured per guest by the loader. Faces right; feet at bottom centre. -->
   <style>
     .skin{fill:var(--skin)} .skin-s{fill:var(--skin-shade)} .hair{fill:var(--hair)}
-    .o{fill:var(--outfit)} .om{fill:var(--outfit-mid)} .os{fill:var(--outfit-shade)}
-    .arm{fill:none;stroke:var(--skin);stroke-width:6.5;stroke-linecap:round}
+    .o{fill:var(--outfit)} .om{fill:var(--outfit-mid)}
+    .arm{fill:none;stroke:var(--skin);stroke-width:6;stroke-linecap:round}
     .ink{fill:none;stroke:var(--hair);stroke-width:1.4;stroke-linecap:round}
   </style>
-  <ellipse cx="55" cy="244" rx="30" ry="5" fill="#120c1c" opacity=".26"/>
-  <!-- legs -->
-  <path class="skin-s" d="M46 180 L45 236 L52 236 L53 180 Z"/>
-  <path class="skin" d="M57 180 L58 236 L65 236 L64 180 Z"/>
-  <path d="M42 234 C38 236 36 240 37 242 L53 242 L53 234 Z" fill="#3B2E2A"/>
-  <path d="M57 234 C55 237 55 240 56 242 L70 242 L67 234 Z" fill="#3B2E2A"/>
+  <ellipse cx="55" cy="244" rx="30" ry="5" fill="#120c1c" opacity=".28"/>
   <!-- back arm -->
-  <path class="arm" d="M46 120 C40 140 40 154 44 166" stroke="var(--skin-shade)"/>
-  <!-- flared tunic dress -->
-  <path class="o" d="M46 114 C40 140 30 168 26 190 C44 198 70 198 88 190 C82 168 72 140 66 114 C60 110 52 110 46 114 Z"/>
-  <path class="om" d="M60 114 C66 140 74 168 80 192 C84 191 86 191 88 190 C82 168 72 140 66 114 Z"/>
-  <path d="M28 186 Q36 182 44 186 T60 187 T76 186 T88 186" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
-  <path d="M46 126 C52 130 60 130 66 126" fill="none" stroke="var(--accent)" stroke-width="2"/>
-  <!-- head -->
+  <path class="arm" d="M47 122 C41 140 41 152 45 162" stroke="var(--skin-shade)"/>
+  <!-- little lehenga -->
+  <path class="o" d="M46 140 C38 170 28 206 22 236 C44 246 74 246 92 236 C86 206 76 170 68 140 Z"/>
+  <path class="om" d="M62 140 C70 170 80 206 86 238 C89 237 91 237 92 236 C86 206 76 170 68 140 Z"/>
+  <path d="M24 226 C44 234 74 234 90 226 L92 236 C74 246 44 246 22 236 Z" fill="var(--zari)"/>
+  <path d="M26 230 Q32 226 38 231 T50 232 T62 232 T74 232 T88 229" fill="none" stroke="var(--outfit-shade)" stroke-width="1.2"/>
+  <g fill="var(--zari)"><circle cx="44" cy="170" r="1.4"/><circle cx="58" cy="184" r="1.4"/><circle cx="40" cy="204" r="1.4"/><circle cx="70" cy="200" r="1.4"/><circle cx="56" cy="214" r="1.4"/></g>
+  <!-- choli & dupatta tied across -->
+  <path d="M46 112 C44 124 44 134 46 142 L68 142 C68 134 68 124 66 112 C60 108 52 108 46 112 Z" fill="var(--choli)"/>
+  <path d="M44 114 C52 124 62 134 72 146" fill="none" stroke="var(--zari)" stroke-width="4" stroke-linecap="round" opacity=".85"/>
+  <!-- head with two plaits -->
   <path class="skin" d="M51 96 L51 112 L61 112 L61 96 Z"/>
+  <path class="hair" d="M42 84 C38 104 40 120 44 132 L48 132 C46 118 46 102 48 88 Z"/>
   <circle class="skin" cx="57" cy="82" r="16"/>
-  <g class="hair">
-    <circle cx="46" cy="72" r="8"/><circle cx="54" cy="66" r="8"/><circle cx="64" cy="67" r="7.5"/><circle cx="42" cy="82" r="6.5"/><circle cx="71" cy="73" r="5.5"/>
-  </g>
-  <path class="ink" d="M62 83 Q65 85.5 68 83"/>
-  <circle cx="66" cy="90" r="3.4" fill="var(--blush)" opacity=".45"/>
-  <path d="M65 95 Q68 98 71 95" fill="none" stroke="var(--skin-shade)" stroke-width="1.4" stroke-linecap="round"/>
+  <path class="hair" d="M41 84 C38 62 60 56 70 66 C74 70 74 76 72 80 C66 72 56 70 48 76 C45 79 43 82 41 84 Z"/>
+  <circle cx="45" cy="132" r="2.6" fill="var(--bloom)"/>
+  <path d="M61 84 Q65.5 80.6 70 83.6 Q65.5 86 61 84 Z" fill="#FBF4EA"/>
+  <circle cx="65.6" cy="83.6" r="2" fill="#1E130E"/><circle cx="66.2" cy="82.9" r=".7" fill="#fff"/>
+  <path class="ink" d="M60.6 83.6 Q65.5 79.8 70.6 83.2"/>
+  <circle cx="66" cy="91" r="3.6" fill="var(--blush)" opacity=".45"/>
+  <path d="M64 95 Q68 99 72 95" fill="#7A3A30" stroke="#7A3A30" stroke-width="1" stroke-linejoin="round"/>
   <!-- raised arm with a flower -->
   <path class="arm" d="M64 120 C74 110 78 98 80 86"/>
+  <path d="M77 92 L82 94" stroke="var(--zari)" stroke-width="1.6"/>
   <circle class="skin" cx="80" cy="83" r="4"/>
   <path d="M81 80 C82 70 84 62 86 54" fill="none" stroke="var(--leaf)" stroke-width="1.8" stroke-linecap="round"/>
   <ellipse cx="80" cy="68" rx="5" ry="2.2" fill="var(--leaf)" transform="rotate(-40 80 68)"/>
-  <g fill="var(--bloom)"><circle cx="86" cy="46" r="4"/><circle cx="92" cy="50" r="4"/><circle cx="90" cy="57" r="4"/><circle cx="82" cy="56" r="4"/><circle cx="81" cy="49" r="4"/></g>
-  <circle cx="86" cy="52" r="2.6" fill="#F6D88E"/>
+  <g fill="var(--bloom)"><circle cx="86" cy="45" r="3.6"/><circle cx="91" cy="48" r="3.6"/><circle cx="90" cy="54" r="3.6"/><circle cx="83" cy="54" r="3.6"/><circle cx="81" cy="48" r="3.6"/><circle cx="86" cy="50" r="3.4"/></g>
+  <g fill="#C27A2E" opacity=".6"><circle cx="86" cy="50" r="1.6"/></g>
 </svg>

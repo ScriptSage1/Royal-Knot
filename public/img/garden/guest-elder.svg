@@ -1,41 +1,50 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 360" style="--skin:#B88A6C;--skin-shade:#956A4D;--hair:#D9D4CF;--hair-shade:#B4ADA6;--outfit:#4E5D84;--outfit-mid:#62729C;--outfit-shade:#3A4566;--shawl:#E6D2B2;--shawl-shade:#C9B18C;--accent:#E3C27E;--blush:#D88A76">
-  <!-- The Royal Knot · Shared Garden · Elder guest with a shawl and walking stick.
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 360" style="--skin:#A87452;--skin-shade:#875A3C;--hair:#E3DED8;--hair-shade:#B9B1A9;--kurta:#F1E8D6;--kurta-shade:#D6C8AC;--jacket:#5B3A57;--jacket-shade:#432A40;--shawl:#D9B26A;--shawl-shade:#B48A45;--frame:#6B4E2E;--blush:#C9765F">
+  <!-- The Royal Knot · Shared Garden · Elder guest in a kurta, Nehru jacket and shawl, with spectacles and a walking stick.
        Recoloured per guest by the loader. Faces right; feet at bottom centre. -->
   <style>
-    .skin{fill:var(--skin)} .skin-s{fill:var(--skin-shade)} .hair{fill:var(--hair)} .hair-s{fill:var(--hair-shade)}
-    .o{fill:var(--outfit)} .om{fill:var(--outfit-mid)} .os{fill:var(--outfit-shade)}
+    .skin{fill:var(--skin)} .skin-s{fill:var(--skin-shade)} .hair{fill:var(--hair)}
+    .k{fill:var(--kurta)} .ks{fill:var(--kurta-shade)}
+    .jk{fill:var(--jacket)} .jks{fill:var(--jacket-shade)}
     .sh{fill:var(--shawl)} .shs{fill:var(--shawl-shade)}
-    .ink{fill:none;stroke:#4A3A33;stroke-width:1.4;stroke-linecap:round}
+    .ink{fill:none;stroke:#3A2A22;stroke-width:1.4;stroke-linecap:round}
   </style>
-  <defs><linearGradient id="og" x1="0" x2="1"><stop offset="0" style="stop-color:var(--outfit-shade)"/><stop offset=".5" style="stop-color:var(--outfit)"/><stop offset="1" style="stop-color:var(--outfit-mid)"/></linearGradient></defs>
-  <ellipse cx="75" cy="352" rx="46" ry="7" fill="#120c1c" opacity=".26"/>
-  <!-- long outfit -->
-  <path d="M54 140 C46 200 40 280 38 346 L112 346 C110 280 104 200 96 140 Z" fill="url(#og)"/>
-  <path d="M72 150 C68 220 64 290 62 344" fill="none" stroke="var(--outfit-shade)" stroke-width="1.5"/>
-  <path d="M40 338 L110 338" stroke="var(--accent)" stroke-width="1.4" opacity=".8"/>
-  <path d="M48 346 C44 348 42 351 43 353 L66 353 L66 346 Z" fill="#2B2420"/>
-  <path d="M80 346 C78 349 78 351 79 353 L100 353 L98 346 Z" fill="#2B2420"/>
+  <ellipse cx="75" cy="352" rx="46" ry="7" fill="#120c1c" opacity=".28"/>
+  <!-- pyjama & juttis -->
+  <path class="k" d="M60 290 L56 346 L72 346 L76 290 Z"/>
+  <path class="ks" d="M76 290 L80 346 L96 346 L92 290 Z"/>
+  <path d="M54 342 C46 344 42 348 42 352 L72 352 L72 342 Z" fill="#5A3A26"/>
+  <path d="M80 342 C76 345 74 348 74 352 L100 352 L98 342 Z" fill="#5A3A26"/>
+  <!-- long kurta -->
+  <path class="k" d="M54 132 C48 190 46 250 46 300 C64 306 92 306 106 300 C106 250 102 190 96 132 Z"/>
+  <path class="ks" d="M86 136 C92 190 96 250 98 302 C101 302 104 301 106 300 C106 250 102 190 96 132 Z"/>
+  <!-- Nehru jacket -->
+  <path class="jk" d="M56 130 C52 170 50 210 52 244 C64 250 88 250 100 244 C102 210 100 170 96 130 C86 124 66 124 56 130 Z"/>
+  <path d="M76 132 L76 248" stroke="var(--jacket-shade)" stroke-width="1.4"/>
+  <g fill="var(--shawl)"><circle cx="79" cy="150" r="1.8"/><circle cx="79" cy="168" r="1.8"/><circle cx="79" cy="186" r="1.8"/><circle cx="79" cy="204" r="1.8"/></g>
   <!-- shawl over the shoulders -->
-  <path class="sh" d="M50 118 C42 150 40 190 44 222 C60 230 92 228 106 214 C106 180 100 146 94 118 C82 108 62 108 50 118 Z"/>
-  <path class="shs" d="M50 118 C44 150 42 188 44 222 C50 225 54 226 58 226 C54 190 54 150 60 116 Z"/>
-  <g fill="none" stroke="var(--shawl-shade)" stroke-width="1.2" stroke-linecap="round">
-    <path d="M46 222 L45 232 M52 225 L51 235 M58 226 L58 236 M64 227 L64 237 M70 227 L70 237 M76 227 L77 237 M82 226 L83 236 M88 224 L90 234 M94 222 L96 231 M100 218 L102 227"/>
-  </g>
-  <path d="M56 160 C66 170 84 170 96 160" fill="none" stroke="var(--accent)" stroke-width="1.4" opacity=".7"/>
+  <path class="sh" d="M52 122 C46 150 44 190 46 220 L58 222 C56 190 58 156 64 126 Z"/>
+  <path class="shs" d="M90 122 C100 132 106 150 106 170 L98 172 C96 154 92 140 84 128 Z"/>
+  <path d="M46 214 L58 216 M46 218 L58 220" stroke="var(--shawl-shade)" stroke-width="1.2"/>
+  <path d="M47 222 l-1 7 M51 222 l-1 7 M55 222 l0 7" stroke="var(--shawl-shade)" stroke-width="1"/>
   <!-- head, gently inclined -->
-  <path class="skin" d="M72 96 L70 116 C74 119 82 119 86 116 L86 96 Z"/>
-  <ellipse class="skin" cx="82" cy="80" rx="14.5" ry="16"/>
-  <ellipse class="skin" cx="87" cy="86" rx="11" ry="11"/>
-  <path class="hair" d="M67 80 C64 60 84 52 96 60 C101 64 102 72 99 78 C92 70 80 70 73 78 C71 82 69 84 67 80 Z"/>
-  <circle class="hair" cx="68" cy="68" r="8"/>
-  <path class="hair-s" d="M63 64 C66 60 72 60 75 63" fill="none" stroke="var(--hair-shade)" stroke-width="1.5"/>
-  <path class="ink" d="M89 81 Q92 83.5 95 81"/>
-  <path class="ink" d="M88 86 Q90 87 92 86" stroke-width="1" opacity=".5"/>
-  <circle cx="92" cy="89" r="3.2" fill="var(--blush)" opacity=".35"/>
-  <path d="M91 94 Q94 96 97 94" fill="none" stroke="var(--skin-shade)" stroke-width="1.3" stroke-linecap="round"/>
+  <path class="skin" d="M70 98 L70 122 C74 125 82 125 86 122 L86 98 Z"/>
+  <path d="M68 120 C74 125 82 125 88 120 L88 128 C80 132 74 132 68 128 Z" fill="var(--kurta)"/>
+  <ellipse class="skin" cx="80" cy="82" rx="14.5" ry="16"/>
+  <ellipse class="skin" cx="85" cy="88" rx="11" ry="11"/>
+  <ellipse class="skin-s" cx="70" cy="86" rx="2.8" ry="4"/>
+  <path class="hair" d="M65 84 C62 64 80 56 92 62 C97 66 98 72 96 76 C92 70 86 68 80 69 C74 70 69 76 67 84 Z"/>
+  <path d="M65 80 C64 90 66 96 68 98" fill="none" stroke="var(--hair)" stroke-width="3" stroke-linecap="round"/>
+  <!-- spectacles -->
+  <circle cx="89" cy="84" r="5" fill="#FFFFFF" fill-opacity=".18" stroke="var(--frame)" stroke-width="1.4"/>
+  <path d="M84 84 L74 82" stroke="var(--frame)" stroke-width="1.2"/>
+  <path d="M86.6 84.6 Q89.6 86.4 92.4 84.6" class="ink"/>
+  <path class="ink" d="M84.6 76.6 Q89.6 74.6 94.4 76.4" stroke="var(--hair-shade)" stroke-width="2"/>
+  <path d="M86 94 Q90.6 92 95 94" stroke="var(--hair)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  <path d="M87.4 97.6 Q90.6 99.8 93.8 97.6" fill="none" stroke="#6E3E30" stroke-width="1.4" stroke-linecap="round"/>
+  <circle cx="88" cy="91" r="3.2" fill="var(--blush)" opacity=".3"/>
   <!-- walking stick & hand -->
   <path d="M112 190 L118 350" stroke="#6B4E36" stroke-width="4" stroke-linecap="round"/>
   <path d="M104 190 C108 184 114 184 116 190" fill="none" stroke="#6B4E36" stroke-width="4" stroke-linecap="round"/>
-  <path d="M94 150 C104 160 108 176 108 188" fill="none" stroke="var(--shawl)" stroke-width="11" stroke-linecap="round"/>
+  <path d="M94 150 C104 160 108 176 108 188" fill="none" stroke="var(--kurta)" stroke-width="10" stroke-linecap="round"/>
   <ellipse class="skin" cx="110" cy="191" rx="5.5" ry="4.6"/>
 </svg>

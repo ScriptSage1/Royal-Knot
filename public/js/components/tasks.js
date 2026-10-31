@@ -1,7 +1,7 @@
 // Task/checklist board: many tasks grouped by stage, filterable by owner type
 // and status. Actions: data-action="task-status" data-index | form data-form="add-task"
 // Filters: select[data-filter="ownerType"|"status"]
-import { html, fmtDate, pill, emptyState, esc } from '../core/ui.js';
+import { html, fmtDate, pill, emptyState, esc, visibility } from '../core/ui.js';
 import { renderProgressBar } from './journey.js';
 
 export const TASK_STATUSES = ['Pending', 'In progress', 'Done', 'Blocked'];
@@ -24,6 +24,7 @@ export function renderTasks(tasks, filters = {}) {
     <section class="card" aria-labelledby="tasks-h">
       <div class="card-head">
         <h2 id="tasks-h" class="card-title">Wedding tasks</h2>
+        ${visibility('internal')}
         <span class="muted small">${done} of ${tasks.length} done</span>
       </div>
       ${tasks.length ? renderProgressBar(tasks.length ? done / tasks.length : 0, 'Task completion') : ''}

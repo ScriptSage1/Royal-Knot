@@ -6,15 +6,30 @@
 // `mockKey` is a preview route key for this file only. It is NOT a workspace
 // ID; real IDs will be assigned by the workspace module.
 
-export const PLANNERS = ['Priya N.', 'Daniel R.', 'Farah S.'];
+// Mock "today" so the demo's deadlines read the same on any day.
+export const AS_OF = '2026-10-31';
 
+export const PLANNERS = [
+  { name: 'Priya N.', capacity: 4 },
+  { name: 'Daniel R.', capacity: 4 },
+  { name: 'Farah S.', capacity: 3 },
+];
+
+// One row per wedding case. `nextAction.section` is the workspace section
+// that action opens; `payment` is the next couple payment, if any.
 export const CASES = [
-  { mockKey: 'sample-a', coupleLabel: 'Asha & Kiran', approxDate: '2027-02-12', location: 'Udaipur', guests: 250, budgetRange: '₹50 L – 1 Cr', planner: 'Priya N.', stage: 7, nextStep: 'Confirm décor final layout', moneyDue: 1850000, flags: [] },
-  { mockKey: 'sample-b', coupleLabel: 'Meera & Jordan', approxDate: '2027-01-23', location: 'Goa', guests: 140, budgetRange: '₹25 – 50 L', planner: 'Daniel R.', stage: 5, nextStep: 'Send catering shortlist', moneyDue: 600000, flags: ['Vendor quotes pending'] },
-  { mockKey: 'sample-c', coupleLabel: 'Noor & Alex', approxDate: '2027-04-10', location: 'Bengaluru', guests: 90, budgetRange: 'Under ₹25 L', planner: 'Farah S.', stage: 3, nextStep: 'Draft requirements document', moneyDue: 0, flags: [] },
-  { mockKey: 'sample-d', coupleLabel: 'Ravi & Sam', approxDate: '2026-12-05', location: 'Jaipur', guests: 420, budgetRange: '₹1 – 3 Cr', planner: 'Priya N.', stage: 8, nextStep: 'Day-of run sheet sign-off', moneyDue: 3200000, flags: ['Advance overdue'] },
-  { mockKey: 'sample-e', coupleLabel: 'Enquiry · names not shared', approxDate: null, location: 'Kochi (tentative)', guests: 200, budgetRange: 'Not sure yet', planner: null, stage: 1, nextStep: 'Offer consultation slots', moneyDue: 0, flags: ['Unassigned'] },
-  { mockKey: 'sample-f', coupleLabel: 'Tara & Ishaan', approxDate: '2026-11-14', location: 'Mussoorie', guests: 160, budgetRange: '₹50 L – 1 Cr', planner: 'Daniel R.', stage: 9, nextStep: 'Final payment & vendor closeout', moneyDue: 950000, flags: [] },
+  { mockKey: 'sample-a', coupleLabel: 'Asha & Kiran', approxDate: '2027-02-12', location: 'Udaipur', guests: 250, budgetRange: '₹50 L – 1 Cr', planner: 'Priya N.', stage: 7,
+    nextAction: { label: 'Confirm décor final layout', due: '2026-11-03', section: 'tasks' }, payment: { label: 'Planning advance', amount: 1850000, due: '2026-12-15', status: 'Due' }, openTasks: 8, overdueTasks: 0, flags: [] },
+  { mockKey: 'sample-b', coupleLabel: 'Meera & Arjun', approxDate: '2027-01-23', location: 'Goa', guests: 140, budgetRange: '₹25 – 50 L', planner: 'Daniel R.', stage: 5,
+    nextAction: { label: 'Send catering shortlist to couple', due: '2026-11-02', section: 'vendors' }, payment: { label: 'Booking payment', amount: 600000, due: '2026-11-12', status: 'Due' }, openTasks: 11, overdueTasks: 2, flags: ['Vendor quotes pending'] },
+  { mockKey: 'sample-c', coupleLabel: 'Noor & Kabir', approxDate: '2027-04-10', location: 'Bengaluru', guests: 90, budgetRange: 'Under ₹25 L', planner: 'Farah S.', stage: 3,
+    nextAction: { label: 'Draft requirements document', due: '2026-11-05', section: 'documents' }, payment: null, openTasks: 3, overdueTasks: 0, flags: [] },
+  { mockKey: 'sample-d', coupleLabel: 'Ravi & Sana', approxDate: '2026-12-05', location: 'Jaipur', guests: 420, budgetRange: '₹1 – 3 Cr', planner: 'Priya N.', stage: 8,
+    nextAction: { label: 'Sign off day-of run sheet', due: '2026-11-01', section: 'schedule' }, payment: { label: 'Pre-wedding advance', amount: 3200000, due: '2026-10-25', status: 'Overdue' }, openTasks: 6, overdueTasks: 1, flags: ['Advance overdue'] },
+  { mockKey: 'sample-e', coupleLabel: 'New enquiry · names not shared', approxDate: null, location: 'Kochi (tentative)', guests: 200, budgetRange: 'Not sure yet', planner: null, stage: 1,
+    nextAction: { label: 'Assign a planner and offer consultation slots', due: '2026-10-30', section: 'meeting' }, payment: null, openTasks: 1, overdueTasks: 1, flags: ['Unassigned'] },
+  { mockKey: 'sample-f', coupleLabel: 'Tara & Ishaan', approxDate: '2026-11-14', location: 'Mussoorie', guests: 160, budgetRange: '₹50 L – 1 Cr', planner: 'Daniel R.', stage: 9,
+    nextAction: { label: 'Confirm vendor arrival times', due: '2026-11-12', section: 'schedule' }, payment: { label: 'Final payment (after the event)', amount: 950000, due: '2026-11-30', status: 'Upcoming' }, openTasks: 4, overdueTasks: 0, flags: [] },
 ];
 
 const FULL = {
@@ -183,7 +198,7 @@ function lightDetail(c) {
 }
 
 export function weddingDetail(mockKey) {
-  if (mockKey === FULL.mockKey) return FULL;
+  if (mockKey === FULL.mockKey) return { ...CASES.find((c) => c.mockKey === mockKey), ...FULL };
   const c = CASES.find((x) => x.mockKey === mockKey);
   return c ? lightDetail(c) : null;
 }
@@ -192,10 +207,10 @@ export const SEASON = {
   label: 'Season 2026–27',
   weddings: CASES,
   upcomingMoney: [
-    { couple: 'Ravi & Sam', label: 'Pre-wedding advance', amount: 3200000, due: '2026-10-25', status: 'Overdue' },
-    { couple: 'Tara & Ishaan', label: 'Final payment', amount: 950000, due: '2026-11-30', status: 'Upcoming' },
-    { couple: 'Asha & Kiran', label: 'Planning advance', amount: 1850000, due: '2026-12-15', status: 'Due' },
-    { couple: 'Meera & Jordan', label: 'Booking payment', amount: 600000, due: '2026-11-12', status: 'Due' },
+    { couple: 'Ravi & Sana', mockKey: 'sample-d', label: 'Pre-wedding advance', amount: 3200000, due: '2026-10-25', status: 'Overdue' },
+    { couple: 'Tara & Ishaan', mockKey: 'sample-f', label: 'Final payment', amount: 950000, due: '2026-11-30', status: 'Upcoming' },
+    { couple: 'Asha & Kiran', mockKey: 'sample-a', label: 'Planning advance', amount: 1850000, due: '2026-12-15', status: 'Due' },
+    { couple: 'Meera & Arjun', mockKey: 'sample-b', label: 'Booking payment', amount: 600000, due: '2026-11-12', status: 'Due' },
   ],
   vendorBillsDue: 4180000,
   vendors: [

@@ -13,7 +13,7 @@ Open http://localhost:3000. That's the developer preview hub, not a login.
 
 | Route | Interface |
 | --- | --- |
-| `/couple` | Couple portal (hash sections: `#journey`, `#details`, `#consultation`, `#plan`, `#agreement`, `#vendors`, `#payments`, `#events`) |
+| `/couple` | Couple portal (chapters by hash: `#details`, `#consultation`, `#plan`, `#agreement`, `#vendors`, `#events`, `#day`, plus `#payments`) |
 | `/agent/weddings` | Agent: wedding cases list |
 | `/agent/weddings/:mockKey` | Agent: wedding workspace (`#overview`, `#meeting`, `#documents`, `#agreement`, `#vendors`, `#tasks`, `#schedule`, `#finance`) |
 | `/agent/season` | Agent: season overview |
@@ -49,26 +49,66 @@ public/js/garden/         garden.js — Three.js "Shared Garden" background
 
 ## Couple experience
 
-The couple portal is a guided story told in seven chapters: Your story, Meeting your planner, Your plan in writing, Our agreement, Choosing your vendors, Bringing it together, and The celebration. The home view leads with the current chapter and one primary action, set over the garden, with a reassurance band below (planner note, chapters ahead, what you've shared). All chapters live in the **Your journey** drawer, where upcoming chapters are shown as milestones rather than menu items. Payments and Your details sit "alongside the journey". To add a chapter, add a row to `CHAPTERS` in `public/js/pages/couple.js` and a view function.
+The portal is one journey in eight chapters:
+
+1. Your story
+2. Meeting your planner
+3. Your plan, in writing
+4. Our agreement
+5. Choosing your vendors
+6. Bringing it together
+7. The wedding day
+8. After the celebration
+
+There is one way to navigate and see progress: the **Your journey** button in the top bar. It opens a drawer listing every chapter, with completed chapters you can revisit and upcoming ones marked as milestones. Payments and what you've shared are always available there.
+
+The home view shows one moment at a time:
+
+- the chapter
+- a short line about what your planner is handling
+- one primary action
+- what happens next, with supporting detail behind an expander
+
+Chapter content opens as an ivory panel over the garden. To extend the journey, add a row to `CHAPTERS` in `public/js/pages/couple.js` and a view function.
+
+The first chapter asks only optional questions. Traditions are a single open question: "Are there any traditions, customs, or family practices you'd like us to make room for?" Couples can also answer "We're still deciding" or ask to talk it through with their planner.
+
+## Planner workspace
+
+- **`/agent/weddings`:** the case list. It shows couple, wedding date and countdown, stage, planner, next action with deadline, and next payment. Attention filters (needs attention, due this week, unassigned, payment overdue) double as the workload indicators. Search, planner and phase filters, and sorting sit above the list. A rose edge marks overdue or unassigned work.
+- **`/agent/weddings/:mockKey`:** a single case file.
+  - The header is the only place the stage appears.
+  - The overview leads with "Needs your attention" and "Coming up". Beside them sit what the couple shared, the case record and a small preview of the couple's garden.
+  - Sections: meeting and notes, requirements, agreement, vendors and proposals, tasks, schedule with a day-of run sheet, and payments and closeout.
+  - Every area carries an **Internal** or **Shared with couple** badge.
+- **`/agent/season`:** upcoming weddings by month, planner workload against capacity (with a suggestion for who can take an unassigned enquiry), money due from couples, cases needing attention, and vendor reliability.
+- **Mobile:** the sidebar becomes a slide-in menu, and workspace sections are also available from a section picker.
+
+Mock data uses a fixed reference date, `AS_OF` (31 Oct 2026, in `public/js/data/agency-mock.js`), so deadlines read the same on any day.
 
 ## The Shared Garden
 
-- `public/js/garden/garden.js`: the Three.js scene. It is drawn from a single progress value between 0 and 1 and only animates when progress changes; it never replays on load.
-- `public/img/garden/*.svg`: the illustrated characters (bride, groom, four guest types). Colours and pose are CSS custom properties on each file's root.
-- `public/js/garden/config.js`: palettes, guests, when each guest arrives, and the flower colours. Change art or colours here without touching the scene.
-- `public/js/garden/art.js`: the loader, plus the procedural set pieces (arch, lanterns, flower clusters, trees, foliage).
+- `public/js/garden/garden.js`: the Three.js scene. It is drawn from one progress value between 0 and 1 and only animates when progress changes; it never replays on load.
+- `public/img/garden/*.svg`: the illustrated characters.
+  - The bride wears a lehenga with a zari border and a dupatta, with a jasmine gajra and jhumkas.
+  - The groom wears an ivory sherwani with a rose stole and mojaris.
+  - There are four guest types: a sari, a bandhgala, a child in a lehenga, and an elder in a kurta, Nehru jacket and shawl.
+  - Colours and pose are CSS custom properties on each file's root.
+- `public/js/garden/config.js`: palettes, guests, when each guest arrives, and the planter types.
+- `public/js/garden/art.js`: the loader, plus the courtyard set pieces. These are a carved sandstone wall with cusped jaali arches (with a separate glow layer), a chhatri-inspired pavilion with jasmine and marigold strands, a block-print runner, brass lanterns, bougainvillea, champa trees and planters.
+
+Indian identity comes from attire, textiles, architecture, plants and brass light. There are no religious symbols or ritual objects, and there is a single story for every couple.
 
 The story, by planning progress:
 
-1. **Dusk:** the couple stand apart with a softly lit path between them.
-2. **Planning begins:** the path lights up and flowers appear.
-3. **The plan takes shape:** the arch forms, the lanterns and string lights glow, and the couple draw closer.
+1. **Dusk:** the couple stand apart with the runner softly lit between them.
+2. **Planning begins:** the runner lights up and bougainvillea and planters bloom.
+3. **The plan takes shape:** the pavilion forms, the jaali screens and lanterns glow, and the couple draw closer.
 4. **The wedding approaches:** loved ones arrive one by one.
-5. **Plan complete:** the garden is at its most luminous, with the couple hand in hand among their guests.
+5. **Plan complete:** the courtyard is at its most luminous, with the couple hand in hand among their guests and petals falling.
 
 Other behaviour:
 
-- Wide screens place the couple to the right of the content column, and narrow screens place them in the upper half. The agent workspace shows the same scene in a preview card.
-- Artwork loads in two phases (the setting and the couple first) at roughly on-screen resolution.
-- `prefers-reduced-motion` gets still frames only.
-- Small screens use fewer particles and a lower pixel ratio.
+- Wide screens keep the couple and bright details out of the text column. Narrow screens place the scene in the upper half.
+- `prefers-reduced-motion` gets still frames.
+- Artwork loads in two phases at roughly on-screen resolution, and small screens use fewer particles.

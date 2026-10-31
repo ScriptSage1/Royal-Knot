@@ -1,17 +1,35 @@
-<aside class="ag-sidebar" aria-label="Agency navigation">
+<header class="ag-topbar">
   <a class="ag-brand" href="/agent/weddings">
     <span class="ag-brand-mark" aria-hidden="true">RK</span>
-    <span><strong>The Royal Knot</strong><small>Agency workspace</small></span>
+    <span><strong>The Royal Knot</strong><small>Planning studio</small></span>
   </a>
+  <button class="ag-menu-btn" type="button" aria-expanded="false" aria-controls="ag-sidebar">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>Menu
+  </button>
+</header>
+<div class="ag-backdrop" hidden></div>
+<aside class="ag-sidebar" id="ag-sidebar" aria-label="Agency navigation">
+  <div class="ag-sidebar-head">
+    <a class="ag-brand" href="/agent/weddings">
+      <span class="ag-brand-mark" aria-hidden="true">RK</span>
+      <span><strong>The Royal Knot</strong><small>Planning studio</small></span>
+    </a>
+    <button class="ag-close-btn" type="button" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
   <nav class="ag-nav" aria-label="Primary">
     <a href="/agent/weddings" <%= nav === 'weddings' ? 'aria-current=page' : '' %>>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Weddings</a>
     <a href="/agent/season" <%= nav === 'season' ? 'aria-current=page' : '' %>>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19V11M12 19V5M19 19v-6"/></svg>Season overview</a>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Season</a>
   </nav>
   <div class="ag-nav-group" id="ag-section-nav" hidden>
-    <p class="ag-nav-label">This wedding</p>
-    <nav class="ag-nav ag-nav-sub" aria-label="Wedding workspace sections"></nav>
+    <p class="ag-nav-label" id="ag-section-label">This wedding</p>
+    <nav class="ag-nav ag-nav-sub" aria-labelledby="ag-section-label"></nav>
   </div>
-  <p class="ag-internal-flag">Internal · not visible to couples</p>
+  <p class="ag-internal-flag">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5"/><path d="M5.5 7V5.2a2.5 2.5 0 0 1 5 0V7"/></svg>
+    Internal workspace · not visible to couples
+  </p>
 </aside>

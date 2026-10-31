@@ -1,11 +1,13 @@
-// Agent: wedding workspace dashboard. All sections render from one in-memory
-// wedding object; interactions mutate that copy only.
-import { html, mount, on, inr, fmtDate, pill, emptyState, previewNotice } from '../core/ui.js';
+// Agent: one wedding, one case file. The header is the single place for the
+// stage; the overview leads with what needs attention and what's coming up.
+// All sections render from one in-memory wedding object; interactions mutate
+// that copy only.
+import { html, mount, on, inr, fmtDate, pill, emptyState, previewNotice, relDays, daysFrom, visibility, initials } from '../core/ui.js';
 import { STAGES, stageState, stageIndexOf, progressOf, milestoneStatuses, stageFromUrl, writeStageToUrl, publishProgress } from '../core/progress.js';
 import { initDevbar, isDevMode } from '../core/devbar.js';
-import { loadWedding } from '../data/source.js';
-import { renderJourney } from '../components/journey.js';
-import { renderWorkspaceContainer, renderCaseFacts, renderPeople } from '../components/workspace.js';
+import { initAgentShell } from '../core/agent-shell.js';
+import { loadWedding, asOf } from '../data/source.js';
+import { renderPeople } from '../components/workspace.js';
 import { renderMeeting, renderAgentNotes } from '../components/meeting.js';
 import { renderRequirementsDoc, renderChecklist } from '../components/documents.js';
 import { renderAgreement, AGREEMENT_FLOW } from '../components/agreement.js';
@@ -15,6 +17,8 @@ import { renderAgentSchedule, ARRIVAL_FLOW } from '../components/schedule.js';
 import { renderPaymentTimeline, renderVendorCosts, renderCloseout } from '../components/payments.js';
 import { mountGarden } from '../garden/garden.js';
 
+const TODAY = asOf();
+
 // Add a row here to add a workspace section; the nav and router follow.
 const SECTIONS = [
   { id: 'overview', label: 'Overview' },
@@ -22,12 +26,26 @@ const SECTIONS = [
   { id: 'documents', label: 'Requirements' },
   { id: 'agreement', label: 'Agreement' },
   { id: 'vendors', label: 'Vendors & proposals' },
-  { id: 'tasks', label: 'Tasks' },
-  { id: 'schedule', label: 'Schedule & day-of' },
+  { id: 'tasks', label: 'Planning tasks' },
+  { id: 'schedule', label: 'Schedule & run sheet' },
   { id: 'finance', label: 'Payments & closeout' },
 ];
 
-const S = { w: null, state: null, section: 'overview', category: null, taskFilters: {} };
+// Suggested planner actions per stage, used when the case has little else due.
+const STAGE_ACTIONS = [
+  [['Assign a planner', 'overview'], ['Offer consultation slots', 'meeting']],
+  [['Offer consultation slots', 'meeting']],
+  [['Prepare for the consultation', 'meeting']],
+  [['Draft the requirements document', 'documents'], ['Complete the planner checklist', 'documents']],
+  [['Prepare the service agreement', 'agreement'], ['Send vendor requests', 'vendors']],
+  [['Shortlist proposals and send to the couple', 'vendors']],
+  [['Confirm vendor bookings', 'vendors'], ['Build the wedding schedule', 'schedule']],
+  [['Collect the pre-wedding advance', 'finance']],
+  [['Confirm vendor arrival times', 'schedule']],
+  [['Final payment and vendor closeout after the event', 'finance']],
+];
+
+const S = { w: null, state: null, section: 'overview', category: null, taskFilters: {}, scheduleView: 'events' };
 const root = document.getElementById('ag-view');
 const subnav = document.querySelector('#ag-section-nav');
 
@@ -37,96 +55,119 @@ function renderSubnav() {
     html`<a href="#${s.id}" ${S.section === s.id ? 'aria-current=true' : ''}>${s.label}</a>`)}`);
 }
 
-// Planner next actions per stage. Buttons route to the relevant section.
-const NEXT_ACTIONS = [
-  [['Review the new enquiry', 'overview'], ['Assign a planner', 'overview'], ['Offer consultation slots', 'meeting']],
-  [['Offer consultation slots', 'meeting'], ['Read what the couple shared', 'overview']],
-  [['Prepare for the consultation', 'meeting'], ['Add the meeting link (later module)', 'meeting']],
-  [['Draft the requirements document', 'documents'], ['Complete the planner checklist', 'documents']],
-  [['Prepare the service agreement', 'agreement'], ['Send vendor requests', 'vendors']],
-  [['Shortlist vendor proposals', 'vendors'], ['Send the shortlist to the couple', 'vendors']],
-  [['Confirm vendor bookings', 'vendors'], ['Build the wedding schedule', 'schedule']],
-  [['Chase open tasks', 'tasks'], ['Collect the pre-wedding advance', 'finance']],
-  [['Sign off the day-of run sheet', 'schedule'], ['Confirm vendor arrival times', 'schedule']],
-  [['Final payment after the event', 'finance'], ['Vendor closeout & profit review', 'finance']],
-];
-
 function header() {
   const w = S.w;
   const idx = stageIndexOf(S.state);
-  const p = progressOf(S.state);
   const steps = milestoneStatuses(S.state);
   return html`
-    <header class="ag-head ag-head-ws">
-      <div class="ag-head-main">
+    <header class="ag-pagehead case-head">
+      <div>
         <a class="back" href="/agent/weddings">← All weddings</a>
+        <p class="ag-eyebrow">Case file</p>
         <h1 class="ag-title">${w.coupleLabel}</h1>
-        <p class="ag-meta">${w.location} <span aria-hidden="true">·</span> ${w.approxDate ? fmtDate(w.approxDate) : 'Date not decided'} <span aria-hidden="true">·</span> ${w.guests ? `~${w.guests} guests` : 'Guests TBC'} <span aria-hidden="true">·</span> Planner: ${w.planner || 'Unassigned'}</p>
+        <p class="case-facts">
+          <span><b>${w.approxDate ? fmtDate(w.approxDate) : 'Date not set'}</b>${w.approxDate ? ` · ${relDays(w.approxDate, TODAY)}` : ''}</span>
+          <span>${w.location}</span>
+          <span>~${w.guests} guests</span>
+          <span>${w.budgetRange}</span>
+          <span>Planner <b>${w.planner || 'Unassigned'}</b></span>
+        </p>
       </div>
-      <div class="ag-stage">
-        <p class="ag-stage-label"><span>Current stage</span><strong>${STAGES[idx].label}</strong><span class="muted">${Math.round(p * 100)}%</span></p>
-        <ol class="ag-stage-track" aria-label="Milestones">
-          ${steps.map((m) => html`<li class="is-${m.status}" title="${m.label}"><span class="sr-only">${m.label}: ${m.status}</span></li>`)}
-        </ol>
+      <div class="case-stage">
+        <p class="case-stage-label">Current stage</p>
+        <p class="case-stage-name">${STAGES[idx].label}</p>
+        <ol class="stage-track" aria-label="Milestones">${steps.map((m) => html`<li class="is-${m.status}" title="${m.label}"><span class="sr-only">${m.label}: ${m.status}</span></li>`)}</ol>
       </div>
     </header>
-    <nav class="ws-tabs" aria-label="Workspace sections">
-      ${SECTIONS.map((s) => html`<a href="#${s.id}" ${S.section === s.id ? 'aria-current=true' : ''}>${s.label}</a>`)}
-    </nav>`;
+    <label class="ws-jump field"><span class="field-label">Section</span>
+      <select data-jump>${SECTIONS.map((s) => html`<option value="${s.id}" ${S.section === s.id ? 'selected' : ''}>${s.label}</option>`)}</select>
+    </label>`;
 }
 
-// ---------- sections ----------
+// ---------- overview: what needs attention, what's coming up ----------
+function attentionItems(w) {
+  const items = [];
+  const level = (iso) => (daysFrom(iso, TODAY) < 0 ? 'high' : daysFrom(iso, TODAY) <= 7 ? 'soon' : 'normal');
+  if (!w.planner) items.push({ title: 'Assign a planner', meta: 'This enquiry has no planner yet', due: null, level: 'high', section: 'overview' });
+  if (w.nextAction) items.push({ title: w.nextAction.label, meta: `Next action · ${fmtDate(w.nextAction.due, { day: 'numeric', month: 'short' })} · ${relDays(w.nextAction.due, TODAY)}`, level: level(w.nextAction.due), section: w.nextAction.section, sort: w.nextAction.due });
+  w.tasks.filter((t) => t.status !== 'Done' && daysFrom(t.due, TODAY) <= 7 && t.title !== w.nextAction?.label)
+    .forEach((t) => items.push({ title: t.title, meta: `Task · ${t.owner} · ${relDays(t.due, TODAY)}`, level: level(t.due), section: 'tasks', sort: t.due }));
+  w.payments.filter((p) => p.status === 'Overdue' || (p.status === 'Due' && daysFrom(p.due, TODAY) <= 45))
+    .forEach((p) => items.push({ title: `${p.label} · ${inr(p.amount)}`, meta: `Couple payment · ${p.status === 'Overdue' ? 'overdue' : `due ${fmtDate(p.due, { day: 'numeric', month: 'short' })}`}`, level: p.status === 'Overdue' ? 'high' : 'soon', section: 'finance', sort: p.due }));
+  if (w.payment?.status === 'Overdue' && !w.payments.length) items.push({ title: `${w.payment.label} · ${inr(w.payment.amount)}`, meta: 'Couple payment · overdue', level: 'high', section: 'finance', sort: w.payment.due });
+  w.vendorRequests.filter((r) => r.responses < r.sentTo && !r.proposals.some((p) => p.status === 'Selected'))
+    .forEach((r) => items.push({ title: `Chase ${r.sentTo - r.responses} ${r.category.toLowerCase()} quote${r.sentTo - r.responses > 1 ? 's' : ''}`, meta: `Vendor requests · due ${fmtDate(r.dueBy, { day: 'numeric', month: 'short' })}`, level: level(r.dueBy), section: 'vendors', sort: r.dueBy }));
+  if (w.overdueTasks && !w.tasks.length) items.push({ title: `${w.overdueTasks} overdue task${w.overdueTasks > 1 ? 's' : ''}`, meta: 'Planning tasks', level: 'high', section: 'tasks' });
+  const rank = { high: 0, soon: 1, normal: 2 };
+  items.sort((a, b) => rank[a.level] - rank[b.level] || (a.sort || '').localeCompare(b.sort || ''));
+  if (items.length < 3) {
+    STAGE_ACTIONS[stageIndexOf(S.state)].forEach(([title, section]) => {
+      if (!items.some((i) => i.title === title)) items.push({ title, meta: 'Suggested for this stage', level: 'normal', section });
+    });
+  }
+  return items.slice(0, 6);
+}
+
+function agenda(w) {
+  const rows = [];
+  w.tasks.filter((t) => t.status !== 'Done' && daysFrom(t.due, TODAY) >= 0).forEach((t) => rows.push({ date: t.due, kind: 'Task', title: t.title, who: t.owner }));
+  w.payments.filter((p) => p.status !== 'Paid').forEach((p) => rows.push({ date: p.due, kind: 'Payment', title: `${p.label} · ${inr(p.amount)}`, who: 'Couple' }));
+  w.vendorBills.filter((b) => b.status !== 'Paid').forEach((b) => rows.push({ date: b.due, kind: 'Vendor bill', title: `${b.vendor} · ${inr(b.amount - b.paid)}`, who: 'Agency' }));
+  w.schedule.forEach((d) => rows.push({ date: d.date, kind: 'Event', title: `${d.label}: ${d.events.map((e) => e.name).join(', ')}`, who: '' }));
+  return rows.filter((r) => daysFrom(r.date, TODAY) <= 120).sort((a, b) => a.date.localeCompare(b.date)).slice(0, 7);
+}
+
 function viewOverview() {
   const w = S.w;
-  const today = new Date().toISOString().slice(0, 10);
-  const openTasks = w.tasks.filter((t) => t.status !== 'Done').sort((a, b) => a.due.localeCompare(b.due)).slice(0, 4);
-  const nextPay = w.payments.find((p) => p.status !== 'Paid');
-  const actions = NEXT_ACTIONS[stageIndexOf(S.state)];
+  const items = attentionItems(w);
+  const ag = agenda(w);
+  const counts = [['events', w.schedule.reduce((n, d) => n + d.events.length, 0)], ['proposals', w.vendorRequests.reduce((n, r) => n + r.proposals.length, 0)], ['tasks', w.tasks.length], ['payment milestones', w.payments.length]];
   return html`
-    <section class="card next-actions" aria-labelledby="na-h">
-      <div class="card-head"><h2 id="na-h" class="card-title">Your next actions</h2><span class="muted small">Suggested for this stage · preview</span></div>
-      <ol class="na-list">
-        ${actions.map(([label, sec], i) => html`<li><span class="na-n">${i + 1}</span><span class="na-label">${label}</span><a class="btn btn-small ${i ? 'btn-ghost' : ''}" href="#${sec}">Open</a></li>`)}
-      </ol>
-    </section>
-    <div class="ws-grid">
-      <div class="ws-col">
-        <section class="card garden-card" aria-labelledby="gd-h">
-          <div class="card-head"><h2 id="gd-h" class="card-title">The couple’s garden</h2><span class="muted small">What the couple sees at this stage</span></div>
+    <div class="ws-layout">
+      <div class="ws-stack">
+        <section class="card" aria-labelledby="attn-h">
+          <div class="card-head"><h2 id="attn-h" class="card-title">Needs your attention</h2><span class="muted small">${items.length} item${items.length === 1 ? '' : 's'}</span></div>
+          <ul class="attn">
+            ${items.map((it) => html`
+              <li class="attn-${it.level}">
+                <span class="attn-mark" aria-hidden="true"></span>
+                <span><span class="attn-title">${it.title}</span><span class="attn-meta">${it.level === 'high' ? html`<span class="due-overdue">Urgent · </span>` : ''}${it.meta}</span></span>
+                <a class="btn btn-small ${it.level === 'high' ? '' : 'btn-ghost'}" href="#${it.section}">Open<span class="sr-only"> ${it.title}</span></a>
+              </li>`)}
+          </ul>
+        </section>
+        <section class="card" aria-labelledby="ag-h">
+          <div class="card-head"><h2 id="ag-h" class="card-title">Coming up</h2><span class="muted small">Next deadlines, payments and events</span></div>
+          ${ag.length ? html`<ol class="agenda">
+            ${ag.map((r) => html`<li>
+              <span class="agenda-date"><b>${new Date(r.date + 'T00:00:00').getDate()}</b><small>${new Date(r.date + 'T00:00:00').toLocaleDateString('en-IN', { month: 'short' })}</small></span>
+              <span><span class="cell-strong">${r.title}</span><span class="cell-sub">${relDays(r.date, TODAY)}${r.who ? ` · ${r.who}` : ''}</span></span>
+              <span class="kind kind-${r.kind.split(' ')[0].toLowerCase()}">${r.kind}</span>
+            </li>`)}
+          </ol>` : emptyState({ icon: 'calendar', title: 'Nothing scheduled yet', body: 'Deadlines, payments and events appear here as the plan takes shape.' })}
+        </section>
+      </div>
+
+      <aside class="ws-stack" aria-label="Case details">
+        <section class="card couple-shared" aria-labelledby="cp-h">
+          <div class="card-head"><h2 id="cp-h" class="card-title">From the couple</h2>${visibility('shared', 'Shared by the couple')}</div>
+          ${renderPeople(w.people)}
+          <h3 class="sub-h">What matters to them</h3>
+          ${w.preferences.length ? html`<ul class="tags">${w.preferences.map((p) => html`<li>${p}</li>`)}</ul>` : html`<p class="muted small">Not shared yet.</p>`}
+          <h3 class="sub-h">Traditions, customs & family practices</h3>
+          ${w.traditions.note ? html`<blockquote class="quote">${w.traditions.note}</blockquote>` : html`<p class="muted small">Nothing shared yet — keep it couple-led.</p>`}
+          ${w.traditions.discussWithPlanner ? html`<p class="small muted">They’d like to talk this through with their planner.</p>` : ''}
+        </section>
+        <section class="card" aria-labelledby="rec-h">
+          <div class="card-head"><h2 id="rec-h" class="card-title">Case record</h2></div>
+          <div class="ws-id"><span class="ws-id-label">Workspace ID</span><span class="ws-id-value">Assigned in a later module</span></div>
+          <p class="record-line">${counts.map(([k, v]) => html`<span><b>${v}</b> ${k}</span>`)}</p>
+        </section>
+        <section class="card garden-mini" aria-labelledby="gd-h">
+          <div class="card-head"><h2 id="gd-h" class="card-title">The couple’s view</h2><span class="muted small">Their garden at this stage</span></div>
           <div data-garden-slot></div>
         </section>
-        <section class="card" aria-labelledby="ov-h">
-          <div class="card-head"><h2 id="ov-h" class="card-title">Case overview</h2></div>
-          ${renderCaseFacts(w)}
-        </section>
-        <section class="card" aria-labelledby="ms-h">
-          <div class="card-head"><h2 id="ms-h" class="card-title">Milestones</h2></div>
-          ${renderJourney(milestoneStatuses(S.state), { audience: 'agent', compact: true })}
-        </section>
-        <section class="card" aria-labelledby="up-h">
-          <div class="card-head"><h2 id="up-h" class="card-title">Upcoming tasks</h2><a class="link small" href="#tasks">All tasks</a></div>
-          ${openTasks.length ? html`<ul class="list">${openTasks.map((t) => html`
-            <li class="list-row"><span>${t.title}<small class="muted"> · ${t.owner}</small></span>
-            <span class="list-row-side"><span class="${t.due < today ? 'is-late' : 'muted'} small">${fmtDate(t.due)}</span>${pill(t.status)}</span></li>`)}</ul>`
-          : emptyState({ title: 'No open tasks' })}
-        </section>
-      </div>
-      <div class="ws-col">
-        ${renderWorkspaceContainer(w)}
-        <section class="card" aria-labelledby="cp-h">
-          <div class="card-head"><h2 id="cp-h" class="card-title">Shared by the couple</h2></div>
-          ${renderPeople(w.people)}
-          <h3 class="sub-h">Preferences</h3>
-          ${w.preferences.length ? html`<ul class="tags">${w.preferences.map((p) => html`<li>${p}</li>`)}</ul>` : html`<p class="muted small">None shared yet.</p>`}
-          <h3 class="sub-h">Traditions, customs &amp; cultural details</h3>
-          ${w.traditions.note ? html`<blockquote class="quote">${w.traditions.note}</blockquote>` : html`<p class="muted small">Nothing shared yet.</p>`}
-          ${w.traditions.discussWithPlanner ? html`<p class="small">${pill('Requested', 'Would like to discuss with planner')}</p>` : ''}
-        </section>
-        <section class="card" aria-labelledby="np-h">
-          <div class="card-head"><h2 id="np-h" class="card-title">Next payment</h2><a class="link small" href="#finance">Finance</a></div>
-          ${nextPay ? html`<p class="big-num">${inr(nextPay.amount)}</p><p class="muted small">${nextPay.label} · due ${fmtDate(nextPay.due)} ${pill(nextPay.status)}</p>` : emptyState({ icon: 'coin', title: 'No payments scheduled' })}
-        </section>
-      </div>
+      </aside>
     </div>`;
 }
 
@@ -140,11 +181,40 @@ function viewVendors() {
   const req = reqs.find((r) => r.category === category);
   return html`${renderVendorRequests(reqs, category)}
     ${req ? renderComparison({ category, options: req.proposals, audience: 'agent', categories: reqs.map((r) => r.category) }) : ''}
-    ${req ? html`<div class="row-end"><button class="btn" type="button" data-action="send-shortlist">Send shortlist to couple</button></div>` : ''}`;
+    ${req ? html`<div class="row-end"><span class="muted small">Only shortlisted options and planner notes reach the couple.</span><button class="btn" type="button" data-action="send-shortlist">Send shortlist to couple</button></div>` : ''}`;
 }
 
 const viewTasks = () => renderTasks(S.w.tasks, S.taskFilters);
-const viewSchedule = () => renderAgentSchedule(S.w.schedule);
+
+// Day-of run sheet: every arrival and start time, in order, per day.
+function runSheet(days) {
+  if (!days.length) return emptyState({ icon: 'calendar', title: 'No schedule yet', body: 'The run sheet builds itself from the event schedule.' });
+  return html`<div class="ag-sheet"><table class="ag-table runsheet">
+    <thead><tr><th scope="col">Time</th><th scope="col">What happens</th><th scope="col">Owner</th><th scope="col">Status</th></tr></thead>
+    <tbody>${days.map((d, di) => {
+      const rows = [];
+      d.events.forEach((e, ei) => {
+        rows.push({ time: e.start, what: html`<b>${e.name} begins</b><span class="cell-sub">${e.venue}</span>`, owner: e.owner, status: null });
+        e.vendors.forEach((v, vi) => rows.push({ time: v.arrival, what: html`${v.name} arrives<span class="cell-sub">${v.role} · for ${e.name}</span>`, owner: e.owner, status: html`<button class="pill-btn" type="button" data-action="arrival" data-day="${di}" data-event="${ei}" data-vendor="${vi}">${pill(v.status)}<span class="sr-only">, change status</span></button>` }));
+      });
+      rows.sort((a, b) => a.time.localeCompare(b.time));
+      return html`<tr class="rs-day"><td colspan="4">${d.label} · ${fmtDate(d.date, { weekday: 'long', day: 'numeric', month: 'long' })}</td></tr>
+        ${rows.map((r) => html`<tr><td data-label="Time" class="num">${r.time}</td><td data-label="What" class="wide">${r.what}</td><td data-label="Owner"><span class="who"><span class="who-dot" aria-hidden="true">${initials(r.owner)}</span>${r.owner}</span></td><td data-label="Status">${r.status || html`<span class="muted small">Event</span>`}</td></tr>`)}`;
+    })}</tbody></table></div>`;
+}
+
+function viewSchedule() {
+  return html`
+    <div class="ag-filters">
+      <div class="seg-toggle" role="group" aria-label="Schedule view">
+        <button type="button" data-sched="events" aria-pressed="${S.scheduleView === 'events'}">By event</button>
+        <button type="button" data-sched="runsheet" aria-pressed="${S.scheduleView === 'runsheet'}">Day-of run sheet</button>
+      </div>
+      <span class="muted small">${visibility('shared', 'Event times shared with couple')} ${visibility('internal', 'Arrivals & owners internal')}</span>
+    </div>
+    ${S.scheduleView === 'runsheet' ? runSheet(S.w.schedule) : renderAgentSchedule(S.w.schedule)}`;
+}
+
 const viewFinance = () => html`${renderPaymentTimeline(S.w.payments, { audience: 'agent' })}${renderVendorCosts(S.w.vendorBills, S.w.extras)}${renderCloseout(S.w)}`;
 
 const VIEWS = { overview: viewOverview, meeting: viewMeeting, documents: viewDocuments, agreement: viewAgreement, vendors: viewVendors, tasks: viewTasks, schedule: viewSchedule, finance: viewFinance };
@@ -181,7 +251,7 @@ on(root, 'click', '[data-action]', (e, t) => {
     const i = AGREEMENT_FLOW.indexOf(w.agreement.status);
     const next = AGREEMENT_FLOW[i + 1];
     w.agreement.status = next;
-    w.agreement.history = [...(w.agreement.history || []), { status: next, at: new Date().toISOString().slice(0, 10) }];
+    w.agreement.history = [...(w.agreement.history || []), { status: next, at: TODAY }];
     previewNotice(`Status set to “${next}” in this preview only. No document was ${next === 'Signed' ? 'signed or attached' : 'sent'}.`);
     render();
   } else if (a === 'category') { S.category = t.dataset.category; render(); }
@@ -201,7 +271,8 @@ on(root, 'click', '[data-action]', (e, t) => {
     render();
   } else if (a === 'remind') previewNotice('Reminders are a later module. Nothing was sent to the couple.');
 });
-
+on(root, 'click', '[data-sched]', (e, t) => { S.scheduleView = t.dataset.sched; render(); root.querySelector(`[data-sched="${S.scheduleView}"]`)?.focus(); });
+on(root, 'change', '[data-jump]', (e, t) => { location.hash = t.value; });
 on(root, 'change', '[data-action="toggle-check"]', (e, t) => { S.w.checklist[+t.dataset.index].done = t.checked; render(); });
 on(root, 'change', 'select[data-filter]', (e, t) => { S.taskFilters[t.dataset.filter] = t.value; render(); });
 
@@ -223,6 +294,7 @@ on(root, 'submit', 'form[data-form]', (e, form) => {
 window.addEventListener('hashchange', () => { S.section = location.hash.slice(1) || 'overview'; render(); window.scrollTo({ top: 0 }); });
 
 (async function boot() {
+  initAgentShell();
   const key = document.body.dataset.mockKey;
   S.w = await loadWedding(key);
   if (!S.w) {
@@ -230,9 +302,8 @@ window.addEventListener('hashchange', () => { S.section = location.hash.slice(1)
     mount(root, html`<div class="card">${emptyState({ title: 'No mock wedding with this preview key', body: 'Go back to the weddings list to open a sample case.' })}<div class="row-center"><a class="btn" href="/agent/weddings">All weddings</a></div></div>`);
     return;
   }
-  document.title = `${S.w.coupleLabel} · Wedding workspace · The Royal Knot`;
-  const urlStage = stageFromUrl();
-  S.state = stageState(urlStage ?? S.w.stage);
+  document.title = `${S.w.coupleLabel} · Case file · The Royal Knot`;
+  S.state = stageState(stageFromUrl() ?? S.w.stage);
   S.section = location.hash.slice(1) || 'overview';
   initDevbar({
     stage: stageIndexOf(S.state),

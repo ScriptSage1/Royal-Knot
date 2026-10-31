@@ -62,6 +62,23 @@ export function tone(status) {
 }
 export const pill = (status, label = status) => html`<span class="pill pill-${tone(status)}">${label}</span>`;
 
+// Who can see a section: 'internal' (agency only) or 'shared' (visible to the couple).
+export const visibility = (kind, label) => html`<span class="vis vis-${kind}" title="${kind === 'internal' ? 'Agency only — never shown to the couple' : 'Visible to the couple'}"><svg viewBox="0 0 16 16" aria-hidden="true">${raw(kind === 'internal'
+  ? '<rect x="3.5" y="7" width="9" height="6.5" rx="1.5"/><path d="M5.5 7V5.2a2.5 2.5 0 0 1 5 0V7"/>'
+  : '<path d="M1.5 8s2.4-4.5 6.5-4.5S14.5 8 14.5 8 12.1 12.5 8 12.5 1.5 8 1.5 8Z"/><circle cx="8" cy="8" r="2"/>')}</svg>${label || (kind === 'internal' ? 'Internal' : 'Shared with couple')}</span>`;
+
+// Relative dates against a reference day (mock data uses a fixed "as of").
+const DAY = 86400000;
+export const daysFrom = (iso, ref) => Math.round((new Date(iso + 'T00:00:00') - new Date(ref + 'T00:00:00')) / DAY);
+export function relDays(iso, ref) {
+  const d = daysFrom(iso, ref);
+  if (d === 0) return 'today';
+  if (d === 1) return 'tomorrow';
+  if (d === -1) return 'yesterday';
+  return d > 0 ? `in ${d} days` : `${-d} days overdue`;
+}
+export const initials = (name) => (name || '?').split(/[\s.&]+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+
 // "Connects later" tag marks a visible future integration point.
 export const futureTag = (label) => html`<span class="future-tag" title="Integration point for a later module">Connects later · ${label}</span>`;
 

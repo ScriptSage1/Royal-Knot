@@ -1,6 +1,6 @@
 // Payment timeline (any number of milestones), vendor costs, and closeout.
 // Actions: data-action="pay" data-index (couple, not connected) | "remind" data-index (agent, mock)
-import { html, inr, fmtDate, pill, emptyState, futureTag } from '../core/ui.js';
+import { html, inr, fmtDate, pill, emptyState, futureTag, visibility } from '../core/ui.js';
 
 const KIND_LABEL = { booking: 'Booking', advance: 'Advance', final: 'Final', extra: 'Extra' };
 
@@ -15,7 +15,7 @@ export function renderPaymentTimeline(milestones, { audience = 'couple' } = {}) 
 
   return html`
     <section class="card" aria-labelledby="pay-h">
-      <div class="card-head"><h2 id="pay-h" class="card-title">Payment timeline</h2>${futureTag('Payments')}</div>
+      <div class="card-head"><h2 id="pay-h" class="card-title">Payment timeline</h2>${audience === 'agent' ? visibility('shared') : ''}${futureTag('Payments')}</div>
       <ul class="stat-row">
         <li><span>Total</span><strong>${inr(total)}</strong></li>
         <li><span>Paid</span><strong>${inr(paid)}</strong></li>
@@ -46,7 +46,7 @@ export function renderVendorCosts(bills, extras) {
   const billTotal = bills.reduce((n, b) => n + b.amount, 0);
   return html`
     <section class="card" aria-labelledby="vc-h">
-      <div class="card-head"><h2 id="vc-h" class="card-title">Vendor bills</h2><span class="internal-badge">Internal</span></div>
+      <div class="card-head"><h2 id="vc-h" class="card-title">Vendor bills</h2>${visibility('internal')}</div>
       ${bills.length ? html`
         <div class="table-wrap"><table class="table">
           <thead><tr><th scope="col">Vendor</th><th scope="col">Category</th><th scope="col" class="num">Amount</th><th scope="col" class="num">Paid</th><th scope="col">Due</th><th scope="col">Status</th></tr></thead>
@@ -55,7 +55,7 @@ export function renderVendorCosts(bills, extras) {
         </table></div>` : emptyState({ icon: 'coin', title: 'No vendor bills yet', body: 'Bills appear once vendors are booked.' })}
     </section>
     <section class="card" aria-labelledby="ex-h">
-      <div class="card-head"><h2 id="ex-h" class="card-title">Extra costs</h2><span class="internal-badge">Internal</span></div>
+      <div class="card-head"><h2 id="ex-h" class="card-title">Extra costs</h2>${visibility('internal')}</div>
       ${extras.length ? html`
         <ul class="list">
           ${extras.map((x) => html`<li class="list-row"><span>${x.label}<small class="muted"> · ${x.billable ? 'Billable to couple' : 'Agency cost'}</small></span><span class="list-row-side"><strong>${inr(x.amount)}</strong>${pill(x.status)}</span></li>`)}
@@ -69,7 +69,7 @@ export function renderCloseout(w) {
   const steps = ['All vendor bills received', 'Final payment received', 'Extras reconciled', 'Profit reviewed & case closed'];
   return html`
     <section class="card" aria-labelledby="co-h">
-      <div class="card-head"><h2 id="co-h" class="card-title">Final closeout</h2>${futureTag('Closeout & reporting')}<span class="internal-badge">Internal</span></div>
+      <div class="card-head"><h2 id="co-h" class="card-title">Final closeout</h2>${visibility('internal')}${futureTag('Closeout & reporting')}</div>
       <ul class="stat-row">
         <li><span>Expected income</span><strong>${inr(income)}</strong></li>
         <li><span>Known costs</span><strong>${inr(costs)}</strong></li>

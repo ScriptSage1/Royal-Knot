@@ -1,7 +1,7 @@
 // Multi-day wedding schedule. Agents see owners and vendor arrival tracking;
 // couples see times, venues and notes only.
 // Actions (agent): data-action="arrival" data-day data-event data-vendor
-import { html, fmtDay, pill, emptyState, futureTag } from '../core/ui.js';
+import { html, fmtDay, pill, emptyState, futureTag, visibility } from '../core/ui.js';
 
 export const ARRIVAL_FLOW = ['Not confirmed', 'Expected', 'Arrived', 'Delayed'];
 
@@ -16,7 +16,8 @@ export function renderAgentSchedule(days) {
     <section class="card" aria-labelledby="sch-h">
       <div class="card-head">
         <h2 id="sch-h" class="card-title">Wedding schedule &amp; day-of tracking</h2>
-        <span class="muted small">${days.length} days · ${arrived}/${vendorsTotal.length} vendor arrivals checked in</span>
+        ${visibility('shared', 'Times shared · arrivals internal')}
+        <span class="muted small">${days.length} days · ${arrived}/${vendorsTotal.length} arrivals checked in</span>
         ${futureTag('Live day-of updates')}
       </div>
       ${days.map((d, di) => html`
@@ -60,10 +61,10 @@ export function renderCoupleEvents(days, { dayOf = [], final = false } = {}) {
               </div>
             </article>`)}
         </section>`)}
-      <section class="card card-soft" aria-labelledby="dayof-h">
+${dayOf.length ? html`      <section class="card card-soft" aria-labelledby="dayof-h">
         <div class="card-head"><h3 id="dayof-h" class="card-title">On the day</h3>${pill(final ? 'Confirmed' : 'Draft', final ? 'Final' : 'Draft schedule')}</div>
         <ul class="list">${dayOf.map((p) => html`<li class="list-row"><span class="muted">${p.role}</span><strong>${p.name}</strong></li>`)}</ul>
         <p class="muted small">Contact details will be shared closer to the date.</p>
-      </section>
+      </section>` : ''}
     </div>`;
 }

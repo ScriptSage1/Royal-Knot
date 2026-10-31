@@ -3,7 +3,7 @@
 // internal notes and only receives shortlisted options from couple-mock.js.
 // Actions: data-action="category" data-category | "shortlist" data-index |
 //          "decline" data-index | "choose" data-index | "request-quotes"
-import { html, inr, fmtDate, pill, emptyState, futureTag, plural } from '../core/ui.js';
+import { html, inr, fmtDate, pill, emptyState, futureTag, plural, visibility } from '../core/ui.js';
 
 export function renderVendorRequests(requests, active) {
   if (!requests.length) {
@@ -13,7 +13,7 @@ export function renderVendorRequests(requests, active) {
   }
   return html`
     <section class="card" aria-labelledby="vr-h">
-      <div class="card-head"><h2 id="vr-h" class="card-title">Vendor requests</h2>${futureTag('Vendor portal')}</div>
+      <div class="card-head"><h2 id="vr-h" class="card-title">Vendor requests</h2>${visibility('internal')}${futureTag('Vendor portal')}</div>
       <div class="table-wrap"><table class="table">
         <thead><tr><th scope="col">Category</th><th scope="col">Brief</th><th scope="col">Responses</th><th scope="col">Quotes due</th><th scope="col"><span class="sr-only">Compare</span></th></tr></thead>
         <tbody>${requests.map((r) => html`
@@ -59,7 +59,7 @@ export function renderComparison({ category, options, audience = 'agent', select
     <section class="card" aria-labelledby="cmp-h">
       <div class="card-head">
         <h2 id="cmp-h" class="card-title">${audience === 'agent' ? 'Proposal comparison' : 'Compare your options'} · ${category}</h2>
-        <span class="muted small">${plural(options.length, 'option')}</span>
+        ${audience === 'agent' ? visibility('internal', 'Internal comments stay private') : ''}<span class="muted small">${plural(options.length, 'option')}</span>
       </div>
       ${tabs}
       <div class="compare-wrap" tabindex="0" aria-label="Comparison table, scrolls sideways on small screens">

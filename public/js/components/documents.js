@@ -1,6 +1,6 @@
 // Requirements/specification document + planner checklist.
 // Actions: data-action="toggle-check" data-index | "generate-doc"
-import { html, fmtDate, futureTag, emptyState, pill } from '../core/ui.js';
+import { html, fmtDate, futureTag, emptyState, pill, visibility } from '../core/ui.js';
 
 export function renderRequirementsDoc(req, { audience = 'agent' } = {}) {
   const body = req.sections.length
@@ -23,7 +23,7 @@ export function renderRequirementsDoc(req, { audience = 'agent' } = {}) {
       <div class="card-head">
         <h2 id="req-h" class="card-title">Requirements document</h2>
         ${pill(req.status)}
-        ${audience === 'agent' ? futureTag('Document generation') : ''}
+        ${audience === 'agent' ? html`${visibility('shared', 'Shared once sent')}${futureTag('Document generation')}` : ''}
       </div>
       ${body}
       ${audience === 'agent' ? html`
@@ -38,7 +38,7 @@ export function renderChecklist(items) {
   const done = items.filter((i) => i.done).length;
   return html`
     <section class="card" aria-labelledby="chk-h">
-      <div class="card-head"><h2 id="chk-h" class="card-title">Planner checklist</h2><span class="muted small">${done}/${items.length} done</span><span class="internal-badge">Internal</span></div>
+      <div class="card-head"><h2 id="chk-h" class="card-title">Planner checklist</h2><span class="muted small">${done}/${items.length} done</span>${visibility('internal')}</div>
       ${items.length ? html`
         <ul class="checklist">
           ${items.map((it, i) => html`

@@ -2,6 +2,10 @@
 // the stage. Renders from the couple-safe mock projection only; nothing is
 // saved or sent. Planning state comes from the mock stage (or `?stage=N`) and
 // from the couple's own preview actions.
+//
+// One way to navigate and see progress: the "Your journey" button in the top
+// bar. The home view is one moment — what your planner is handling, the one
+// thing needed from you, and what happens next.
 import { html, mount, on, fmtDate, fmtDay, pill, emptyState, previewNotice } from '../core/ui.js';
 import { stageState, stageIndexOf, progressOf, stageFromUrl, writeStageToUrl, publishProgress } from '../core/progress.js';
 import { initDevbar, isDevMode } from '../core/devbar.js';
@@ -13,31 +17,29 @@ import { renderComparison } from '../components/proposals.js';
 import { renderCoupleEvents } from '../components/schedule.js';
 import { mountGarden } from '../garden/garden.js';
 
-// The story, in chapters. Each chapter completes when its milestones are done.
-// Add a chapter here (and a view below) to extend the journey.
+// The whole journey, in chapters. A chapter completes when its milestones are
+// done; chapters without milestones follow the one before. Add a row here (and
+// a view below) to extend the journey.
 const CHAPTERS = [
-  { id: 'details', milestones: ['enquiry'], title: 'Your story', blurb: 'Share a little about the celebration you imagine.' },
-  { id: 'consultation', milestones: ['consultBooked', 'consultHeld'], title: 'Meeting your planner', blurb: 'A relaxed first conversation, online or in person.' },
-  { id: 'plan', milestones: ['requirements'], title: 'Your plan, in writing', blurb: 'Your conversation becomes a plan summary for you to approve.' },
-  { id: 'agreement', milestones: ['agreement'], title: 'Our agreement', blurb: 'Read and sign the service agreement.' },
-  { id: 'vendors', milestones: ['vendors'], title: 'Choosing your vendors', blurb: 'Compare the caterers, designers and artists we shortlist for you.' },
-  { id: 'events', milestones: ['tasks', 'schedule'], title: 'Bringing it together', blurb: 'Your events, your schedule, and who looks after each moment.' },
-  { id: 'celebration', milestones: ['complete'], title: 'The celebration', blurb: 'Everything in place, and your loved ones gathered.' },
-];
-// Always-available places that sit alongside the story.
-const ALONGSIDE = [
-  { id: 'details', title: 'Your details', note: 'Update anything you’ve shared' },
-  { id: 'payments', title: 'Payments', note: 'Your milestone schedule', opensAfter: 'requirements' },
+  { id: 'details', milestones: ['enquiry'], title: 'Your story', blurb: 'A little about the celebration you imagine.' },
+  { id: 'consultation', milestones: ['consultBooked', 'consultHeld'], title: 'Meeting your planner', blurb: 'A relaxed first conversation.' },
+  { id: 'plan', milestones: ['requirements'], title: 'Your plan, in writing', blurb: 'Your conversation, written up for you to approve.' },
+  { id: 'agreement', milestones: ['agreement'], title: 'Our agreement', blurb: 'The service agreement and your payment schedule.' },
+  { id: 'vendors', milestones: ['vendors'], title: 'Choosing your vendors', blurb: 'Shortlisted caterers, designers and artists to compare.' },
+  { id: 'events', milestones: ['tasks', 'schedule', 'complete'], title: 'Bringing it together', blurb: 'Every event, every timing, confirmed.' },
+  { id: 'day', milestones: ['wedding-day'], title: 'The wedding day', blurb: 'Your day-of schedule and the people looking after you.' },
+  { id: 'closeout', milestones: ['closeout'], title: 'After the celebration', blurb: 'Final payment, thank-yous and your memories.' },
 ];
 
 const BUDGETS = ['Under ₹25 L', '₹25 – 50 L', '₹50 L – 1 Cr', '₹1 – 3 Cr', 'Above ₹3 Cr', 'Not sure yet'];
-const PREFERENCES = ['Intimate', 'Large & lively', 'Outdoors', 'Indoors', 'Destination', 'Close to home', 'Relaxed', 'Formal', 'Eco-conscious', 'Music & dancing', 'Food-focused', 'Comfortable for elders'];
+const PREFERENCES = ['Intimate', 'Grand & lively', 'Outdoors', 'Heritage venue', 'Destination', 'Close to home', 'Relaxed', 'Formal', 'Sustainable choices', 'Music & dancing', 'Food-focused', 'Comfortable for elders'];
 
-const S = { data: null, state: null, view: 'home', vendorCategory: null, choices: {}, step: 0, dev: false };
+const S = { data: null, state: null, view: 'home', vendorCategory: null, choices: {}, step: 0, editing: false, dev: false };
 const root = document.getElementById('cp-view');
 const dialog = document.getElementById('journey');
 const has = (k) => S.state.done.has(k);
 const planner = () => S.data.planner.name;
+const firstName = () => planner().split(' ')[0];
 
 // ---------- chapter state ----------
 function chapterStates() {
@@ -50,50 +52,14 @@ function chapterStates() {
     return { ...c, n: i + 1, status };
   });
 }
-const currentChapter = () => { const chs = chapterStates(); return chs.find((c) => c.status === 'current') || chs.at(-1); };
+const currentChapter = () => chapterStates().find((c) => c.status === 'current');
+const nextChapter = () => { const chs = chapterStates(); const i = chs.findIndex((c) => c.status === 'current'); return chs[i + 1]; };
 
 function canOpen(id) {
   if (id === 'home' || id === 'details') return true;
   if (id === 'payments') return has('requirements');
   const c = chapterStates().find((x) => x.id === id);
   return !!c && c.status !== 'upcoming';
-}
-
-// What the couple sees as "now": one moment, one action.
-function moment() {
-  const c = currentChapter();
-  const booked = S.data.consultation.booked || S.data.consultation.slots[0];
-  if (c.status === 'done') {
-    return { chapter: c, title: 'Everything is ready', lede: 'Your plan is complete. Every vendor, every moment and every detail is in place. All that’s left is to celebrate — together.', cta: 'See your events', href: '#events' };
-  }
-  const m = {
-    details: { title: 'Let’s begin with you', lede: 'Tell us a little about the celebration you imagine — as much or as little as you like. Nothing is fixed yet, and everything can change.', cta: 'Begin your story', href: '#details' },
-    consultation: has('consultBooked')
-      ? { title: 'We’re looking forward to meeting you', lede: `Your first conversation with ${planner()} is on ${fmtDay(booked.date)} at ${booked.time}. There’s nothing to prepare — just bring your ideas.`, cta: 'View your appointment', href: '#consultation' }
-      : { title: 'A first conversation', lede: `Choose a time to meet ${planner()}, your planner. Bring your ideas, your questions, and anyone you’d like to include.`, cta: 'Choose a time', href: '#consultation' },
-    plan: { title: 'Your plan is taking shape', lede: `${planner()} is writing up everything you talked about. You’ll be invited to read it and approve it here.`, cta: 'See what’s being prepared', href: '#plan' },
-    agreement: { title: 'A promise, in writing', lede: 'Your service agreement is ready. It sets out how we’ll look after every detail, and when each payment falls.', cta: 'Read the agreement', href: '#agreement' },
-    vendors: { title: 'The people who will bring it to life', lede: `${planner()} has shortlisted caterers and designers for you. Compare them side by side and choose your favourites.`, cta: 'Compare your options', href: '#vendors' },
-    events: { title: 'Every moment, finding its place', lede: 'Your planner and vendors are working through the details. Your events and schedule are coming together, day by day.', cta: 'See your events', href: '#events' },
-    celebration: { title: 'Almost there', lede: 'A final walk-through with your planner, and your plan is complete.', cta: 'See your events', href: '#events' },
-  }[c.id];
-  return { chapter: c, ...m };
-}
-
-function plannerNote() {
-  const c = currentChapter();
-  if (!has('enquiry')) return { who: 'The Royal Knot', initials: 'RK', note: 'Once you share your story, a dedicated planner will be matched to you and will be in touch personally.' };
-  const note = c.status === 'done'
-    ? 'Everything is in place. I’ll be with you on the day, from the first arrival to the last goodbye.'
-    : {
-      consultation: 'I’ve read everything you shared. I’ll come to our conversation with a few ideas — and plenty of questions.',
-      plan: 'I’m writing up our conversation now, so nothing gets lost. You’ll see it all before anything is booked.',
-      agreement: 'Take your time with the agreement. If anything is unclear, I’m happy to walk you through it.',
-      vendors: 'I’ve worked with every vendor on your shortlist. I’ll be there for tastings and walk-throughs.',
-      events: 'I’m coordinating every vendor and every timing, so you don’t have to.',
-      celebration: 'We’re nearly there. I’ll be with you on the day, from the first arrival to the last goodbye.',
-    }[c.id];
-  return { who: planner(), initials: planner()[0], note };
 }
 
 // ---------- derived mock statuses ----------
@@ -114,15 +80,83 @@ function paymentsView() {
     return { ...p, status, paidOn: status === 'Paid' ? p.due : null };
   });
 }
+const duePayment = () => paymentsView().find((p) => p.status === 'Due' || p.status === 'Overdue');
+
+// What the couple sees now: the planner's part, their part, and what follows.
+function moment(c) {
+  const booked = S.data.consultation.booked || S.data.consultation.slots[0];
+  const P = firstName();
+  const M = {
+    details: {
+      title: 'Let’s begin with you',
+      lede: 'Tell us a little about the celebration you imagine — as much or as little as you like. Nothing is fixed yet.',
+      planner: 'A dedicated planner will be matched to you as soon as you share your story.',
+      cta: 'Begin your story', href: '#details',
+      more: ['Five short, optional questions', 'Approximate answers are perfect', 'You can change anything later'],
+    },
+    consultation: has('consultBooked')
+      ? {
+        title: 'We’re looking forward to meeting you',
+        lede: `Your first conversation is on ${fmtDay(booked.date)} at ${booked.time}. There’s nothing to prepare — just bring your ideas.`,
+        planner: `${P} has read your story and is preparing a few ideas for you.`,
+        cta: 'View your appointment', href: '#consultation',
+        more: ['About an hour, online or at our studio', 'Bring anyone you’d like to include', 'Your planner keeps private notes so nothing is lost'],
+      }
+      : {
+        title: 'A first conversation',
+        lede: 'Choose a time to meet your planner. Bring your ideas, your questions, and anyone you’d like to include.',
+        planner: `${P} has read your story and will lead the conversation.`,
+        cta: 'Choose a time', href: '#consultation',
+        more: ['About an hour, online or at our studio', 'Pick whichever slot suits you', 'You can change the time later'],
+      },
+    plan: {
+      title: 'Your plan is taking shape',
+      lede: 'Everything you talked about is being written into a plan summary for you to read and approve.',
+      planner: `${P} is writing up your consultation, so nothing gets lost.`,
+      cta: 'See what’s being prepared', href: '#plan',
+      more: ['Your celebration, style, food and accessibility needs', 'Traditions only as you described them', 'Nothing is booked until you approve'],
+    },
+    agreement: {
+      title: 'A promise, in writing',
+      lede: 'Your service agreement is ready to read. It sets out how we’ll look after every detail, and when each payment falls.',
+      planner: `${P} is happy to walk you through any clause.`,
+      cta: 'Read the agreement', href: '#agreement',
+      more: ['Digital signing arrives in a later version of this preview', 'Your payment schedule is attached', 'A copy stays here once signed'],
+    },
+    vendors: {
+      title: 'The people who will bring it to life',
+      lede: 'Your planner has shortlisted caterers and designers. Compare them side by side and choose your favourites.',
+      planner: `${P} has worked with every vendor on your shortlist and will join tastings.`,
+      cta: 'Compare your options', href: '#vendors',
+      more: ['Prices, inclusions and extras shown side by side', 'Invitation design is handled by your stationery vendor', 'Your choice is confirmed with your planner'],
+    },
+    events: {
+      title: 'Every moment, finding its place',
+      lede: 'Vendors are confirmed and your events are being scheduled, day by day.',
+      planner: `${P} is coordinating every vendor, timing and arrival.`,
+      cta: 'See your events', href: '#events',
+      more: ['A draft schedule you can follow as it firms up', 'Final timings are shared before the day', 'Your planner handles vendor arrivals'],
+    },
+    day: {
+      title: 'Everything is ready',
+      lede: 'Your plan is complete. Every vendor, every moment and every detail is in place. All that’s left is to celebrate — together.',
+      planner: `${P} will be with you on the day, from the first arrival to the last goodbye.`,
+      cta: 'Your wedding day', href: '#day',
+      more: ['Your final schedule, by day and by event', 'Who to call for anything, at any time', 'Your closing chapter opens after the celebration'],
+    },
+  }[c.id];
+  return M;
+}
 
 // ---------- shell ----------
 function renderBar() {
   const c = currentChapter();
-  document.getElementById('journey-meta').textContent = c.status === 'done' ? 'Plan complete' : `Chapter ${c.n} of ${CHAPTERS.length}`;
+  document.getElementById('journey-meta').textContent = `Chapter ${c.n} of ${CHAPTERS.length}`;
 }
 
 function renderJourney() {
   const chs = chapterStates();
+  const pay = has('requirements');
   document.getElementById('journey-body').innerHTML = String(html`
     <div class="cx-journey-head">
       <h2 id="journey-title" class="cx-journey-title">Your journey</h2>
@@ -130,11 +164,10 @@ function renderJourney() {
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
     </div>
-    <p class="cx-journey-intro">${CHAPTERS.length} chapters, at your own pace. ${has('enquiry') ? planner() : 'Your planner'} guides you through each one.</p>
     <ol class="cx-chapters">
       ${chs.map((c, i) => {
-        const href = c.id === 'celebration' ? '#home' : `#${c.id}`;
-        const note = c.status === 'done' ? 'Complete' : c.status === 'current' ? 'You are here' : `Opens after “${chs[i - 1].title}”`;
+        const href = `#${c.id}`;
+        const note = c.status === 'done' ? 'Complete · revisit' : c.status === 'current' ? 'You are here' : c.id === 'closeout' ? 'Opens after the wedding' : `Opens after “${chs[i - 1].title}”`;
         const inner = html`
           <span class="cx-ch-num" aria-hidden="true">${c.status === 'done' ? '✓' : c.n}</span>
           <span class="cx-ch-text"><span class="cx-ch-title">${c.title}</span><span class="cx-ch-blurb">${c.blurb}</span><span class="cx-ch-note">${note}</span></span>`;
@@ -143,14 +176,10 @@ function renderJourney() {
           : html`<a class="cx-ch-row" href="${href}" ${S.view === c.id ? 'aria-current=page' : ''}>${inner}</a>`}</li>`;
       })}
     </ol>
-    <h3 class="cx-journey-sub">Alongside your journey</h3>
+    <h3 class="cx-journey-sub">Always here</h3>
     <ul class="cx-alongside">
-      ${ALONGSIDE.map((a) => {
-        const open = !a.opensAfter || has(a.opensAfter);
-        return html`<li>${open
-          ? html`<a href="#${a.id}"><strong>${a.title}</strong><span>${a.note}</span></a>`
-          : html`<div><strong>${a.title}</strong><span>Shared once your plan is approved</span></div>`}</li>`;
-      })}
+      <li><a href="#details"><strong>What you’ve shared</strong><span>Review or update your story</span></a></li>
+      <li>${pay ? html`<a href="#payments"><strong>Payments</strong><span>${duePayment() ? 'A milestone is due' : 'Your milestone schedule'}</span></a>` : html`<div><strong>Payments</strong><span>Your schedule appears with the agreement</span></div>`}</li>
     </ul>`);
 }
 
@@ -162,75 +191,37 @@ function openJourney() {
 
 // ---------- views ----------
 function viewHome() {
-  const m = moment();
-  const chs = chapterStates();
-  const pn = plannerNote();
-  const ahead = chs.filter((c) => c.status === 'upcoming').slice(0, 3);
-  const f = S.data.profile;
-  const names = f.names.trim();
-  const shared = has('enquiry');
-  const when = f.dateMode === 'exact' && f.date ? fmtDate(f.date)
-    : f.dateMode === 'month' && f.month ? new Date(f.month + '-01T00:00:00').toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })
-    : 'Still deciding';
+  const c = currentChapter();
+  const m = moment(c);
+  const nx = nextChapter();
+  const names = S.data.profile.names.trim();
+  const due = c.id !== 'agreement' && duePayment();
   return html`
     <section class="moment" aria-labelledby="moment-title">
       <div class="moment-copy">
-        <p class="moment-eyebrow">${m.chapter.status === 'done' ? 'Your plan is complete' : `Chapter ${m.chapter.n} of ${CHAPTERS.length} · ${m.chapter.title}`}</p>
+        <p class="moment-eyebrow">${c.title}</p>
         ${names ? html`<p class="moment-greeting">For ${names}</p>` : ''}
         <h1 class="moment-title" id="moment-title" tabindex="-1">${m.title}</h1>
         <p class="moment-lede">${m.lede}</p>
+        <p class="moment-planner"><span class="moment-avatar" aria-hidden="true">${has('enquiry') ? planner()[0] : 'RK'}</span><span>${m.planner}</span></p>
         <div class="moment-actions">
           <a class="cx-btn" href="${m.href}">${m.cta}</a>
-          <button class="cx-link" type="button" data-open-journey>See your whole journey</button>
+          ${due ? html`<a class="cx-link cx-link-sm" href="#payments">${due.label} is due ${fmtDate(due.due, { day: 'numeric', month: 'short' })}</a>` : ''}
         </div>
-        <ol class="moment-dots" aria-label="${chs.filter((c) => c.status === 'done').length} of ${CHAPTERS.length} chapters complete">
-          ${chs.map((c) => html`<li class="is-${c.status}"><span class="sr-only">${c.title}: ${c.status}</span></li>`)}
-        </ol>
+        <details class="moment-more">
+          <summary>${nx ? html`Then: <strong>${nx.title}</strong>` : 'What this chapter covers'}</summary>
+          <ul>${m.more.map((x) => html`<li>${x}</li>`)}</ul>
+        </details>
       </div>
     </section>
-
-    <section class="care" aria-label="Looking after you">
-      <div class="care-grid">
-        <article class="care-card care-planner">
-          <p class="care-eyebrow">In ${pn.who}’s care</p>
-          <div class="care-planner-row">
-            <span class="care-avatar" aria-hidden="true">${pn.initials}</span>
-            <blockquote class="care-note">“${pn.note}”</blockquote>
-          </div>
-          ${shared ? html`<button class="cx-link cx-link-sm" type="button" data-action="message-planner">Send ${planner()} a note</button>` : ''}
-        </article>
-
-        <article class="care-card">
-          <p class="care-eyebrow">${ahead.length ? 'Chapters ahead' : 'Your journey'}</p>
-          ${ahead.length ? html`
-            <ol class="care-ahead">
-              ${ahead.map((c) => html`<li><span class="care-ahead-n">${c.n}</span><span><strong>${c.title}</strong><small>${c.blurb}</small></span></li>`)}
-            </ol>` : html`<p class="care-muted">Every chapter is complete. Thank you for letting us be part of your story.</p>`}
-          <button class="cx-link cx-link-sm" type="button" data-open-journey>All chapters</button>
-        </article>
-
-        <article class="care-card">
-          <p class="care-eyebrow">What you’ve shared</p>
-          ${shared ? html`
-            <dl class="care-facts">
-              <div><dt>When</dt><dd>${when}</dd></div>
-              <div><dt>Where</dt><dd>${f.location || 'Still deciding'}</dd></div>
-              <div><dt>Guests</dt><dd>About ${f.guests}</dd></div>
-              <div><dt>Budget</dt><dd>${f.budget || 'To discuss'}</dd></div>
-            </dl>
-            <a class="cx-link cx-link-sm" href="#details">Update your details</a>`
-          : html`<p class="care-muted">Nothing yet — and there’s no rush. Your story starts whenever you’re ready.</p><a class="cx-link cx-link-sm" href="#details">Begin your story</a>`}
-        </article>
-      </div>
-      <p class="care-foot">Preview build · anything you enter stays in this browser tab and is not sent to anyone.</p>
-    </section>`;
+    <p class="cx-foot">Preview build · anything you enter stays in this browser tab and is not sent to anyone.</p>`;
 }
 
 function chapterShell(id, { eyebrow, title, lede }, body) {
   const i = CHAPTERS.findIndex((x) => x.id === id);
   return html`
     <article class="chapter" aria-labelledby="chapter-title">
-      <a class="chapter-back" href="#home"><span aria-hidden="true">←</span> Back to your journey</a>
+      <a class="chapter-back" href="#home"><span aria-hidden="true">←</span> Back to now</a>
       <header class="chapter-head">
         <p class="moment-eyebrow">${eyebrow || (i >= 0 ? `Chapter ${i + 1} · ${CHAPTERS[i].title}` : '')}</p>
         <h1 class="chapter-title" id="chapter-title" tabindex="-1">${title}</h1>
@@ -240,15 +231,34 @@ function chapterShell(id, { eyebrow, title, lede }, body) {
     </article>`;
 }
 
-// Guided, one-question-at-a-time story form. Every answer is optional.
+// Chapter 1 — guided, one question at a time; a summary once shared.
 const STEPS = ['About you', 'When & where', 'Size & budget', 'What matters', 'Traditions & family'];
+function whenText(f) {
+  if (f.dateMode === 'exact' && f.date) return fmtDate(f.date);
+  if (f.dateMode === 'month' && f.month) return new Date(f.month + '-01T00:00:00').toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+  return 'Still deciding';
+}
 function viewDetails() {
   const f = S.data.profile;
+  if (has('enquiry') && !S.editing) {
+    const trad = f.traditionsNote || (f.traditionsDeciding ? 'Still deciding' : f.traditionsDiscuss ? 'Would rather talk it through with the planner' : 'Nothing shared');
+    return chapterShell('details', { title: 'Your story so far', lede: 'What you’ve shared with us. Update it any time — your planner sees the latest version.' }, html`
+      <dl class="story-summary">
+        <div><dt>How we address you</dt><dd>${f.names || 'Not shared'}</dd></div>
+        <div><dt>When</dt><dd>${whenText(f)}</dd></div>
+        <div><dt>Where</dt><dd>${f.location || 'Still deciding'}</dd></div>
+        <div><dt>Guests</dt><dd>About ${f.guests}${f.eventsCount ? ` · ${f.eventsCount} events or days` : ''}</dd></div>
+        <div><dt>Budget</dt><dd>${f.budget || 'To discuss'}</dd></div>
+        <div><dt>What matters</dt><dd>${f.preferences.length ? f.preferences.join(', ') : 'Not shared'}</dd></div>
+        <div class="wide"><dt>Traditions, customs & family practices</dt><dd>${trad}</dd></div>
+      </dl>
+      <div class="row-end"><button class="btn" type="button" data-action="edit-story">Update your story</button></div>`);
+  }
   const chip = (name, value, checked, type = 'checkbox') => html`
     <label class="chip"><input type="${type}" name="${name}" value="${value}" ${checked ? 'checked' : ''}><span>${value}</span></label>`;
   const step = (i, body) => html`<fieldset class="story-step" data-step="${i}" ${S.step === i ? '' : 'hidden'}><legend class="story-legend" tabindex="-1">${STEPS[i]}</legend>${body}</fieldset>`;
   return chapterShell('details', {
-    title: has('enquiry') ? 'Your story so far' : 'Tell us about the celebration you imagine',
+    title: 'Tell us about the celebration you imagine',
     lede: 'Every question is optional. Approximate answers are perfect — your planner will go through everything with you.',
   }, html`
     <form class="story" data-form="details" novalidate>
@@ -316,7 +326,7 @@ function viewDetails() {
         <span class="story-count" aria-live="polite">Step ${S.step + 1} of ${STEPS.length}</span>
         ${S.step < STEPS.length - 1
           ? html`<button class="btn" type="button" data-step-nav="1">Continue</button>`
-          : html`<button class="btn" type="submit">${has('enquiry') ? 'Update your story' : 'Share your story'}</button>`}
+          : html`<button class="btn" type="submit">${has('enquiry') ? 'Save changes' : 'Share your story'}</button>`}
       </div>
       <p class="story-note">Preview build: your answers stay in this browser tab and are not sent to anyone.</p>
     </form>`);
@@ -329,7 +339,8 @@ function viewConsultation() {
   if (has('consultHeld')) {
     body = html`<div class="paper-section"><div class="card-head"><h2 class="card-title">Your consultation</h2>${pill('Held')}</div>
       <p>${fmtDay(c.heldSlot.date)} · ${c.heldSlot.time} · ${c.heldSlot.mode}</p>
-      <p class="muted">Thank you for meeting with us. ${planner()} is turning your conversation into a plan summary.</p></div>`;
+      <p class="muted">Thank you for meeting with us. Your conversation became your plan summary.</p>
+      ${has('requirements') ? html`<a class="link" href="#plan">Read your plan summary →</a>` : ''}</div>`;
   } else if (booked) {
     body = html`<div class="paper-section"><div class="card-head"><h2 class="card-title">Your appointment</h2>${pill('Requested', 'Requested · preview')}</div>
       <dl class="kv"><div><dt>When</dt><dd>${fmtDay(booked.date)} · ${booked.time}</dd></div><div><dt>Format</dt><dd>${booked.mode}</dd></div><div><dt>With</dt><dd>${planner()}, your planner</dd></div></dl>
@@ -342,7 +353,6 @@ function viewConsultation() {
       <p class="muted">About an hour, online or at our studio. Bring as many people as you like.</p>
       <ul class="slots">${c.slots.map((s, i) => html`
         <li><button class="slot" type="button" data-action="book" data-index="${i}"><strong>${fmtDay(s.date)}</strong><span>${s.time}</span><small>${s.mode}</small></button></li>`)}</ul>
-      ${!has('enquiry') ? html`<p class="muted small">Tip: <a href="#details">sharing your story</a> first helps your planner prepare.</p>` : ''}
     </div>`;
   }
   return chapterShell('consultation', { title: 'Meeting your planner', lede: 'A relaxed conversation about what you have in mind. There’s nothing to prepare.' }, body);
@@ -350,13 +360,15 @@ function viewConsultation() {
 
 function viewPlan() {
   if (!has('requirements')) {
-    return chapterShell('plan', { title: 'Your plan, in writing' }, html`<div class="paper-section">${emptyState({ icon: 'doc', title: `${planner()} is preparing this`, body: 'After your consultation, your planner writes up everything you discussed. You’ll be able to read and approve it here.' })}</div>`);
+    return chapterShell('plan', { title: 'Your plan, in writing' }, html`<div class="paper-section">${emptyState({ icon: 'doc', title: `${firstName()} is preparing this`, body: 'Your planner writes up everything you discussed. You’ll be able to read and approve it here.' })}</div>`);
   }
   return chapterShell('plan', { title: 'Your plan, in writing', lede: 'What we heard from you, in one place. Your approved summary guides every vendor we approach.' },
     renderRequirementsDoc({ ...S.data.requirementsSummary, status: 'Approved', version: null }, { audience: 'couple' }));
 }
 
-const viewAgreement = () => chapterShell('agreement', { title: 'Our agreement', lede: 'How we’ll look after your celebration, and when each payment falls.' }, renderAgreement(agreementView(), { audience: 'couple' }));
+const viewAgreement = () => chapterShell('agreement', { title: 'Our agreement', lede: 'How we’ll look after your celebration, and when each payment falls.' }, html`
+  ${renderAgreement(agreementView(), { audience: 'couple' })}
+  <p class="paper-link"><a class="link" href="#payments">See your payment schedule →</a></p>`);
 
 function viewVendors() {
   const cats = S.data.shortlist.map((c) => c.category);
@@ -365,15 +377,33 @@ function viewVendors() {
   const selected = has('vendors') ? S.data.selectedVendors[category] : S.choices[category] || null;
   return chapterShell('vendors', {
     title: 'Choosing your vendors',
-    lede: has('vendors') ? 'Your vendors are confirmed. Here’s who will bring your celebration to life.' : `${planner()} has shortlisted these for you. Compare them side by side and tell us your favourite.`,
+    lede: has('vendors') ? 'Your vendors are confirmed. Here’s who will bring your celebration to life.' : `${firstName()} has shortlisted these for you. Compare them side by side and tell us your favourite.`,
   }, html`${renderComparison({ category, options: group.options, audience: 'couple', selected, categories: cats })}
     <p class="muted small center">Invitation design is handled by your chosen stationery vendor.</p>`);
 }
 
-const viewPayments = () => chapterShell('payments', { eyebrow: 'Alongside your journey', title: 'Your payments', lede: 'Payments are spread across milestones, so nothing arrives all at once.' }, renderPaymentTimeline(paymentsView(), { audience: 'couple' }));
-const viewEvents = () => chapterShell('events', { title: 'Bringing it together', lede: 'Every function across every day, with what you need to know.' }, renderCoupleEvents(S.data.events, { dayOf: S.data.dayOf, final: has('schedule') }));
+const viewPayments = () => chapterShell('payments', { eyebrow: 'Always here', title: 'Your payments', lede: 'Payments are spread across milestones — a booking payment, an advance before the wedding, and a final payment after the celebration.' }, renderPaymentTimeline(paymentsView(), { audience: 'couple' }));
 
-const VIEWS = { home: viewHome, details: viewDetails, consultation: viewConsultation, plan: viewPlan, agreement: viewAgreement, vendors: viewVendors, payments: viewPayments, events: viewEvents };
+function viewEvents() {
+  const vendors = Object.entries(S.data.selectedVendors);
+  return chapterShell('events', { title: 'Bringing it together', lede: 'Every function across every day. Timings firm up as your planner confirms each vendor.' }, html`
+    <div class="paper-section">
+      <p class="eyebrow">Confirmed so far</p>
+      <ul class="confirmed">${vendors.map(([cat, v]) => html`<li><span class="muted">${cat}</span><strong>${v}</strong></li>`)}</ul>
+    </div>
+    <div class="paper-section">${renderCoupleEvents(S.data.events, { dayOf: [], final: has('schedule') })}</div>`);
+}
+
+function viewDay() {
+  return chapterShell('day', { title: 'The wedding day', lede: 'Your final schedule and the people looking after you. Rest — we have everything in hand.' }, html`
+    ${renderCoupleEvents(S.data.events, { dayOf: S.data.dayOf, final: true })}
+    <details class="paper-more">
+      <summary>Before the day</summary>
+      <ul class="bullets"><li>Choose one family point of contact and share them with your planner</li><li>Final outfit fittings at least a week before</li><li>Your planner confirms every vendor arrival the evening before</li></ul>
+    </details>`);
+}
+
+const VIEWS = { home: viewHome, details: viewDetails, consultation: viewConsultation, plan: viewPlan, agreement: viewAgreement, vendors: viewVendors, payments: viewPayments, events: viewEvents, day: viewDay };
 
 function render({ focus = false } = {}) {
   if (!VIEWS[S.view] || !canOpen(S.view)) S.view = 'home';
@@ -404,7 +434,7 @@ function complete(key) {
 function readForm(form) {
   const fd = new FormData(form);
   Object.assign(S.data.profile, {
-    names: fd.get('names') || '',
+    names: fd.get('names') ?? S.data.profile.names,
     dateMode: fd.get('dateMode') || 'undecided',
     date: fd.get('date') || '', month: fd.get('month') || '',
     location: fd.get('location') || '',
@@ -430,9 +460,10 @@ on(root, 'submit', 'form[data-form="details"]', (e, form) => {
   e.preventDefault();
   readForm(form);
   S.step = 0;
+  const first = !has('enquiry');
+  S.editing = false;
   previewNotice('Your story is kept in this browser tab only. It has not been sent to a planner.');
-  if (!has('enquiry')) complete('enquiry');
-  location.hash = 'home';
+  if (first) { complete('enquiry'); location.hash = 'home'; } else render({ focus: true });
 });
 on(root, 'click', '[data-step-nav]', (e, t) => goStep(t.closest('form'), S.step + +t.dataset.stepNav));
 on(root, 'click', '[data-goto-step]', (e, t) => goStep(t.closest('form'), +t.dataset.gotoStep));
@@ -444,7 +475,6 @@ on(root, 'change', 'input[name="dateMode"]', (e, input) => {
   root.querySelectorAll('[data-date]').forEach((el) => { el.hidden = el.dataset.date !== input.value; });
 });
 
-on(document.body, 'click', '[data-open-journey]', () => openJourney());
 document.getElementById('journey-open').addEventListener('click', openJourney);
 on(dialog, 'click', '[data-close-journey]', () => dialog.close());
 dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
@@ -460,7 +490,8 @@ on(root, 'click', '[data-action]', (e, t) => {
     S.data.consultation.booked = null;
     const done = new Set(S.state.done); done.delete('consultBooked');
     setState({ ...S.state, done });
-  } else if (a === 'join') previewNotice('Video meetings are not connected yet.');
+  } else if (a === 'edit-story') { S.editing = true; S.step = 0; render({ focus: true }); }
+  else if (a === 'join') previewNotice('Video meetings are not connected yet.');
   else if (a === 'agreement-sign') previewNotice('Digital signing is not connected yet. Nothing was signed.');
   else if (a === 'pay') previewNotice('Online payments are not connected yet. No payment was taken.');
   else if (a === 'category') { S.vendorCategory = t.dataset.category; render(); }
@@ -471,18 +502,15 @@ on(root, 'click', '[data-action]', (e, t) => {
     S.choices[cat] = opt.vendor;
     previewNotice(`${opt.vendor} marked as your favourite in this preview. Your planner has not been notified.`);
     render();
-  } else if (a === 'message-planner') previewNotice('Messaging is a later module. Nothing was sent.');
+  }
 });
 
 window.addEventListener('hashchange', () => {
   S.view = location.hash.slice(1) || 'home';
+  S.editing = false;
   render({ focus: true });
   window.scrollTo({ top: 0 });
 });
-
-// Deepen the scrim as the couple scrolls past the opening moment.
-const onScroll = () => document.body.style.setProperty('--scroll', Math.min(1, window.scrollY / (window.innerHeight * 0.7)).toFixed(3));
-window.addEventListener('scroll', onScroll, { passive: true });
 
 // ---------- boot ----------
 (async function boot() {
@@ -494,5 +522,4 @@ window.addEventListener('scroll', onScroll, { passive: true });
   document.body.dataset.view = '';
   mountGarden(document.getElementById('garden-canvas'), { progress: progressOf(S.state) });
   render();
-  onScroll();
 })();

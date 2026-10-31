@@ -1,102 +1,116 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 480" style="--skin:#B97E5C;--skin-shade:#96603F;--hair:#221815;--hair-light:#4A362C;--coat:#26324D;--coat-mid:#31406A;--coat-shade:#1A2338;--vest:#EBDDC3;--shirt:#FAF4EA;--trousers:#1D2232;--shoes:#141419;--accent:#D2AA62;--bloom-1:#EFAFA5;--bloom-2:#FFF6EC;--leaf:#6C8C66;--blush:#D9846F;--pose-a:inline;--pose-b:none">
-  <!-- The Royal Knot · Shared Garden · Groom (original illustration)
-       Long tailored coat; palette and pose set by the loader. Faces left.
-       Feet rest on the bottom centre (x≈100, y≈466). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 480" style="--skin:#A86E4C;--skin-shade:#875235;--hair:#1C1411;--hair-light:#4A362C;--sherwani:#EEE1C3;--sherwani-mid:#F8EFDA;--sherwani-shade:#CDB78C;--zari:#C9A15A;--zari-light:#EED79F;--churidar:#F3EAD6;--churidar-shade:#D8C9A8;--stole:#A9304C;--stole-shade:#7A1E36;--mojari:#C9A15A;--stone:#2F6E5A;--lip:#7E4535;--blush:#C9765F;--pose-a:inline;--pose-b:none">
+  <!-- The Royal Knot · Shared Garden · Groom in a sherwani (original illustration)
+       Palette and pose are CSS custom properties, set by the loader.
+       Faces left; feet rest on the bottom centre (x≈100, y≈466). -->
   <style>
-    .skin{fill:var(--skin)} .skin-s{fill:var(--skin-shade)}
-    .hair{fill:var(--hair)}
-    .coat{fill:var(--coat)} .coat-m{fill:var(--coat-mid)} .coat-s{fill:var(--coat-shade)}
-    .vest{fill:var(--vest)} .shirt{fill:var(--shirt)} .trousers{fill:var(--trousers)} .shoes{fill:var(--shoes)}
-    .gold{fill:var(--accent)} .gold-l{fill:none;stroke:var(--accent);stroke-width:1.3;stroke-linecap:round}
-    .seam{fill:none;stroke:var(--coat-shade);stroke-width:1.6;stroke-linecap:round}
-    .b1{fill:var(--bloom-1)} .b2{fill:var(--bloom-2)} .leaf{fill:var(--leaf)}
-    .arm{fill:none;stroke:var(--coat);stroke-width:16;stroke-linecap:round}
-    .arm-s{fill:none;stroke:var(--coat-shade);stroke-width:15;stroke-linecap:round}
-    .ink{fill:none;stroke:var(--hair);stroke-width:1.7;stroke-linecap:round}
-    .mouth{fill:none;stroke:var(--skin-shade);stroke-width:1.5;stroke-linecap:round}
+    .skin{fill:var(--skin)} .skin-s{fill:var(--skin-shade)} .hair{fill:var(--hair)}
+    .sh{fill:var(--sherwani)} .sh-m{fill:var(--sherwani-mid)} .sh-s{fill:var(--sherwani-shade)}
+    .ch{fill:var(--churidar)} .ch-s{fill:var(--churidar-shade)}
+    .zari{fill:var(--zari)} .zari-l{fill:var(--zari-light)}
+    .zline{fill:none;stroke:var(--zari);stroke-width:1.3;stroke-linecap:round}
+    .stole{fill:var(--stole)} .stole-s{fill:var(--stole-shade)}
+    .arm{fill:none;stroke:var(--sherwani);stroke-width:16;stroke-linecap:round}
+    .arm-s{fill:none;stroke:var(--sherwani-shade);stroke-width:15;stroke-linecap:round}
+    .ink{fill:none;stroke:var(--hair);stroke-width:1.8;stroke-linecap:round}
+    .nose{fill:none;stroke:var(--skin-shade);stroke-width:1.3;stroke-linecap:round}
     .pose-a{display:var(--pose-a)} .pose-b{display:var(--pose-b)}
   </style>
   <defs>
-    <linearGradient id="coatg" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" style="stop-color:var(--coat-mid)"/>
-      <stop offset=".5" style="stop-color:var(--coat)"/>
-      <stop offset="1" style="stop-color:var(--coat-shade)"/>
+    <linearGradient id="coat" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" style="stop-color:var(--sherwani-mid)"/>
+      <stop offset=".55" style="stop-color:var(--sherwani)"/>
+      <stop offset="1" style="stop-color:var(--sherwani-shade)"/>
     </linearGradient>
+    <g id="buta"><path d="M0 4 C-4.5 3 -4.5 -3.5 0 -4.5 C3.6 -4.5 4.5 0 1.8 2.8 C0.9 3.7 0 4 0 4 Z" class="zari"/><circle cx="-0.4" cy="-0.8" r=".9" class="zari-l"/></g>
+    <g id="dot3"><circle cx="0" cy="0" r="1.2" class="zari"/><circle cx="2.6" cy="1.6" r="1" class="zari"/><circle cx="-2.6" cy="1.6" r="1" class="zari"/></g>
   </defs>
 
-  <ellipse cx="100" cy="466" rx="62" ry="8" fill="#120c1c" opacity=".28"/>
+  <ellipse cx="100" cy="466" rx="64" ry="8" fill="#120c1c" opacity=".3"/>
+
+  <!-- stole falling behind -->
+  <path class="stole-s" d="M122 140 C134 190 140 250 146 322 L134 326 C128 260 122 200 112 148 Z"/>
 
   <!-- back arm -->
-  <path class="arm-s" d="M128 148 C136 190 136 228 131 260"/>
-  <circle class="skin-s" cx="131" cy="266" r="6"/>
+  <path class="arm-s" d="M127 150 C134 190 132 226 112 246"/>
+  <g class="pose-b"><path class="zline" d="M118 238 L110 247" stroke-width="3"/><ellipse class="skin-s" cx="107" cy="250" rx="5.6" ry="5"/></g>
 
-  <!-- trousers & shoes -->
-  <path class="trousers" d="M82 334 L76 456 L94 456 L101 334 Z"/>
-  <path class="trousers" d="M101 334 L106 456 L124 456 L119 334 Z"/>
-  <path d="M110 340 L114 452" fill="none" stroke="#000" stroke-opacity=".25" stroke-width="1"/>
-  <path class="shoes" d="M74 452 C66 454 60 458 60 462 L96 462 L96 452 Z"/>
-  <path class="shoes" d="M104 452 C98 455 94 458 94 462 L126 462 L125 452 Z"/>
-  <path d="M64 459 L92 459" stroke="#fff" stroke-opacity=".18" stroke-width="1"/>
+  <!-- churidar & mojari -->
+  <path class="ch" d="M83 344 L78 452 L95 452 L101 344 Z"/>
+  <path class="ch-s" d="M101 344 L105 452 L122 452 L118 344 Z"/>
+  <g fill="none" stroke="var(--churidar-shade)" stroke-width="1.4" stroke-linecap="round">
+    <path d="M79 420 q8 3 15 0 M79 428 q8 3 15 0 M78 436 q8 3 16 0 M78 444 q8 3 16 0"/>
+    <path d="M105 420 q8 3 15 0 M105 428 q8 3 15 0 M106 436 q8 3 16 0 M106 444 q8 3 16 0"/>
+  </g>
+  <path d="M78 450 C66 450 56 454 50 459 C56 456 60 456 62 460 C64 463 70 463 96 463 L96 450 Z" fill="var(--mojari)"/>
+  <path d="M104 450 C96 452 90 456 88 460 C90 463 96 463 124 463 L123 450 Z" fill="var(--mojari)"/>
+  <g fill="#8E6A30" opacity=".7"><circle cx="70" cy="456" r="1.2"/><circle cx="78" cy="455" r="1.2"/><circle cx="86" cy="456" r="1.2"/><circle cx="100" cy="456" r="1.2"/><circle cx="108" cy="455" r="1.2"/></g>
 
-  <!-- long tailored coat -->
-  <path d="M70 140 C63 200 60 282 64 354 C78 360 122 360 136 354 C139 282 137 200 131 140 C116 129 85 129 70 140 Z" fill="url(#coatg)"/>
-  <!-- inner waistcoat & shirt -->
-  <path class="vest" d="M88 136 L100 232 L112 136 C106 133 94 133 88 136 Z"/>
-  <path class="shirt" d="M93 134 L100 162 L107 134 C104 131 96 131 93 134 Z"/>
-  <path class="gold-l" d="M100 166 L100 226" opacity=".6"/>
-  <g class="gold"><circle cx="100" cy="176" r="1.8"/><circle cx="100" cy="192" r="1.8"/><circle cx="100" cy="208" r="1.8"/></g>
-  <!-- lapels -->
-  <path class="coat-s" d="M88 136 L80 168 L96 206 L99 196 L92 168 Z"/>
-  <path class="coat-m" d="M112 136 L120 168 L104 206 L101 196 L108 168 Z" opacity=".9"/>
-  <path class="gold-l" d="M88 137 L81 168 L96 205 M112 137 L119 168 L104 205" opacity=".8"/>
-  <!-- coat front edge, buttons, hem -->
-  <path class="seam" d="M100 232 C99 270 98 312 96 356"/>
-  <g class="gold"><circle cx="104" cy="240" r="2.6"/><circle cx="104" cy="262" r="2.6"/><circle cx="103" cy="284" r="2.6"/></g>
-  <path class="gold-l" d="M66 346 C90 352 112 352 134 346"/>
-  <path class="gold-l" d="M70 338 C76 330 82 334 86 326 M128 338 C122 330 118 334 114 326" opacity=".7"/>
-  <path class="seam" d="M74 180 C72 240 72 300 74 350" opacity=".6"/>
-  <path d="M129 150 C134 220 135 290 134 352" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="2"/>
+  <!-- sherwani -->
+  <path d="M70 138 C62 200 57 284 58 358 C80 366 120 366 142 358 C143 284 139 200 131 138 C117 128 84 128 70 138 Z" fill="url(#coat)"/>
+  <!-- placket & buttons -->
+  <path d="M97 140 L97 362 M103 140 L103 362" class="zline"/>
+  <g class="zari"><circle cx="100" cy="152" r="2.6"/><circle cx="100" cy="176" r="2.6"/><circle cx="100" cy="200" r="2.6"/><circle cx="100" cy="224" r="2.6"/><circle cx="100" cy="248" r="2.6"/><circle cx="100" cy="272" r="2.6"/></g>
+  <g fill="#fff" opacity=".5"><circle cx="99.2" cy="151.2" r=".8"/><circle cx="99.2" cy="175.2" r=".8"/><circle cx="99.2" cy="199.2" r=".8"/><circle cx="99.2" cy="223.2" r=".8"/></g>
+  <!-- chest embroidery, buta scattered, hem border -->
+  <path class="zline" d="M92 150 C84 160 90 168 82 178 C76 186 82 196 76 204" opacity=".85"/>
+  <path class="zline" d="M108 150 C116 160 110 168 118 178 C124 186 118 196 124 204" opacity=".85"/>
+  <g><use href="#buta" x="84" y="160"/><use href="#buta" x="116" y="160"/><use href="#buta" x="80" y="192"/><use href="#buta" x="120" y="192"/></g>
+  <g opacity=".85"><use href="#dot3" x="80" y="232"/><use href="#dot3" x="120" y="236"/><use href="#dot3" x="74" y="266"/><use href="#dot3" x="126" y="268"/><use href="#dot3" x="82" y="300"/><use href="#dot3" x="118" y="302"/><use href="#dot3" x="72" y="330"/><use href="#dot3" x="128" y="330"/></g>
+  <path d="M59 340 C80 348 120 348 141 340 L142 358 C120 366 80 366 58 358 Z" class="zari" opacity=".9"/>
+  <path d="M60 346 Q66 342 72 347 T84 349 T96 350 T108 350 T120 349 T132 347 T140 345" fill="none" stroke="#8E6A30" stroke-width="1.2"/>
+  <path d="M131 150 C136 220 138 290 140 354" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/>
 
-  <!-- boutonnière -->
-  <ellipse class="leaf" cx="86" cy="172" rx="6" ry="2.6" transform="rotate(30 86 172)"/>
-  <ellipse class="leaf" cx="80" cy="168" rx="5" ry="2.2" transform="rotate(-40 80 168)"/>
-  <circle class="b2" cx="84" cy="163" r="4.6"/><circle class="b1" cx="79" cy="166" r="3.4"/>
-  <circle cx="84" cy="163" r="1.5" fill="#000" opacity=".12"/>
+  <!-- stole draped over the shoulder, in front -->
+  <path class="stole" d="M74 136 C68 180 66 250 66 330 L80 332 C82 254 86 186 90 140 Z"/>
+  <path d="M74 136 C68 180 66 250 66 330" fill="none" stroke="var(--zari)" stroke-width="2.2"/>
+  <path d="M90 140 C86 186 82 254 80 332" fill="none" stroke="var(--zari)" stroke-width="1.4"/>
+  <path d="M66 324 L80 326 L80 332 L66 330 Z" class="zari"/>
+  <g class="zari" opacity=".85"><circle cx="76" cy="180" r="1.3"/><circle cx="75" cy="220" r="1.3"/><circle cx="74" cy="260" r="1.3"/><circle cx="73" cy="300" r="1.3"/></g>
+  <path d="M66 330 l-1 6 M70 331 l-1 6 M74 331 l0 6 M78 332 l0 6" stroke="var(--zari)" stroke-width="1"/>
 
-  <!-- neck & collar -->
+  <!-- brooch -->
+  <circle cx="114" cy="166" r="4.2" class="zari"/><circle cx="114" cy="166" r="2" fill="var(--stone)"/>
+  <path d="M110 170 C112 178 116 178 118 170" fill="none" stroke="#F6EEDC" stroke-width="1.4"/>
+
+  <!-- neck & band collar -->
   <path class="skin" d="M93 108 L93 132 C97 135 103 135 107 132 L107 108 Z"/>
   <path class="skin-s" d="M93 122 C97 126 103 126 107 122 L107 130 C103 133 97 133 93 130 Z" opacity=".55"/>
-  <path class="shirt" d="M91 128 L100 136 L109 128 L110 136 L100 142 L90 136 Z"/>
+  <path class="sh" d="M88 128 C96 124 104 124 112 128 L112 140 C104 137 96 137 88 140 Z"/>
+  <path class="zline" d="M88 128 C96 124 104 124 112 128 M88 134 C96 131 104 131 112 134 M88 140 C96 137 104 137 112 140" stroke-width="1.1"/>
 
   <!-- head -->
   <ellipse class="skin" cx="99" cy="88" rx="18.5" ry="20"/>
   <ellipse class="skin" cx="94" cy="95" rx="14.5" ry="14.5"/>
-  <ellipse class="skin-s" cx="110" cy="93" rx="3.4" ry="4.8"/>
-  <!-- hair: short, side-swept -->
-  <path class="hair" d="M80 88 C77 68 94 59 110 64 C120 68 122 80 119 92 C116 86 114 82 110 80 C104 76 96 76 88 80 C85 84 83 88 80 88 Z"/>
-  <path class="hair" d="M84 74 C90 62 106 60 114 66 C104 64 94 68 88 76 Z"/>
-  <path d="M90 68 C98 63 108 64 113 70" fill="none" stroke="var(--hair-light)" stroke-width="1.8" stroke-linecap="round"/>
-  <path class="hair" d="M116 84 C118 94 117 100 114 104 C114 98 114 92 112 86 Z"/>
+  <ellipse class="skin-s" cx="111" cy="93" rx="3.4" ry="4.8"/>
+  <!-- hair, neat and swept -->
+  <path class="hair" d="M80 87 C77 66 94 58 110 63 C121 67 123 80 120 92 C117 85 114 81 109 79 C102 75 93 76 87 80 C84 83 83 87 80 87 Z"/>
+  <path class="hair" d="M83 74 C90 60 108 58 116 66 C105 63 94 67 88 75 Z"/>
+  <path d="M89 68 C97 63 108 64 113 70" fill="none" stroke="var(--hair-light)" stroke-width="1.8" stroke-linecap="round"/>
+  <path class="hair" d="M117 84 C119 94 118 100 115 104 C115 98 115 92 113 86 Z"/>
+  <!-- trimmed beard -->
+  <path d="M81 97 C80 108 87 116 96 117 C104 118 110 112 113 102 C112 96 112 92 111 90 C108 104 102 110 96 110 C89 110 84 104 83 96 Z" fill="var(--hair)" opacity=".2"/>
+  <path d="M82.6 103.4 Q86.6 101.2 91.4 103.2" fill="none" stroke="var(--hair)" stroke-width="2" stroke-linecap="round"/>
   <!-- face -->
-  <path class="ink" d="M84 90 Q88 93 92 90"/>
-  <path class="ink" d="M83 83 Q88 80 93 82" stroke-width="1.5" opacity=".8"/>
-  <circle cx="90" cy="99" r="4" fill="var(--blush)" opacity=".35"/>
-  <path class="mouth" d="M83 103 Q86 105 89 103"/>
+  <path d="M93 89 Q87 85 81 89 Q87 92 93 89 Z" fill="#FBF4EA"/>
+  <circle cx="87" cy="88.6" r="2.6" fill="#22150F"/>
+  <circle cx="86.2" cy="87.7" r=".85" fill="#fff"/>
+  <path class="ink" d="M94 88.5 Q87.5 84 80.8 88.2" stroke-width="1.9"/>
+  <path class="ink" d="M95 80.5 Q88 77.4 81 80" stroke-width="2.2"/>
+  <path class="nose" d="M80.4 90.5 Q78 96 81.2 98"/>
+  <circle cx="91" cy="98" r="4" fill="var(--blush)" opacity=".28"/>
+  <path d="M83.4 107 Q87 109.8 91 107" fill="none" stroke="var(--lip)" stroke-width="1.7" stroke-linecap="round"/>
 
-  <!-- POSE A: hands gently clasped in front -->
+  <!-- POSE A: hands gently clasped -->
   <g class="pose-a">
     <path class="arm" d="M76 148 C68 192 74 232 92 250"/>
-    <path d="M76 150 C70 190 74 226 88 244" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="2" stroke-linecap="round"/>
-    <path class="gold-l" d="M86 240 L95 252" stroke-width="2"/>
-    <ellipse class="skin" cx="98" cy="252" rx="7" ry="6"/>
-    <ellipse class="skin-s" cx="104" cy="254" rx="5" ry="4.6"/>
+    <path class="zline" d="M85 241 L95 252" stroke-width="3.2"/>
+    <ellipse class="skin" cx="99" cy="253" rx="7" ry="6"/>
+    <ellipse class="skin-s" cx="106" cy="252" rx="5.4" ry="5"/>
   </g>
-
   <!-- POSE B: reaching forward -->
   <g class="pose-b">
-    <path class="arm" d="M76 148 C62 162 46 170 26 171"/>
-    <path d="M76 150 C62 163 48 169 30 169" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="2" stroke-linecap="round"/>
-    <path class="gold-l" d="M30 164 L28 178" stroke-width="2.2"/>
+    <path class="arm" d="M76 148 C62 162 46 170 28 171"/>
+    <path class="zline" d="M32 164 L30 178" stroke-width="3.2"/>
     <ellipse class="skin" cx="18" cy="171" rx="7" ry="5"/>
   </g>
 </svg>

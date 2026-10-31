@@ -1,130 +1,157 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 240 480" style="--skin:#C68F6C;--skin-shade:#A6704F;--hair:#2B1E1A;--hair-light:#5A3E30;--gown:#FCF6EC;--gown-mid:#F1E5D3;--gown-shade:#D9C6AC;--accent:#D2AA62;--bloom-1:#EFAFA5;--bloom-2:#FFF6EC;--bloom-3:#F3C88F;--leaf:#6C8C66;--blush:#E5917F;--pose-a:inline;--pose-b:none">
-  <!-- The Royal Knot · Shared Garden · Bride (original illustration)
-       Palette and pose are set by the loader via the CSS custom properties above.
-       Feet/hem rest on the bottom centre (x=120, y≈468). Faces right. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 480" style="--skin:#B97C58;--skin-shade:#99603F;--hair:#1E1512;--hair-light:#4A3226;--lehenga:#A9304C;--lehenga-mid:#C24862;--lehenga-shade:#7A1E36;--choli:#9C2A45;--zari:#D9B26A;--zari-light:#F3DCA2;--dupatta:#F2C9B8;--gajra:#FFF8EE;--stone:#2F6E5A;--lip:#9E3A4A;--blush:#D9806E;--mehendi:#7A3A22;--pose-a:inline;--pose-b:none">
+  <!-- The Royal Knot · Shared Garden · Bride in a lehenga (original illustration)
+       Palette and pose are CSS custom properties, set by the loader.
+       Faces right; hem rests on the bottom centre (x=120, y≈468). -->
   <style>
-    .skin{fill:var(--skin)} .skin-s{fill:var(--skin-shade)}
-    .hair{fill:var(--hair)} .hair-l{fill:var(--hair-light)}
-    .gown{fill:var(--gown)} .gown-m{fill:var(--gown-mid)} .gown-s{fill:var(--gown-shade)}
-    .fold{fill:none;stroke:var(--gown-shade);stroke-width:1.6;stroke-linecap:round;opacity:.85}
-    .gold{fill:var(--accent)} .gold-l{fill:none;stroke:var(--accent);stroke-width:1.3;stroke-linecap:round}
-    .b1{fill:var(--bloom-1)} .b2{fill:var(--bloom-2)} .b3{fill:var(--bloom-3)} .leaf{fill:var(--leaf)}
-    .ribbon{fill:none;stroke:var(--accent);stroke-width:2;stroke-linecap:round}
-    .sleeve{fill:none;stroke:var(--gown);stroke-width:11;stroke-linecap:round}
-    .sleeve-s{fill:none;stroke:var(--gown-shade);stroke-width:10;stroke-linecap:round}
-    .ink{fill:none;stroke:var(--hair);stroke-width:1.7;stroke-linecap:round}
-    .mouth{fill:none;stroke:var(--skin-shade);stroke-width:1.5;stroke-linecap:round}
+    .skin{fill:var(--skin)} .skin-s{fill:var(--skin-shade)} .hair{fill:var(--hair)}
+    .leh{fill:var(--lehenga)} .leh-m{fill:var(--lehenga-mid)} .leh-s{fill:var(--lehenga-shade)} .choli{fill:var(--choli)}
+    .zari{fill:var(--zari)} .zari-l{fill:var(--zari-light)}
+    .zline{fill:none;stroke:var(--zari);stroke-width:1.3;stroke-linecap:round}
+    .zline-l{fill:none;stroke:var(--zari-light);stroke-width:1;stroke-linecap:round}
+    .pleat{fill:none;stroke:var(--lehenga-shade);stroke-width:1.6;stroke-linecap:round;opacity:.7}
+    .sleeve{fill:none;stroke:var(--choli);stroke-width:12;stroke-linecap:round}
+    .forearm{fill:none;stroke:var(--skin);stroke-width:8.5;stroke-linecap:round}
+    .bangle{fill:none;stroke:var(--zari);stroke-width:2.2;stroke-linecap:round}
+    .ink{fill:none;stroke:var(--hair);stroke-width:1.8;stroke-linecap:round}
+    .nose{fill:none;stroke:var(--skin-shade);stroke-width:1.3;stroke-linecap:round}
     .pose-a{display:var(--pose-a)} .pose-b{display:var(--pose-b)}
   </style>
   <defs>
     <linearGradient id="skirt" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" style="stop-color:var(--gown-shade)"/>
-      <stop offset=".45" style="stop-color:var(--gown)"/>
-      <stop offset="1" style="stop-color:var(--gown-mid)"/>
+      <stop offset="0" style="stop-color:var(--lehenga-shade)"/>
+      <stop offset=".5" style="stop-color:var(--lehenga)"/>
+      <stop offset="1" style="stop-color:var(--lehenga-mid)"/>
     </linearGradient>
-    <linearGradient id="tulle" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#fff" stop-opacity=".0"/>
-      <stop offset="1" stop-color="#fff" stop-opacity=".55"/>
+    <linearGradient id="border" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color:var(--zari-light)"/>
+      <stop offset=".5" style="stop-color:var(--zari)"/>
+      <stop offset="1" style="stop-color:#A9823F"/>
     </linearGradient>
-    <linearGradient id="drape" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#fff" stop-opacity=".55"/>
-      <stop offset="1" stop-color="#fff" stop-opacity=".08"/>
+    <linearGradient id="sheer" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color:var(--dupatta)" stop-opacity=".78"/>
+      <stop offset="1" style="stop-color:var(--dupatta)" stop-opacity=".38"/>
     </linearGradient>
-    <g id="bouquet">
-      <path class="ribbon" d="M-2 6 C-6 24 -10 40 -15 56"/>
-      <path class="ribbon" d="M2 6 C5 22 9 36 15 50"/>
-      <ellipse class="leaf" cx="-15" cy="-1" rx="10" ry="4" transform="rotate(-28 -15 -1)"/>
-      <ellipse class="leaf" cx="15" cy="0" rx="10" ry="4" transform="rotate(24 15 0)"/>
-      <ellipse class="leaf" cx="0" cy="10" rx="9" ry="3.6" transform="rotate(84 0 10)"/>
-      <ellipse class="leaf" cx="-10" cy="-12" rx="7" ry="3" transform="rotate(-60 -10 -12)"/>
-      <circle class="b1" cx="-7" cy="-4" r="7.5"/>
-      <circle class="b2" cx="6" cy="-6" r="7.2"/>
-      <circle class="b3" cx="0" cy="3" r="6.6"/>
-      <circle class="b1" cx="10" cy="4" r="5.2"/>
-      <circle class="b2" cx="-10" cy="5" r="5.2"/>
-      <circle class="b1" cx="-1" cy="-12" r="5.6"/>
-      <g fill="#000" opacity=".12"><circle cx="-7" cy="-4" r="2.2"/><circle cx="6" cy="-6" r="2.2"/><circle cx="0" cy="3" r="2"/><circle cx="-1" cy="-12" r="1.6"/></g>
-      <g fill="#fff" opacity=".6"><circle cx="-9" cy="-7" r="1.6"/><circle cx="4" cy="-9" r="1.6"/><circle cx="-3" cy="-14" r="1.2"/></g>
+    <!-- small buti motif: a flower of zari dots -->
+    <g id="buti">
+      <circle cx="0" cy="0" r="1.6" class="zari-l"/>
+      <circle cx="0" cy="-3.2" r="1.4" class="zari"/><circle cx="3" cy="-1" r="1.4" class="zari"/>
+      <circle cx="1.9" cy="2.6" r="1.4" class="zari"/><circle cx="-1.9" cy="2.6" r="1.4" class="zari"/><circle cx="-3" cy="-1" r="1.4" class="zari"/>
     </g>
+    <g id="paisley"><path d="M0 4 C-5 3 -5 -4 0 -5 C4 -5 5 0 2 3 C1 4 0 4 0 4 Z" class="zari"/><circle cx="-0.5" cy="-1" r="1" class="zari-l"/></g>
   </defs>
 
-  <ellipse cx="120" cy="468" rx="96" ry="9" fill="#120c1c" opacity=".28"/>
+  <ellipse cx="120" cy="468" rx="100" ry="9" fill="#120c1c" opacity=".3"/>
 
-  <!-- sheer drape flowing from the hair -->
-  <path d="M100 66 C72 120 46 250 24 462 C42 468 60 468 74 462 C82 330 94 200 112 92 Z" fill="url(#drape)"/>
-  <path d="M100 70 C80 140 60 280 44 460" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1.2"/>
+  <!-- dupatta falling behind from the shoulder -->
+  <path d="M104 138 C80 190 58 300 34 462 C52 470 74 470 90 462 C96 330 104 220 116 150 Z" fill="url(#sheer)"/>
+  <path class="zline" d="M104 140 C82 196 60 300 36 460"/>
+  <g opacity=".7"><use href="#buti" x="94" y="226"/><use href="#buti" x="80" y="320"/><use href="#buti" x="66" y="410"/></g>
 
-  <!-- back arm (sheer sleeve) -->
-  <path class="sleeve-s" d="M106 140 C98 164 96 188 101 206"/>
+  <!-- back arm -->
+  <path class="sleeve" d="M108 144 C102 158 102 168 104 176" stroke="var(--lehenga-shade)"/>
+  <path class="pose-a forearm" d="M104 176 C106 190 112 200 118 205" stroke="var(--skin-shade)"/>
 
-  <!-- skirt -->
-  <path d="M98 206 C84 270 56 360 18 460 C62 474 180 476 216 460 C198 380 166 290 142 206 Z" fill="url(#skirt)"/>
-  <path d="M102 210 C86 280 64 370 34 458 C70 466 120 468 150 466 C136 380 126 290 124 210 Z" fill="url(#tulle)"/>
-  <path class="fold" d="M112 214 C104 300 86 380 66 460"/>
-  <path class="fold" d="M124 214 C126 300 132 380 140 466"/>
-  <path class="fold" d="M134 212 C150 300 172 380 196 460"/>
-  <path class="fold" d="M104 230 C92 300 70 380 44 458" opacity=".5"/>
-  <!-- hem embroidery -->
-  <path class="gold-l" d="M24 452 Q40 444 56 452 T88 453 T120 454 T152 453 T184 452 T212 452"/>
-  <g class="gold">
-    <circle cx="40" cy="446" r="1.6"/><circle cx="72" cy="447" r="1.6"/><circle cx="104" cy="448" r="1.6"/><circle cx="136" cy="448" r="1.6"/><circle cx="168" cy="447" r="1.6"/><circle cx="198" cy="446" r="1.6"/>
+  <!-- lehenga -->
+  <path d="M100 200 C84 262 52 352 16 462 C60 477 182 479 224 462 C196 372 166 282 144 200 Z" fill="url(#skirt)"/>
+  <!-- kali panels -->
+  <g class="zline" opacity=".55">
+    <path d="M106 206 C90 290 62 380 38 462"/><path d="M114 206 C106 290 92 380 80 468"/>
+    <path d="M122 206 C122 290 122 380 122 471"/><path d="M130 206 C138 290 152 380 164 468"/><path d="M138 206 C156 290 182 380 206 464"/>
   </g>
-  <path class="gold-l" d="M60 430 C70 420 80 424 86 414 M150 428 C158 418 168 422 172 412 M110 434 C116 424 124 428 128 418" opacity=".7"/>
+  <g class="pleat"><path d="M110 230 C98 300 80 380 60 456"/><path d="M126 232 C130 310 140 390 146 466"/><path d="M134 228 C148 300 168 380 186 460"/></g>
+  <!-- buti scattered across the skirt -->
+  <g>
+    <use href="#buti" x="112" y="240"/><use href="#buti" x="132" y="246"/><use href="#buti" x="98" y="282"/><use href="#buti" x="122" y="288"/>
+    <use href="#buti" x="146" y="286"/><use href="#buti" x="86" y="326"/><use href="#buti" x="110" y="332"/><use href="#buti" x="136" y="334"/>
+    <use href="#buti" x="160" y="328"/><use href="#buti" x="70" y="370"/><use href="#buti" x="98" y="378"/><use href="#buti" x="124" y="380"/>
+    <use href="#buti" x="150" y="378"/><use href="#buti" x="176" y="372"/>
+  </g>
+  <!-- deep zari border at the hem -->
+  <path d="M30 420 C70 432 176 434 212 420 L224 462 C182 479 60 477 16 462 Z" fill="url(#border)"/>
+  <path d="M30 420 C70 432 176 434 212 420" class="zline" stroke="#8E6A30" stroke-width="1.6"/>
+  <path d="M26 434 Q36 428 46 436 T66 438 T86 440 T106 441 T126 441 T146 441 T166 440 T186 438 T206 434 T218 432" fill="none" stroke="var(--lehenga-shade)" stroke-width="2"/>
+  <g fill="var(--lehenga-shade)"><circle cx="40" cy="450" r="2.4"/><circle cx="62" cy="453" r="2.4"/><circle cx="84" cy="455" r="2.4"/><circle cx="106" cy="456" r="2.4"/><circle cx="128" cy="456" r="2.4"/><circle cx="150" cy="456" r="2.4"/><circle cx="172" cy="455" r="2.4"/><circle cx="194" cy="452" r="2.4"/></g>
+  <g><use href="#paisley" x="52" y="446"/><use href="#paisley" x="96" y="450"/><use href="#paisley" x="140" y="451"/><use href="#paisley" x="184" y="448"/></g>
+  <path d="M38 410 C76 420 170 422 206 410" class="zline" opacity=".85"/>
+  <path d="M42 404 C78 414 168 416 202 404" class="zline-l" opacity=".7"/>
 
-  <!-- bodice -->
-  <path class="gown" d="M104 132 C100 160 98 188 98 210 L142 210 C142 186 140 160 133 132 C125 126 112 126 104 132 Z"/>
-  <path class="gown-m" d="M128 134 C134 160 138 186 140 208 L142 210 C142 186 140 160 133 132 Z"/>
-  <path class="gold-l" d="M118 140 C114 152 122 160 118 172 C114 182 122 190 118 200" opacity=".85"/>
-  <path class="gold-l" d="M118 152 C112 150 110 146 108 142 M118 164 C124 162 127 157 128 152 M118 184 C112 182 110 178 108 174" opacity=".75"/>
-  <!-- waist sash -->
-  <path class="gold" d="M97 198 C110 205 130 205 143 198 L143 210 C130 217 110 217 97 210 Z"/>
-  <path d="M97 204 C110 210 130 210 143 204" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1"/>
+  <!-- choli -->
+  <path class="choli" d="M106 138 C102 160 100 182 100 202 L144 202 C144 182 142 160 136 138 C128 132 114 132 106 138 Z"/>
+  <path d="M130 140 C136 160 140 182 142 200 L144 202 C144 182 142 160 136 138 Z" fill="#000" opacity=".12"/>
+  <g opacity=".85"><use href="#buti" x="114" y="160"/><use href="#buti" x="128" y="172"/><use href="#buti" x="114" y="188"/></g>
+  <path class="zari" d="M99 196 C112 202 132 202 145 196 L145 206 C132 212 112 212 99 206 Z"/>
+  <path class="zline-l" d="M100 201 C112 206 132 206 144 201"/>
 
-  <!-- neck & shoulders -->
-  <path class="skin" d="M112 106 L112 128 C116 131 122 131 126 128 L126 104 Z"/>
-  <path class="skin-s" d="M112 118 C116 122 122 122 126 118 L126 126 C122 129 116 129 112 126 Z" opacity=".6"/>
-  <path class="gown" d="M100 134 C108 128 114 128 119 132 C124 128 130 128 137 134 L134 142 C126 138 112 138 103 142 Z"/>
-  <circle class="gold" cx="119" cy="134" r="2.4"/>
+  <!-- neck & jewellery -->
+  <path class="skin" d="M113 104 L113 132 C117 135 123 135 127 132 L127 104 Z"/>
+  <path d="M106 140 C114 134 126 134 136 140 C128 146 114 146 106 140 Z" class="skin"/>
+  <path d="M110 126 C116 131 124 131 130 126" fill="none" stroke="var(--zari)" stroke-width="4" stroke-linecap="round"/>
+  <g class="zari"><circle cx="113" cy="131" r="1.6"/><circle cx="117" cy="133" r="1.8"/><circle cx="121" cy="134" r="2"/><circle cx="125" cy="133" r="1.8"/><circle cx="128" cy="131" r="1.6"/></g>
+  <circle cx="121" cy="137" r="2.6" fill="var(--stone)"/><circle cx="121" cy="137" r="1" fill="#fff" opacity=".6"/>
+  <path d="M108 140 C114 154 128 154 134 140" fill="none" stroke="var(--zari)" stroke-width="1.6"/>
+  <path class="zari" d="M106 138 C114 144 128 144 136 138 L137 141 C128 148 114 148 105 141 Z"/>
+
+  <!-- dupatta drape across the body (sheer) -->
+  <path d="M106 140 C120 170 140 196 156 226 C166 260 172 300 176 340 C170 344 162 346 156 344 C152 300 146 264 136 236 C124 210 110 180 100 154 Z" fill="url(#sheer)"/>
+  <path class="zline" d="M108 140 C122 170 142 196 158 226 C168 262 174 302 177 342"/>
+  <path class="zline" d="M156 344 C152 300 146 264 136 236" opacity=".7"/>
+  <g opacity=".75"><use href="#buti" x="128" y="204"/><use href="#buti" x="160" y="286"/><use href="#buti" x="164" y="322"/></g>
+  <g class="zari"><circle cx="160" cy="348" r="1.8"/><circle cx="166" cy="349" r="1.8"/><circle cx="172" cy="347" r="1.8"/></g>
 
   <!-- head -->
-  <ellipse class="skin" cx="121" cy="86" rx="18" ry="19.5"/>
-  <ellipse class="skin" cx="126" cy="92" rx="14" ry="14"/>
-  <ellipse class="skin-s" cx="111" cy="90" rx="3.4" ry="4.6"/>
-  <!-- hair: soft updo with bun -->
-  <path class="hair" d="M103 90 C98 64 116 56 132 64 C140 68 142 78 139 86 C132 75 118 72 109 82 C107 86 106 92 103 90 Z"/>
-  <circle class="hair" cx="99" cy="72" r="13"/>
-  <path class="hair-l" d="M92 66 C96 60 104 60 108 64" fill="none" stroke="var(--hair-light)" stroke-width="2" stroke-linecap="round"/>
-  <path class="hair-l" d="M116 64 C124 62 132 66 136 72" fill="none" stroke="var(--hair-light)" stroke-width="1.6" stroke-linecap="round" opacity=".8"/>
-  <path class="hair" d="M106 84 C104 94 104 102 108 108 C104 104 101 96 103 86 Z"/>
-  <!-- hair blossoms -->
-  <circle class="b2" cx="104" cy="60" r="4.2"/><circle class="b1" cx="96" cy="64" r="3.6"/><circle class="b3" cx="108" cy="54" r="3"/><circle class="b2" cx="92" cy="72" r="2.6"/>
-  <ellipse class="leaf" cx="112" cy="58" rx="4" ry="1.8" transform="rotate(-30 112 58)"/>
-  <!-- face -->
-  <path class="ink" d="M127 87 Q131 90 135 87"/>
-  <path class="ink" d="M134 86.5 L136.5 85" stroke-width="1.2"/>
-  <path class="ink" d="M126 80 Q131 78 136 80" stroke-width="1.3" opacity=".75"/>
-  <circle cx="131" cy="95" r="4.2" fill="var(--blush)" opacity=".42"/>
-  <path class="mouth" d="M133 100 Q136 102 139 100"/>
-  <circle class="gold" cx="112" cy="98" r="1.8"/>
+  <ellipse class="skin" cx="121" cy="86" rx="17.5" ry="19.5"/>
+  <ellipse class="skin" cx="127" cy="92" rx="14" ry="14.5"/>
+  <!-- hair: centre parting, smooth, low bun with a jasmine gajra -->
+  <path class="hair" d="M104 92 C99 66 114 56 130 62 C139 66 142 74 141 80 C137 72 130 70 124 70 C118 71 112 76 110 84 C109 90 107 96 104 92 Z"/>
+  <path d="M124 64 C126 68 126 70 124 71" fill="none" stroke="var(--hair-light)" stroke-width="1.4"/>
+  <path class="hair" d="M104 86 C100 96 100 106 104 112 C96 108 96 92 104 86 Z"/>
+  <circle class="hair" cx="100" cy="104" r="12.5"/>
+  <g fill="var(--gajra)"><circle cx="90" cy="98" r="2.6"/><circle cx="91" cy="104" r="2.6"/><circle cx="92" cy="110" r="2.6"/><circle cx="96" cy="115" r="2.6"/><circle cx="102" cy="117" r="2.6"/><circle cx="108" cy="114" r="2.6"/><circle cx="93" cy="93" r="2.4"/></g>
+  <g fill="#E8DDCC"><circle cx="90.5" cy="101" r="1.2"/><circle cx="92" cy="107" r="1.2"/><circle cx="94" cy="113" r="1.2"/><circle cx="99" cy="116" r="1.2"/><circle cx="105" cy="116" r="1.2"/></g>
+  <!-- maang tikka -->
+  <path d="M124 66 L128 74" stroke="var(--zari)" stroke-width="1.1"/>
+  <circle cx="128.5" cy="76" r="2.6" class="zari"/><circle cx="128.5" cy="76" r="1.3" fill="var(--stone)"/>
+  <!-- jhumka -->
+  <ellipse class="skin-s" cx="111" cy="92" rx="3.2" ry="4.6"/>
+  <path d="M111 96 L111 99" stroke="var(--zari)" stroke-width="1.2"/>
+  <path class="zari" d="M106.5 104 C106.5 99 115.5 99 115.5 104 Z"/>
+  <g class="zari"><circle cx="107" cy="106" r="1"/><circle cx="109.3" cy="106.6" r="1"/><circle cx="111.6" cy="106.8" r="1"/><circle cx="113.9" cy="106.4" r="1"/></g>
+  <!-- face: open, warm eyes -->
+  <path d="M124.5 86.5 Q130.5 82 137 86 Q131 89.5 124.5 86.5 Z" fill="#FBF4EA"/>
+  <circle cx="131" cy="86.2" r="2.7" fill="#2A1A14"/>
+  <circle cx="131.9" cy="85.3" r="0.9" fill="#fff"/>
+  <path class="ink" d="M124 86 Q130.5 81.2 137.5 85.6" stroke-width="2"/>
+  <path class="ink" d="M136.6 85 L139 83.6" stroke-width="1.3"/>
+  <path class="ink" d="M123.5 78.5 Q130 75.2 137 77.6" stroke-width="1.8"/>
+  <path class="nose" d="M138.5 88 Q140.8 93.5 137.6 95.5"/>
+  <circle cx="131" cy="96" r="4.6" fill="var(--blush)" opacity=".4"/>
+  <path d="M130.5 100.4 Q134.4 104 138.2 100.4 Q134.4 101.6 130.5 100.4 Z" fill="var(--lip)"/>
+  <path d="M131 100.7 Q134.4 102.8 137.8 100.7" fill="none" stroke="var(--lip)" stroke-width="1.3" stroke-linecap="round"/>
 
-  <!-- POSE A: holding the bouquet at the waist -->
+  <!-- POSE A: hands resting together at the waist, holding the dupatta edge -->
   <g class="pose-a">
-    <path class="sleeve" d="M133 138 C143 156 145 170 141 182 C137 190 131 194 125 196"/>
-    <path d="M133 138 C143 156 145 170 141 182" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2" stroke-linecap="round"/>
-    <use xlink:href="#bouquet" href="#bouquet" x="122" y="200"/>
-    <circle class="skin" cx="124" cy="196" r="4.8"/>
-    <circle class="skin" cx="116" cy="198" r="4.4"/>
+    <path class="sleeve" d="M136 144 C144 158 146 168 144 176"/>
+    <path class="zline" d="M139 172 L149 176" stroke-width="3"/>
+    <path class="forearm" d="M144 177 C140 192 132 200 125 205"/>
+    <path class="bangle" d="M131 196 L136 202 M129 198 L134 204"/>
+    <ellipse class="skin" cx="122" cy="206" rx="6.5" ry="5"/>
+    <ellipse class="skin-s" cx="117" cy="207" rx="5" ry="4.2"/>
+    <path d="M120 204 q2 2 4 0 M121 208 q2 1 3 0" fill="none" stroke="var(--mehendi)" stroke-width=".8" opacity=".75"/>
   </g>
 
-  <!-- POSE B: reaching forward, bouquet lowered in the other hand -->
+  <!-- POSE B: reaching forward, the other hand gathers the dupatta -->
   <g class="pose-b">
-    <use xlink:href="#bouquet" href="#bouquet" x="100" y="216" transform="rotate(-8 100 216)"/>
-    <circle class="skin" cx="101" cy="208" r="4.4"/>
-    <path class="sleeve" d="M133 138 C148 150 162 160 180 163"/>
-    <path d="M133 138 C148 150 162 160 178 163" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2" stroke-linecap="round"/>
-    <ellipse class="skin" cx="186" cy="164" rx="6" ry="4.4"/>
+    <path class="forearm" d="M104 176 C104 192 108 202 112 206" stroke="var(--skin-shade)"/>
+    <ellipse class="skin-s" cx="113" cy="208" rx="5" ry="4.2"/>
+    <path class="sleeve" d="M136 144 C146 152 152 156 158 158"/>
+    <path class="zline" d="M154 152 L157 164" stroke-width="3"/>
+    <path class="forearm" d="M158 159 C166 161 172 163 180 164"/>
+    <path class="bangle" d="M170 158 L169 168 M174 158.5 L173 168.5"/>
+    <ellipse class="skin" cx="186" cy="164.5" rx="6.6" ry="4.6"/>
+    <path d="M183 163 q2 2 4 0 M185 166 q2 1 3 0" fill="none" stroke="var(--mehendi)" stroke-width=".8" opacity=".75"/>
   </g>
 
-  <!-- rim light -->
-  <path d="M141 212 C166 290 196 380 214 458" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
+  <!-- warm rim light -->
+  <path d="M143 206 C168 290 198 380 222 460" fill="none" stroke="var(--zari-light)" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
+  <path d="M138 66 C142 72 143 80 141 88" fill="none" stroke="#FFE7C4" stroke-opacity=".35" stroke-width="1.6"/>
 </svg>
