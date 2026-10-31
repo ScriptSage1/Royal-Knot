@@ -1,0 +1,65 @@
+<%- include('partials/head') %>
+<body class="site">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <%- include('partials/site-header') %>
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-h">
+      <img class="hero-img" src="<%= stories[2].hero.src %>" alt="<%= stories[2].hero.alt %>" fetchpriority="high">
+      <div class="hero-copy">
+        <p class="site-eyebrow">A wedding planning studio · India</p>
+        <h1 id="hero-h" class="hero-title">Your celebration, beautifully held.</h1>
+        <p class="hero-lede">Tell us about the two of you. We shape every detail around your families, your customs and the way you want the days to feel.</p>
+        <div class="hero-actions">
+          <a class="cx-btn" href="<%= coupleSignedIn ? '/couple' : '/signup' %>"><%= coupleSignedIn ? 'Go to your planning space' : 'Start planning' %></a>
+          <a class="hero-link" href="#inspiration">See celebrations we love</a>
+        </div>
+      </div>
+      <p class="hero-credit">Photo: <%= stories[2].hero.author %> · <%= stories[2].hero.licence %></p>
+    </section>
+
+    <section class="inspo" id="inspiration" aria-labelledby="inspo-h">
+      <header class="section-head">
+        <p class="site-eyebrow">Wedding inspiration</p>
+        <h2 id="inspo-h" class="section-title">A look at the celebrations we love</h2>
+        <p class="section-lede">Four ideas to start the conversation, each inspired by a photograph we admire. They’re not Royal Knot client weddings; they’re a taste of what we could create together.</p>
+      </header>
+      <div class="inspo-grid">
+        <% stories.forEach(function (s, i) { %>
+        <article class="inspo-card <%= i === 0 ? 'is-wide' : '' %>">
+          <a href="/inspiration/<%= s.slug %>" class="inspo-link">
+            <img src="<%= i === 0 ? s.hero.src : s.hero.small %>" alt="<%= s.hero.alt %>" loading="lazy" width="900" height="600">
+            <div class="inspo-text">
+              <p class="inspo-place"><%= s.place %></p>
+              <h3 class="inspo-title"><%= s.title %></h3>
+              <p class="inspo-teaser"><%= s.teaser %></p>
+              <span class="inspo-more">Read the idea <span aria-hidden="true">→</span></span>
+            </div>
+          </a>
+        </article>
+        <% }) %>
+      </div>
+    </section>
+
+    <section class="how" id="how" aria-labelledby="how-h">
+      <header class="section-head">
+        <p class="site-eyebrow">How it works</p>
+        <h2 id="how-h" class="section-title">One planner, one plan, every detail held</h2>
+      </header>
+      <ol class="how-steps">
+        <li><span class="how-n">1</span><h3>Share your story</h3><p>A few gentle questions, all optional, all changeable.</p></li>
+        <li><span class="how-n">2</span><h3>Meet your planner</h3><p>An unhurried first conversation, online or in our studio.</p></li>
+        <li><span class="how-n">3</span><h3>Your plan, in writing</h3><p>Everything you said, written up for you to confirm.</p></li>
+        <li><span class="how-n">4</span><h3>We bring it together</h3><p>Vendors, agreement, payments and the schedule, in one private space.</p></li>
+      </ol>
+    </section>
+
+    <section class="cta-band" aria-labelledby="cta-h">
+      <h2 id="cta-h" class="section-title">Tell us about your celebration</h2>
+      <p>It takes a few minutes, and nothing is booked until you’re ready.</p>
+      <a class="cx-btn" href="<%= coupleSignedIn ? '/couple' : '/signup' %>"><%= coupleSignedIn ? 'Go to your planning space' : 'Start planning' %></a>
+      <% if (!coupleSignedIn) { %><p class="cta-alt">Already planning with us? <a href="/login">Sign in</a></p><% } %>
+    </section>
+  </main>
+  <%- include('partials/site-footer') %>
+</body>
+</html>

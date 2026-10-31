@@ -360,3 +360,34 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); width
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
+
+/* ---------- toasts by tone; small shared helpers ---------- */
+.toast-error { background: #8A2A2A; }
+.toast-info { background: #2B3A6B; }
+.toast-ok { background: #1F3A2E; }
+.link-btn { background: none; border: 0; padding: 4px 2px; color: var(--accent); font-weight: 600; font-size: 13.5px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.link-btn:hover { color: var(--accent-hover); }
+.link-btn:disabled, .btn:disabled { opacity: .55; cursor: not-allowed; }
+.pre { white-space: pre-wrap; }
+.btn-small { min-height: 34px; padding: 0 14px; font-size: 13.5px; }
+.cx-loading { padding: 40vh 6vw; }
+fieldset.field { border: 0; padding: 0; margin: 0; min-width: 0; }
+fieldset.field > legend { padding: 0; margin-bottom: 8px; }
+
+/* ---------- The Royal Knot logo (views/partials/logo.ejs) ----------
+   One continuous thread: an R and a K sharing a stem, the arm and leg
+   wrapping once around it like a thread tied to a post. Size the whole
+   lockup with --rk-size; colours come from the tone class. */
+.rk-logo { --rk-size: 16px; display: inline-flex; align-items: center; gap: .7em; font-size: var(--rk-size); line-height: 1; text-decoration: none; color: inherit; }
+.rk-mark { width: 2.85em; height: 2.85em; margin: -.25em 0; flex: none; overflow: visible; fill: none; stroke: var(--rk-mark); stroke-width: var(--rk-weight, 3.4); stroke-linecap: round; stroke-linejoin: round; }
+.rk-wordmark { display: grid; gap: .45em; font-family: "DM Serif Display", Georgia, "Times New Roman", serif; font-weight: 400; font-size: 1em; letter-spacing: .16em; text-transform: uppercase; color: var(--rk-word); white-space: nowrap; }
+/* Descriptor under the name (e.g. "Planning studio"): small, light and widely
+   tracked in muted gold, set off by a hairline so it reads as a quiet label. */
+.rk-wordmark small { display: block; margin-top: .1em; padding-top: .62em; border-top: 1px solid var(--rk-rule, rgba(217, 179, 111, .38)); font-family: var(--font-body); font-size: .56em; font-weight: 500; letter-spacing: .34em; color: var(--rk-sub, #CDB27A); }
+.rk-logo--on-light { --rk-sub: #8A6326; --rk-rule: rgba(138, 99, 38, .35); }
+.rk-logo--mono .rk-wordmark small { color: currentColor; border-top-color: currentColor; opacity: .75; }
+.rk-logo--on-dark { --rk-mark: #D9B36F; --rk-word: #F6EBDD; }
+.rk-logo--on-light { --rk-mark: #8A6326; --rk-word: #4C1222; }
+.rk-logo--mono { --rk-mark: currentColor; --rk-word: currentColor; }
+a.rk-logo:hover .rk-mark { stroke: var(--rk-mark-hover, var(--rk-mark)); }
+a.rk-logo:focus-visible { outline-offset: 6px; }

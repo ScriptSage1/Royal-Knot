@@ -14,7 +14,7 @@
 // content column; narrow screens in the upper half; `layout:'card'` centres
 // them for the planner's small preview.
 
-import * as THREE from 'three';
+import * as THREE from '/vendor/three/three.module.js';
 import { DEFAULT_CONFIG } from './config.js';
 import {
   loadCharacter, svgTexture, courtyardSVG, pavilionSVG, rugSVG, lanternSVG, planterSVG, vineSVG,

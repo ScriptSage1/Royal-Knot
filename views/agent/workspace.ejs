@@ -1,12 +1,12 @@
 <%- include('../partials/head') %>
-<body class="agent agent-workspace" data-mock-key="<%= mockKey %>">
+<body class="agent agent-workspace" data-case-code="<%= caseCode %>">
   <div class="ag-shell">
     <%- include('../partials/agent-sidebar') %>
     <main class="ag-main" id="ag-main">
-      <div id="ag-view"><p class="loading">Loading wedding workspace…</p></div>
+      <div id="ag-view"><p class="loading">Opening the case file…</p></div>
     </main>
   </div>
-  <%- include('../partials/devbar', { showStage: true }) %>
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="false"></div>
   <script type="module" src="/static/js/pages/agent-workspace.js"></script>
 </body>
 </html>

@@ -1,0 +1,34 @@
+<%- include('../partials/head') %>
+<body class="site site-auth">
+  <main class="auth">
+    <%- include('../partials/logo', { tone: 'on-dark', href: '/', cls: 'auth-brand' }) %>
+    <section class="auth-card" aria-labelledby="auth-h">
+      <h1 id="auth-h" class="auth-title">Let’s begin</h1>
+      <p class="auth-lede">Create your account and your wedding’s private planning space. Everything you share can be changed later.</p>
+      <% if (error) { %><p class="auth-error" role="alert"><%= error %></p><% } %>
+      <form method="post" action="/signup" class="auth-form">
+        <% if (csrfToken) { %><input type="hidden" name="_csrf" value="<%= csrfToken %>"><% } %>
+        <fieldset class="auth-mode">
+          <legend class="field-label">Your wedding space</legend>
+          <label class="check"><input type="radio" name="mode" value="new" <%= values.mode !== 'join' ? 'checked' : '' %>><span>Create a new one</span></label>
+          <label class="check"><input type="radio" name="mode" value="join" <%= values.mode === 'join' ? 'checked' : '' %>><span>Join my partner’s, with an invite code</span></label>
+        </fieldset>
+        <label class="field"><span class="field-label">Your name</span>
+          <input name="name" value="<%= values.name || '' %>" autocomplete="name" required maxlength="80"></label>
+        <label class="field" data-show-for="new"><span class="field-label">Names for the celebration <span class="optional">optional</span></span>
+          <input name="coupleLabel" value="<%= values.coupleLabel || '' %>" placeholder="e.g. Asha & Kiran" maxlength="80"></label>
+        <label class="field" data-show-for="join"><span class="field-label">Invite code</span>
+          <input name="invite" value="<%= values.invite || '' %>" placeholder="e.g. ABCD-2345" maxlength="12" autocapitalize="characters"></label>
+        <label class="field"><span class="field-label">Email</span>
+          <input type="email" name="email" value="<%= values.email || '' %>" autocomplete="email" required></label>
+        <label class="field"><span class="field-label">Password</span>
+          <input type="password" name="password" autocomplete="new-password" required minlength="<%= minLength %>" aria-describedby="pw-hint">
+          <span class="field-hint" id="pw-hint">At least <%= minLength %> characters.</span></label>
+        <button class="btn auth-submit" type="submit">Create our space</button>
+      </form>
+      <p class="auth-alt">Already have an account? <a href="/login">Sign in</a></p>
+    </section>
+  </main>
+  <script type="module" src="/static/js/pages/signup.js"></script>
+</body>
+</html>

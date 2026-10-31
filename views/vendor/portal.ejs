@@ -1,0 +1,12 @@
+<%- include('../partials/head') %>
+<body class="agent vendor">
+  <div class="ag-shell">
+    <%- include('../partials/agent-sidebar') %>
+    <main class="ag-main" id="ag-main">
+      <div id="ag-view"><p class="loading">Loading requests…</p></div>
+    </main>
+  </div>
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="false"></div>
+  <script type="module" src="/static/js/pages/vendor.js"></script>
+</body>
+</html>

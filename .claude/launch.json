@@ -1,6 +1,7 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "royal-knot", "runtimeExecutable": "node", "runtimeArgs": ["server.js"], "port": 3000 }
+    { "name": "royal-knot", "runtimeExecutable": "node", "runtimeArgs": ["server.js"], "port": 3000 },
+    { "name": "royal-knot-3100", "runtimeExecutable": "node", "runtimeArgs": ["-e", "process.env.PORT='3100';require('./server.js')"], "port": 3100 }
   ]
 }

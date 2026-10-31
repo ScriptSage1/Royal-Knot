@@ -1,0 +1,18 @@
+<%- include('partials/head') %>
+<body class="site">
+  <%- include('partials/site-header') %>
+  <main id="main" class="story-page">
+    <div class="story-body credits">
+      <p class="site-eyebrow">Photo credits</p>
+      <h1 class="section-title">The photographs on this site</h1>
+      <p>These are openly licensed photographs by independent photographers, used as wedding inspiration. They are not Royal Knot client weddings. Each was resized and compressed for the web; nothing else was changed.</p>
+      <ul class="credit-list">
+        <% credits.forEach(function (c) { %>
+        <li><img src="<%= c.small %>" alt="" loading="lazy" width="120" height="80"><div><p><%= c.alt %></p><p class="muted small"><%= c.author %> · <a href="<%= c.licenceUrl %>" rel="license noopener" target="_blank"><%= c.licence %></a> · <a href="<%= c.source %>" rel="noopener" target="_blank">Wikimedia Commons</a></p></div></li>
+        <% }) %>
+      </ul>
+    </div>
+  </main>
+  <%- include('partials/site-footer') %>
+</body>
+</html>

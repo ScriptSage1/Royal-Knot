@@ -4,13 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= title %> · The Royal Knot</title>
+  <link rel="icon" href="/static/img/brand/favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#4C1222">
+  <% if (csrfToken) { %><meta name="csrf-token" content="<%= csrfToken %>"><% } %>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/base.css">
+  <% if (iface === 'site') { %><link rel="stylesheet" href="/static/css/site.css"><% } %>
   <% if (iface === 'couple') { %><link rel="stylesheet" href="/static/css/couple.css"><% } %>
-  <% if (iface === 'agent') { %><link rel="stylesheet" href="/static/css/agent.css"><% } %>
-  <script type="importmap">
-    { "imports": { "three": "/vendor/three/three.module.js" } }
-  </script>
+  <% if (iface === 'agent' || iface === 'vendor') { %><link rel="stylesheet" href="/static/css/agent.css"><% } %>
 </head>

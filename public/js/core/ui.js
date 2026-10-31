@@ -43,6 +43,21 @@ export const fmtDate = (iso, opts = { day: 'numeric', month: 'short', year: 'num
   iso ? new Date(iso + (iso.length === 10 ? 'T00:00:00' : '')).toLocaleDateString('en-IN', opts) : '—';
 
 export const fmtDay = (iso) => fmtDate(iso, { weekday: 'short', day: 'numeric', month: 'short' });
+export const fmtMonth = (ym) => (ym ? new Date(`${ym}-01T00:00:00`).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' }) : '—');
+export const fmtDateTime = (iso) => (iso ? new Date(iso).toLocaleString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) : '—');
+export const fmtTime = (hhmm) => {
+  if (!hhmm) return '';
+  const [h, m] = hhmm.split(':').map(Number);
+  return new Date(2000, 0, 1, h, m).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' });
+};
+export const todayISO = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+
+// How a wedding's date reads, whichever way the couple answered.
+export function whenText(w) {
+  if (w.dateMode === 'exact' && w.weddingDate) return fmtDate(w.weddingDate);
+  if (w.dateMode === 'month' && w.weddingMonth) return fmtMonth(w.weddingMonth);
+  return 'Date to be decided';
+}
 
 export const plural = (n, one, many = one + 's') => `${n} ${n === 1 ? one : many}`;
 
@@ -50,10 +65,10 @@ export const plural = (n, one, many = one + 's') => `${n} ${n === 1 ? one : many
 // One mapping for every status word used across modules, so new records only
 // need a status string. Unknown statuses fall back to neutral.
 const TONES = {
-  ok: ['paid', 'signed', 'approved', 'done', 'complete', 'completed', 'selected', 'arrived', 'confirmed', 'held', 'on track', 'received', 'settled'],
-  info: ['sent', 'shortlisted', 'in progress', 'in review', 'scheduled', 'requested', 'viewed', 'sent to couple', 'booked', 'active', 'expected', 'open'],
-  warn: ['due', 'due soon', 'awaiting', 'awaiting signature', 'pending', 'delayed', 'not confirmed', 'needs review', 'quote pending', 'at risk', 'partially paid'],
-  risk: ['overdue', 'declined', 'blocked', 'cancelled', 'no show'],
+  ok: ['paid', 'accepted', 'approved', 'done', 'complete', 'completed', 'chosen', 'confirmed', 'shortlisted', 'responded', 'final', 'shared', 'arrived'],
+  info: ['sent', 'requested', 'in_progress', 'in progress', 'received', 'upcoming', 'scheduled', 'invited', 'open', 'draft', 'pending'],
+  warn: ['due', 'deferred', 'changes_requested', 'delayed', 'awaiting'],
+  risk: ['overdue', 'declined', 'blocked', 'cancelled', 'not_progressed'],
 };
 export function tone(status) {
   const s = String(status || '').toLowerCase();
@@ -79,9 +94,6 @@ export function relDays(iso, ref) {
 }
 export const initials = (name) => (name || '?').split(/[\s.&]+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
 
-// "Connects later" tag marks a visible future integration point.
-export const futureTag = (label) => html`<span class="future-tag" title="Integration point for a later module">Planned · ${label}</span>`;
-
 export const emptyState = ({ title, body, icon = 'leaf' }) => html`
   <div class="empty">
     <svg class="empty-icon" viewBox="0 0 24 24" aria-hidden="true">${raw(ICONS[icon] || ICONS.leaf)}</svg>
@@ -98,18 +110,20 @@ const ICONS = {
   people: '<circle cx="9" cy="9" r="3"/><circle cx="16" cy="10" r="2.5"/><path d="M4 19c0-3 2-5 5-5s5 2 5 5M14 19c0-2 1-4 3-4s3 2 3 4"/>',
 };
 
-// ---------- preview notices ----------
-// Every button that would hit a real service calls this instead, so the UI
-// never implies that anything was saved, sent, signed or paid.
-export function previewNotice(message, title = 'Preview only') {
+// ---------- toasts ----------
+// Short confirmations and errors after an action. Text is set with
+// textContent, never HTML.
+export function toast(message, { title = '', tone = 'ok' } = {}) {
   const region = document.getElementById('toast-region');
   if (!region) return;
   const t = document.createElement('div');
-  t.className = 'toast';
-  t.innerHTML = String(html`<strong>${title}</strong><span>${message}</span>`);
+  t.className = `toast toast-${tone}`;
+  t.setAttribute('role', tone === 'error' ? 'alert' : 'status');
+  if (title) { const s = document.createElement('strong'); s.textContent = title; t.append(s); }
+  const m = document.createElement('span'); m.textContent = message; t.append(m);
   region.appendChild(t);
   requestAnimationFrame(() => t.classList.add('in'));
-  setTimeout(() => { t.classList.remove('in'); setTimeout(() => t.remove(), 300); }, 4200);
+  setTimeout(() => { t.classList.remove('in'); setTimeout(() => t.remove(), 300); }, tone === 'error' ? 6500 : 3600);
 }
 
 export const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;

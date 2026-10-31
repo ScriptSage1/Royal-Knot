@@ -1,0 +1,13 @@
+<header class="site-bar">
+  <%- include('logo', { tone: 'on-dark', href: '/', cls: 'site-brand' }) %>
+  <nav class="site-nav" aria-label="Main">
+    <a href="/#inspiration">Celebrations we love</a>
+    <a href="/#how">How it works</a>
+    <% if (coupleSignedIn) { %>
+      <a class="site-cta" href="/couple">Your planning space</a>
+    <% } else { %>
+      <a href="/login">Sign in</a>
+      <a class="site-cta" href="/signup">Start planning</a>
+    <% } %>
+  </nav>
+</header>

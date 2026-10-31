@@ -1,0 +1,22 @@
+<%- include('../partials/head') %>
+<body class="site site-auth">
+  <main class="auth">
+    <%- include('../partials/logo', { tone: 'on-dark', href: '/', cls: 'auth-brand' }) %>
+    <section class="auth-card" aria-labelledby="auth-h">
+      <h1 id="auth-h" class="auth-title">Welcome back</h1>
+      <p class="auth-lede">Couples, planners and vendors all sign in here.</p>
+      <% if (error) { %><p class="auth-error" role="alert"><%= error %></p><% } %>
+      <form method="post" action="/login" class="auth-form">
+        <% if (csrfToken) { %><input type="hidden" name="_csrf" value="<%= csrfToken %>"><% } %>
+        <% if (next) { %><input type="hidden" name="next" value="<%= next %>"><% } %>
+        <label class="field"><span class="field-label">Email</span>
+          <input type="email" name="email" value="<%= email %>" autocomplete="username" required autofocus></label>
+        <label class="field"><span class="field-label">Password</span>
+          <input type="password" name="password" autocomplete="current-password" required></label>
+        <button class="btn auth-submit" type="submit">Sign in</button>
+      </form>
+      <p class="auth-alt">New here? <a href="/signup">Start planning your wedding</a></p>
+    </section>
+  </main>
+</body>
+</html>

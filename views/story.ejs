@@ -1,0 +1,44 @@
+<%- include('partials/head') %>
+<body class="site">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <%- include('partials/site-header') %>
+  <main id="main" class="story-page">
+    <header class="story-hero">
+      <img src="<%= story.hero.src %>" alt="<%= story.hero.alt %>">
+      <div class="story-hero-copy">
+        <p class="site-eyebrow">Wedding inspiration · <%= story.place %></p>
+        <h1 class="hero-title"><%= story.title %></h1>
+      </div>
+    </header>
+    <div class="story-body">
+      <p class="story-note-honest">An idea inspired by the photographs on this page. Not a Royal Knot client wedding.</p>
+      <dl class="story-facts">
+        <div><dt>The setting</dt><dd><%= story.setting %></dd></div>
+        <div><dt>The mood</dt><dd><%= story.mood %></dd></div>
+        <div><dt>A meaningful detail</dt><dd><%= story.detailText %></dd></div>
+        <div><dt>What makes it distinctive</dt><dd><%= story.distinctive %></dd></div>
+      </dl>
+      <figure class="story-figure">
+        <img src="<%= story.detail.src %>" alt="<%= story.detail.alt %>" loading="lazy">
+        <figcaption>Photo: <%= story.detail.author %> · <a href="<%= story.detail.licenceUrl %>" rel="license noopener" target="_blank"><%= story.detail.licence %></a> · <a href="<%= story.detail.source %>" rel="noopener" target="_blank">source</a></figcaption>
+      </figure>
+      <p class="story-credit">Top photo: <%= story.hero.author %> · <a href="<%= story.hero.licenceUrl %>" rel="license noopener" target="_blank"><%= story.hero.licence %></a> · <a href="<%= story.hero.source %>" rel="noopener" target="_blank">source</a></p>
+      <section class="cta-band cta-inline">
+        <h2 class="section-title">Imagine yours</h2>
+        <p>Tell us what you love about this idea, and what you’d make your own.</p>
+        <a class="cx-btn" href="<%= coupleSignedIn ? '/couple' : '/signup' %>"><%= coupleSignedIn ? 'Go to your planning space' : 'Start planning' %></a>
+      </section>
+      <h2 class="section-title small-title">More celebrations we love</h2>
+      <div class="inspo-grid inspo-grid-small">
+        <% more.forEach(function (s) { %>
+        <article class="inspo-card"><a href="/inspiration/<%= s.slug %>" class="inspo-link">
+          <img src="<%= s.hero.small %>" alt="<%= s.hero.alt %>" loading="lazy" width="900" height="600">
+          <div class="inspo-text"><p class="inspo-place"><%= s.place %></p><h3 class="inspo-title"><%= s.title %></h3></div>
+        </a></article>
+        <% }) %>
+      </div>
+    </div>
+  </main>
+  <%- include('partials/site-footer') %>
+</body>
+</html>

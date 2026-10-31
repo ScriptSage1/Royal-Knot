@@ -1,0 +1,21 @@
+.sheet { margin: 0; padding: 32px; background: #EFE7DA; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; font-family: Manrope, system-ui, sans-serif; }
+.sheet-head { grid-column: 1 / -1; color: #4C1222; }
+.sheet-head p { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #8A6326; }
+.sheet-head h1 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: 34px; margin: 6px 0 8px; }
+.sheet-head .sheet-lede { font-size: 15px; letter-spacing: 0; text-transform: none; font-weight: 500; color: #5C4A4E; max-width: 70ch; }
+.tile { border-radius: 18px; padding: 44px 32px 18px; display: grid; gap: 28px; justify-items: center; align-content: center; min-height: 220px; }
+.tile p { margin: 0; font-size: 12px; font-weight: 600; letter-spacing: .08em; opacity: .75; }
+.tile-dark { background: #4C1222; color: #F6EBDD; }
+.tile-light { background: #FBF6EE; color: #4C1222; box-shadow: inset 0 0 0 1px #E5D9C6; }
+.tile-indigo { background: #1A2147; color: #E7E2D6; }
+.tile-mono { background: #FBF6EE; color: #2A1A1E; box-shadow: inset 0 0 0 1px #E5D9C6; }
+.tile-icons { background: #FBF6EE; color: #2A1A1E; box-shadow: inset 0 0 0 1px #E5D9C6; }
+.tile-tab { background: #DAD3C8; color: #2A1A1E; }
+.big { --rk-size: 26px; }
+.mid { --rk-size: 18px; }
+.mono-light { color: #F6EBDD; background: #2A1A1E; padding: 16px 22px; border-radius: 12px; }
+.icons { display: flex; align-items: center; gap: 22px; }
+.markonly { --rk-size: 24px; }
+.markonly.sm { --rk-size: 10px; }
+.tab { display: flex; align-items: center; gap: 8px; background: #fff; border-radius: 10px 10px 0 0; padding: 9px 14px; font-size: 13px; color: #333; box-shadow: 0 1px 0 #ccc; }
+@media (max-width: 760px) { .sheet { grid-template-columns: 1fr; padding: 16px; } }
