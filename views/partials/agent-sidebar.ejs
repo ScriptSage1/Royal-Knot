@@ -1,0 +1,17 @@
+<aside class="ag-sidebar" aria-label="Agency navigation">
+  <a class="ag-brand" href="/agent/weddings">
+    <span class="ag-brand-mark" aria-hidden="true">RK</span>
+    <span><strong>The Royal Knot</strong><small>Agency workspace</small></span>
+  </a>
+  <nav class="ag-nav" aria-label="Primary">
+    <a href="/agent/weddings" <%= nav === 'weddings' ? 'aria-current=page' : '' %>>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Weddings</a>
+    <a href="/agent/season" <%= nav === 'season' ? 'aria-current=page' : '' %>>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19V11M12 19V5M19 19v-6"/></svg>Season overview</a>
+  </nav>
+  <div class="ag-nav-group" id="ag-section-nav" hidden>
+    <p class="ag-nav-label">This wedding</p>
+    <nav class="ag-nav ag-nav-sub" aria-label="Wedding workspace sections"></nav>
+  </div>
+  <p class="ag-internal-flag">Internal · not visible to couples</p>
+</aside>

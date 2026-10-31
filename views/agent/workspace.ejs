@@ -1,0 +1,12 @@
+<%- include('../partials/head') %>
+<body class="agent agent-workspace" data-mock-key="<%= mockKey %>">
+  <div class="ag-shell">
+    <%- include('../partials/agent-sidebar') %>
+    <main class="ag-main" id="ag-main">
+      <div id="ag-view"><p class="loading">Loading wedding workspace…</p></div>
+    </main>
+  </div>
+  <%- include('../partials/devbar', { showStage: true }) %>
+  <script type="module" src="/static/js/pages/agent-workspace.js"></script>
+</body>
+</html>

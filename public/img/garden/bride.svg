@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 240 480" style="--skin:#C68F6C;--skin-shade:#A6704F;--hair:#2B1E1A;--hair-light:#5A3E30;--gown:#FCF6EC;--gown-mid:#F1E5D3;--gown-shade:#D9C6AC;--accent:#D2AA62;--bloom-1:#EFAFA5;--bloom-2:#FFF6EC;--bloom-3:#F3C88F;--leaf:#6C8C66;--blush:#E5917F;--pose-a:inline;--pose-b:none">
+  <!-- The Royal Knot · Shared Garden · Bride (original illustration)
+       Palette and pose are set by the loader via the CSS custom properties above.
+       Feet/hem rest on the bottom centre (x=120, y≈468). Faces right. -->
+  <style>
+    .skin{fill:var(--skin)} .skin-s{fill:var(--skin-shade)}
+    .hair{fill:var(--hair)} .hair-l{fill:var(--hair-light)}
+    .gown{fill:var(--gown)} .gown-m{fill:var(--gown-mid)} .gown-s{fill:var(--gown-shade)}
+    .fold{fill:none;stroke:var(--gown-shade);stroke-width:1.6;stroke-linecap:round;opacity:.85}
+    .gold{fill:var(--accent)} .gold-l{fill:none;stroke:var(--accent);stroke-width:1.3;stroke-linecap:round}
+    .b1{fill:var(--bloom-1)} .b2{fill:var(--bloom-2)} .b3{fill:var(--bloom-3)} .leaf{fill:var(--leaf)}
+    .ribbon{fill:none;stroke:var(--accent);stroke-width:2;stroke-linecap:round}
+    .sleeve{fill:none;stroke:var(--gown);stroke-width:11;stroke-linecap:round}
+    .sleeve-s{fill:none;stroke:var(--gown-shade);stroke-width:10;stroke-linecap:round}
+    .ink{fill:none;stroke:var(--hair);stroke-width:1.7;stroke-linecap:round}
+    .mouth{fill:none;stroke:var(--skin-shade);stroke-width:1.5;stroke-linecap:round}
+    .pose-a{display:var(--pose-a)} .pose-b{display:var(--pose-b)}
+  </style>
+  <defs>
+    <linearGradient id="skirt" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" style="stop-color:var(--gown-shade)"/>
+      <stop offset=".45" style="stop-color:var(--gown)"/>
+      <stop offset="1" style="stop-color:var(--gown-mid)"/>
+    </linearGradient>
+    <linearGradient id="tulle" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".0"/>
+      <stop offset="1" stop-color="#fff" stop-opacity=".55"/>
+    </linearGradient>
+    <linearGradient id="drape" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#fff" stop-opacity=".08"/>
+    </linearGradient>
+    <g id="bouquet">
+      <path class="ribbon" d="M-2 6 C-6 24 -10 40 -15 56"/>
+      <path class="ribbon" d="M2 6 C5 22 9 36 15 50"/>
+      <ellipse class="leaf" cx="-15" cy="-1" rx="10" ry="4" transform="rotate(-28 -15 -1)"/>
+      <ellipse class="leaf" cx="15" cy="0" rx="10" ry="4" transform="rotate(24 15 0)"/>
+      <ellipse class="leaf" cx="0" cy="10" rx="9" ry="3.6" transform="rotate(84 0 10)"/>
+      <ellipse class="leaf" cx="-10" cy="-12" rx="7" ry="3" transform="rotate(-60 -10 -12)"/>
+      <circle class="b1" cx="-7" cy="-4" r="7.5"/>
+      <circle class="b2" cx="6" cy="-6" r="7.2"/>
+      <circle class="b3" cx="0" cy="3" r="6.6"/>
+      <circle class="b1" cx="10" cy="4" r="5.2"/>
+      <circle class="b2" cx="-10" cy="5" r="5.2"/>
+      <circle class="b1" cx="-1" cy="-12" r="5.6"/>
+      <g fill="#000" opacity=".12"><circle cx="-7" cy="-4" r="2.2"/><circle cx="6" cy="-6" r="2.2"/><circle cx="0" cy="3" r="2"/><circle cx="-1" cy="-12" r="1.6"/></g>
+      <g fill="#fff" opacity=".6"><circle cx="-9" cy="-7" r="1.6"/><circle cx="4" cy="-9" r="1.6"/><circle cx="-3" cy="-14" r="1.2"/></g>
+    </g>
+  </defs>
+
+  <ellipse cx="120" cy="468" rx="96" ry="9" fill="#120c1c" opacity=".28"/>
+
+  <!-- sheer drape flowing from the hair -->
+  <path d="M100 66 C72 120 46 250 24 462 C42 468 60 468 74 462 C82 330 94 200 112 92 Z" fill="url(#drape)"/>
+  <path d="M100 70 C80 140 60 280 44 460" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1.2"/>
+
+  <!-- back arm (sheer sleeve) -->
+  <path class="sleeve-s" d="M106 140 C98 164 96 188 101 206"/>
+
+  <!-- skirt -->
+  <path d="M98 206 C84 270 56 360 18 460 C62 474 180 476 216 460 C198 380 166 290 142 206 Z" fill="url(#skirt)"/>
+  <path d="M102 210 C86 280 64 370 34 458 C70 466 120 468 150 466 C136 380 126 290 124 210 Z" fill="url(#tulle)"/>
+  <path class="fold" d="M112 214 C104 300 86 380 66 460"/>
+  <path class="fold" d="M124 214 C126 300 132 380 140 466"/>
+  <path class="fold" d="M134 212 C150 300 172 380 196 460"/>
+  <path class="fold" d="M104 230 C92 300 70 380 44 458" opacity=".5"/>
+  <!-- hem embroidery -->
+  <path class="gold-l" d="M24 452 Q40 444 56 452 T88 453 T120 454 T152 453 T184 452 T212 452"/>
+  <g class="gold">
+    <circle cx="40" cy="446" r="1.6"/><circle cx="72" cy="447" r="1.6"/><circle cx="104" cy="448" r="1.6"/><circle cx="136" cy="448" r="1.6"/><circle cx="168" cy="447" r="1.6"/><circle cx="198" cy="446" r="1.6"/>
+  </g>
+  <path class="gold-l" d="M60 430 C70 420 80 424 86 414 M150 428 C158 418 168 422 172 412 M110 434 C116 424 124 428 128 418" opacity=".7"/>
+
+  <!-- bodice -->
+  <path class="gown" d="M104 132 C100 160 98 188 98 210 L142 210 C142 186 140 160 133 132 C125 126 112 126 104 132 Z"/>
+  <path class="gown-m" d="M128 134 C134 160 138 186 140 208 L142 210 C142 186 140 160 133 132 Z"/>
+  <path class="gold-l" d="M118 140 C114 152 122 160 118 172 C114 182 122 190 118 200" opacity=".85"/>
+  <path class="gold-l" d="M118 152 C112 150 110 146 108 142 M118 164 C124 162 127 157 128 152 M118 184 C112 182 110 178 108 174" opacity=".75"/>
+  <!-- waist sash -->
+  <path class="gold" d="M97 198 C110 205 130 205 143 198 L143 210 C130 217 110 217 97 210 Z"/>
+  <path d="M97 204 C110 210 130 210 143 204" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1"/>
+
+  <!-- neck & shoulders -->
+  <path class="skin" d="M112 106 L112 128 C116 131 122 131 126 128 L126 104 Z"/>
+  <path class="skin-s" d="M112 118 C116 122 122 122 126 118 L126 126 C122 129 116 129 112 126 Z" opacity=".6"/>
+  <path class="gown" d="M100 134 C108 128 114 128 119 132 C124 128 130 128 137 134 L134 142 C126 138 112 138 103 142 Z"/>
+  <circle class="gold" cx="119" cy="134" r="2.4"/>
+
+  <!-- head -->
+  <ellipse class="skin" cx="121" cy="86" rx="18" ry="19.5"/>
+  <ellipse class="skin" cx="126" cy="92" rx="14" ry="14"/>
+  <ellipse class="skin-s" cx="111" cy="90" rx="3.4" ry="4.6"/>
+  <!-- hair: soft updo with bun -->
+  <path class="hair" d="M103 90 C98 64 116 56 132 64 C140 68 142 78 139 86 C132 75 118 72 109 82 C107 86 106 92 103 90 Z"/>
+  <circle class="hair" cx="99" cy="72" r="13"/>
+  <path class="hair-l" d="M92 66 C96 60 104 60 108 64" fill="none" stroke="var(--hair-light)" stroke-width="2" stroke-linecap="round"/>
+  <path class="hair-l" d="M116 64 C124 62 132 66 136 72" fill="none" stroke="var(--hair-light)" stroke-width="1.6" stroke-linecap="round" opacity=".8"/>
+  <path class="hair" d="M106 84 C104 94 104 102 108 108 C104 104 101 96 103 86 Z"/>
+  <!-- hair blossoms -->
+  <circle class="b2" cx="104" cy="60" r="4.2"/><circle class="b1" cx="96" cy="64" r="3.6"/><circle class="b3" cx="108" cy="54" r="3"/><circle class="b2" cx="92" cy="72" r="2.6"/>
+  <ellipse class="leaf" cx="112" cy="58" rx="4" ry="1.8" transform="rotate(-30 112 58)"/>
+  <!-- face -->
+  <path class="ink" d="M127 87 Q131 90 135 87"/>
+  <path class="ink" d="M134 86.5 L136.5 85" stroke-width="1.2"/>
+  <path class="ink" d="M126 80 Q131 78 136 80" stroke-width="1.3" opacity=".75"/>
+  <circle cx="131" cy="95" r="4.2" fill="var(--blush)" opacity=".42"/>
+  <path class="mouth" d="M133 100 Q136 102 139 100"/>
+  <circle class="gold" cx="112" cy="98" r="1.8"/>
+
+  <!-- POSE A: holding the bouquet at the waist -->
+  <g class="pose-a">
+    <path class="sleeve" d="M133 138 C143 156 145 170 141 182 C137 190 131 194 125 196"/>
+    <path d="M133 138 C143 156 145 170 141 182" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2" stroke-linecap="round"/>
+    <use xlink:href="#bouquet" href="#bouquet" x="122" y="200"/>
+    <circle class="skin" cx="124" cy="196" r="4.8"/>
+    <circle class="skin" cx="116" cy="198" r="4.4"/>
+  </g>
+
+  <!-- POSE B: reaching forward, bouquet lowered in the other hand -->
+  <g class="pose-b">
+    <use xlink:href="#bouquet" href="#bouquet" x="100" y="216" transform="rotate(-8 100 216)"/>
+    <circle class="skin" cx="101" cy="208" r="4.4"/>
+    <path class="sleeve" d="M133 138 C148 150 162 160 180 163"/>
+    <path d="M133 138 C148 150 162 160 178 163" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2" stroke-linecap="round"/>
+    <ellipse class="skin" cx="186" cy="164" rx="6" ry="4.4"/>
+  </g>
+
+  <!-- rim light -->
+  <path d="M141 212 C166 290 196 380 214 458" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
+</svg>

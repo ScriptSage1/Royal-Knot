@@ -1,0 +1,16 @@
+{
+  "name": "royal-knot",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The Royal Knot — wedding planning management system (UI module, mock data only)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "three": "0.169.0"
+  }
+}

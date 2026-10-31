@@ -1,0 +1,26 @@
+<%- include('../partials/head') %>
+<body class="couple" data-view="home">
+  <%- include('../partials/garden') %>
+  <a class="skip-link" href="#cp-main">Skip to content</a>
+
+  <header class="cx-bar">
+    <a class="cx-brand" href="#home" aria-label="The Royal Knot — your journey">The Royal Knot</a>
+    <button class="cx-journey-btn" type="button" id="journey-open" aria-haspopup="dialog" aria-controls="journey">
+      <span class="cx-journey-meta" id="journey-meta"></span>
+      <span class="cx-journey-label">Your journey</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+    </button>
+  </header>
+
+  <main class="cx-main" id="cp-main" tabindex="-1">
+    <div id="cp-view"><p class="cx-loading">Preparing your garden…</p></div>
+  </main>
+
+  <dialog class="cx-journey" id="journey" aria-labelledby="journey-title">
+    <div class="cx-journey-inner" id="journey-body"></div>
+  </dialog>
+
+  <%- include('../partials/devbar', { showStage: true }) %>
+  <script type="module" src="/static/js/pages/couple.js"></script>
+</body>
+</html>

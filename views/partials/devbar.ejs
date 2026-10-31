@@ -1,0 +1,22 @@
+<%# Developer-only preview controls. This is NOT authentication: anyone can switch views. %>
+<aside class="devbar" id="devbar" aria-label="Developer preview controls" hidden>
+  <button class="devbar-toggle" type="button" aria-expanded="false" aria-controls="devbar-panel">
+    <span class="devbar-dot" aria-hidden="true"></span> Dev preview
+  </button>
+  <div class="devbar-panel" id="devbar-panel" hidden>
+    <p class="devbar-note">Developer preview (?dev=1) — not a login. Switches mock views. Turn off with ?dev=0.</p>
+    <nav class="devbar-links" aria-label="Switch interface">
+      <a href="/couple" <%= iface === 'couple' ? 'aria-current=page' : '' %>>Couple portal</a>
+      <a href="/agent/weddings" <%= iface === 'agent' ? 'aria-current=page' : '' %>>Agent workspace</a>
+      <a href="/">Preview hub</a>
+    </nav>
+    <% if (typeof showStage !== 'undefined' && showStage) { %>
+    <label class="devbar-field">
+      <span>Mock planning stage</span>
+      <select id="dev-stage"></select>
+    </label>
+    <p class="devbar-note">Drives the mock journey state and the garden background.</p>
+    <% } %>
+  </div>
+</aside>
+<div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="false"></div>
