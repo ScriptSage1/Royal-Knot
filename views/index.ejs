@@ -1,24 +1,24 @@
 <%- include('partials/head') %>
 <body class="hub">
   <main class="hub-main">
-    <p class="eyebrow">The Royal Knot · UI module</p>
+    <p class="eyebrow">The Royal Knot</p>
     <h1 class="display"><%= typeof notFound !== 'undefined' ? 'That page isn’t here' : 'Developer preview' %></h1>
-    <p class="lede">Two separate interfaces, rendered from mock data in the browser. Nothing here signs in, saves, sends, or charges anything.</p>
+    <p class="lede">Preview only · no sign-in, saving, sending or payments.</p>
     <div class="hub-grid">
       <a class="hub-card" href="/couple">
         <span class="hub-tag">Client-facing</span>
         <h2>Couple portal</h2>
-        <p>Share planning details, book a consultation, follow the journey, and preview later modules: requirements, vendor shortlist, agreement, payments, and events.</p>
+        <p>Share your story, meet a planner, compare vendors and follow the plan.</p>
         <span class="hub-go">Open couple portal →</span>
       </a>
       <a class="hub-card hub-card-dark" href="/agent/weddings">
         <span class="hub-tag">Internal</span>
         <h2>Agent workspace</h2>
-        <p>Wedding cases, workspace dashboard, meeting and notes, documents, agreement, vendor proposals, tasks, schedule, finance, and season overview.</p>
+        <p>Manage a wedding from consultation to closeout.</p>
         <span class="hub-go">Open agent workspace →</span>
       </a>
     </div>
-    <p class="hub-foot">Presenting? Add <code>?stage=0</code> … <code>?stage=9</code> to the couple portal or a wedding workspace to show a planning stage. Developer controls stay hidden unless you add <code>?dev=1</code> (turn off with <code>?dev=0</code>).</p>
+    <p class="hub-foot">Demo: add <code>?stage=0–9</code> to preview progress. Add <code>?dev=1</code> for controls.</p>
   </main>
 </body>
 </html>

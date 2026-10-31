@@ -15,7 +15,7 @@ export const COUPLE = {
     guests: 200,
     budget: '',
     eventsCount: '',
-    preferences: [],
+    whatMatters: '',
     traditionsNote: '',
     traditionsDeciding: false,
     traditionsDiscuss: false,

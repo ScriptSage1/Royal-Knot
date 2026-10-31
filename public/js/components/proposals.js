@@ -8,7 +8,7 @@ import { html, inr, fmtDate, pill, emptyState, futureTag, plural, visibility } f
 export function renderVendorRequests(requests, active) {
   if (!requests.length) {
     return html`<section class="card"><div class="card-head"><h2 class="card-title">Vendor requests</h2>${futureTag('Vendor portal')}</div>
-      ${emptyState({ icon: 'people', title: 'No vendor requests yet', body: 'Requests are sent once the requirements are approved.' })}
+      ${emptyState({ icon: 'people', title: 'No vendor requests yet', body: 'Request quotes after plan approval.' })}
       <div class="row-end"><button class="btn btn-ghost" type="button" data-action="request-quotes">Request quotes</button></div></section>`;
   }
   return html`
@@ -25,7 +25,7 @@ export function renderVendorRequests(requests, active) {
             <td><button class="btn btn-small btn-ghost" type="button" data-action="category" data-category="${r.category}" aria-pressed="${r.category === active}">Compare</button></td>
           </tr>`)}</tbody>
       </table></div>
-      <div class="row-end"><button class="btn btn-ghost" type="button" data-action="request-quotes">Request more quotes</button></div>
+      <div class="row-end"><button class="btn btn-ghost" type="button" data-action="request-quotes">Request quotes</button></div>
     </section>`;
 }
 
@@ -58,8 +58,8 @@ export function renderComparison({ category, options, audience = 'agent', select
   return html`
     <section class="card" aria-labelledby="cmp-h">
       <div class="card-head">
-        <h2 id="cmp-h" class="card-title">${audience === 'agent' ? 'Proposal comparison' : 'Compare your options'} · ${category}</h2>
-        ${audience === 'agent' ? visibility('internal', 'Internal comments stay private') : ''}<span class="muted small">${plural(options.length, 'option')}</span>
+        <h2 id="cmp-h" class="card-title">${audience === 'agent' ? 'Proposals' : 'Your options'} · ${category}</h2>
+        ${audience === 'agent' ? visibility('internal', 'Internal only') : ''}<span class="muted small">${plural(options.length, 'option')}</span>
       </div>
       ${tabs}
       <div class="compare-wrap" tabindex="0" aria-label="Comparison table, scrolls sideways on small screens">

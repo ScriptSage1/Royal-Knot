@@ -20,16 +20,8 @@ export const PLANNERS = [
 export const CASES = [
   { mockKey: 'sample-a', coupleLabel: 'Asha & Kiran', approxDate: '2027-02-12', location: 'Udaipur', guests: 250, budgetRange: '₹50 L – 1 Cr', planner: 'Priya N.', stage: 7,
     nextAction: { label: 'Confirm décor final layout', due: '2026-11-03', section: 'tasks' }, payment: { label: 'Planning advance', amount: 1850000, due: '2026-12-15', status: 'Due' }, openTasks: 8, overdueTasks: 0, flags: [] },
-  { mockKey: 'sample-b', coupleLabel: 'Meera & Arjun', approxDate: '2027-01-23', location: 'Goa', guests: 140, budgetRange: '₹25 – 50 L', planner: 'Daniel R.', stage: 5,
-    nextAction: { label: 'Send catering shortlist to couple', due: '2026-11-02', section: 'vendors' }, payment: { label: 'Booking payment', amount: 600000, due: '2026-11-12', status: 'Due' }, openTasks: 11, overdueTasks: 2, flags: ['Vendor quotes pending'] },
-  { mockKey: 'sample-c', coupleLabel: 'Noor & Kabir', approxDate: '2027-04-10', location: 'Bengaluru', guests: 90, budgetRange: 'Under ₹25 L', planner: 'Farah S.', stage: 3,
-    nextAction: { label: 'Draft requirements document', due: '2026-11-05', section: 'documents' }, payment: null, openTasks: 3, overdueTasks: 0, flags: [] },
-  { mockKey: 'sample-d', coupleLabel: 'Ravi & Sana', approxDate: '2026-12-05', location: 'Jaipur', guests: 420, budgetRange: '₹1 – 3 Cr', planner: 'Priya N.', stage: 8,
-    nextAction: { label: 'Sign off day-of run sheet', due: '2026-11-01', section: 'schedule' }, payment: { label: 'Pre-wedding advance', amount: 3200000, due: '2026-10-25', status: 'Overdue' }, openTasks: 6, overdueTasks: 1, flags: ['Advance overdue'] },
-  { mockKey: 'sample-e', coupleLabel: 'New enquiry · names not shared', approxDate: null, location: 'Kochi (tentative)', guests: 200, budgetRange: 'Not sure yet', planner: null, stage: 1,
-    nextAction: { label: 'Assign a planner and offer consultation slots', due: '2026-10-30', section: 'meeting' }, payment: null, openTasks: 1, overdueTasks: 1, flags: ['Unassigned'] },
-  { mockKey: 'sample-f', coupleLabel: 'Tara & Ishaan', approxDate: '2026-11-14', location: 'Mussoorie', guests: 160, budgetRange: '₹50 L – 1 Cr', planner: 'Daniel R.', stage: 9,
-    nextAction: { label: 'Confirm vendor arrival times', due: '2026-11-12', section: 'schedule' }, payment: { label: 'Final payment (after the event)', amount: 950000, due: '2026-11-30', status: 'Upcoming' }, openTasks: 4, overdueTasks: 0, flags: [] },
+  { mockKey: 'sample-b', coupleLabel: 'Naina & Rohan', approxDate: '2027-04-18', location: 'Jaipur', guests: 180, budgetRange: '₹25 L – 50 L', planner: 'Daniel R.', stage: 3,
+    nextAction: { label: 'Draft the requirements summary', due: '2026-11-03', section: 'documents' }, payment: null, openTasks: 4, overdueTasks: 0, flags: [] },
 ];
 
 const FULL = {
@@ -180,44 +172,67 @@ const FULL = {
   ],
 };
 
-// Lighter cases get empty collections so empty states render naturally.
-function lightDetail(c) {
-  return {
-    ...c,
-    people: [],
-    dateNote: c.approxDate ? 'Approximate date' : 'Date not decided yet',
-    preferences: [],
-    traditions: { note: '', discussWithPlanner: false },
-    meeting: { status: c.stage >= 2 ? 'Scheduled' : 'Not booked', date: null, time: null, mode: null, attendees: [], meetLink: null, transcript: null },
-    agentNotes: [],
-    requirements: { status: c.stage >= 4 ? 'Approved' : c.stage >= 3 ? 'Draft' : 'Not started', version: null, updated: null, sections: [] },
-    checklist: [],
-    agreement: { status: c.stage >= 5 ? 'Signed' : c.stage >= 4 ? 'Sent' : 'Not started', title: 'Wedding planning service agreement', history: [], summary: [], file: null },
-    vendorRequests: [], tasks: [], schedule: [], payments: [], vendorBills: [], extras: [],
-  };
-}
+const FULL_B = {
+  mockKey: 'sample-b',
+  coupleLabel: 'Naina & Rohan',
+  people: [
+    { name: 'Naina', role: 'Partner', contact: 'Shared via portal' },
+    { name: 'Rohan', role: 'Partner', contact: 'Shared via portal' },
+    { name: 'Anita', role: 'Family coordinator', contact: 'Shared via portal' },
+  ],
+  approxDate: '2027-04-18', dateNote: 'Mid-April 2027 · confirmed',
+  location: 'Jaipur, Rajasthan', guests: 180, budgetRange: '₹25 L – 50 L', planner: 'Daniel R.', stage: 3,
+  preferences: ['Close-knit celebration', 'Local, seasonal menu', 'Evening garden setting'],
+  traditions: {
+    note: 'The families would like to include customs from both sides. They will share the order and details with the planner; avoid assuming a fixed ritual format.',
+    discussWithPlanner: true,
+  },
+  meeting: {
+    status: 'Held', date: '2026-10-29', time: '13:00', duration: '45 min', mode: 'In person · Studio',
+    attendees: ['Naina', 'Rohan', 'Daniel R. (planner)'], meetLink: null, transcript: null,
+  },
+  agentNotes: [
+    { at: '2026-10-29T14:05', author: 'Daniel R.', text: 'Keep the first plan flexible; the families are still discussing the event order.' },
+    { at: '2026-10-29T14:15', author: 'Daniel R.', text: 'Anita will share dietary needs and the family customs list next week.' },
+  ],
+  requirements: {
+    status: 'Draft', version: 'Draft v1', updated: '2026-10-30',
+    sections: [
+      { title: 'Celebration overview', items: ['Two days, three events', 'About 180 guests', 'Jaipur venue · garden or courtyard preferred'] },
+      { title: 'Style & feel', items: ['Close-knit and relaxed', 'Warm evening lighting', 'Design direction to be discussed'] },
+      { title: 'Food & dietary', items: ['Vegetarian menu', 'Seasonal, locally sourced options', 'Dietary needs list to follow'] },
+      { title: 'Traditions & customs', items: ['Include customs from both families', 'Order of events to be confirmed together'] },
+      { title: 'Open questions', items: ['Confirm venue and event timings', 'Review budget split after first proposals'] },
+    ],
+  },
+  checklist: [
+    { label: 'Confirm event order with both families', done: false },
+    { label: 'Collect dietary needs', done: false },
+    { label: 'Shortlist Jaipur garden venues', done: true },
+    { label: 'Review draft requirements with couple', done: false },
+  ],
+  agreement: {
+    status: 'Draft', title: 'Wedding planning service agreement', history: [], summary: [], file: null,
+  },
+  vendorRequests: [],
+  tasks: [
+    { title: 'Review draft requirements', owner: 'Daniel R.', ownerType: 'Agency', stage: 'Discovery', due: '2026-11-03', status: 'In progress' },
+    { title: 'Share dietary needs', owner: 'Naina & Rohan', ownerType: 'Couple', stage: 'Discovery', due: '2026-11-07', status: 'Pending' },
+    { title: 'Confirm event order', owner: 'Anita', ownerType: 'Couple', stage: 'Discovery', due: '2026-11-10', status: 'Pending' },
+    { title: 'Prepare venue shortlist', owner: 'Daniel R.', ownerType: 'Agency', stage: 'Venues', due: '2026-11-12', status: 'Pending' },
+  ],
+  schedule: [], payments: [], vendorBills: [], extras: [],
+};
+const FULL_BY_KEY = new Map([[FULL.mockKey, FULL], [FULL_B.mockKey, FULL_B]]);
 
 export function weddingDetail(mockKey) {
-  if (mockKey === FULL.mockKey) return { ...CASES.find((c) => c.mockKey === mockKey), ...FULL };
-  const c = CASES.find((x) => x.mockKey === mockKey);
-  return c ? lightDetail(c) : null;
+  const row = CASES.find((item) => item.mockKey === mockKey);
+  const detail = FULL_BY_KEY.get(mockKey);
+  return row && detail ? { ...row, ...detail } : null;
 }
 
+// Preview records only; portfolio metrics are intentionally omitted.
 export const SEASON = {
-  label: 'Season 2026–27',
+  label: 'Two-wedding preview',
   weddings: CASES,
-  upcomingMoney: [
-    { couple: 'Ravi & Sana', mockKey: 'sample-d', label: 'Pre-wedding advance', amount: 3200000, due: '2026-10-25', status: 'Overdue' },
-    { couple: 'Tara & Ishaan', mockKey: 'sample-f', label: 'Final payment', amount: 950000, due: '2026-11-30', status: 'Upcoming' },
-    { couple: 'Asha & Kiran', mockKey: 'sample-a', label: 'Planning advance', amount: 1850000, due: '2026-12-15', status: 'Due' },
-    { couple: 'Meera & Arjun', mockKey: 'sample-b', label: 'Booking payment', amount: 600000, due: '2026-11-12', status: 'Due' },
-  ],
-  vendorBillsDue: 4180000,
-  vendors: [
-    { name: 'Saffron Table Caterers', category: 'Catering', weddings: 6, onTime: 0.97, rating: 4.8, issues: 0 },
-    { name: 'Fernwood Studio', category: 'Décor', weddings: 4, onTime: 0.92, rating: 4.6, issues: 1 },
-    { name: 'Northlight Collective', category: 'Photography', weddings: 5, onTime: 1, rating: 4.9, issues: 0 },
-    { name: 'Green Leaf Kitchens', category: 'Catering', weddings: 3, onTime: 0.81, rating: 4.1, issues: 2 },
-    { name: 'Lumen & Bloom', category: 'Décor', weddings: 2, onTime: 0.88, rating: 4.3, issues: 1 },
-  ],
 };

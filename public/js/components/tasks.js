@@ -23,7 +23,7 @@ export function renderTasks(tasks, filters = {}) {
   return html`
     <section class="card" aria-labelledby="tasks-h">
       <div class="card-head">
-        <h2 id="tasks-h" class="card-title">Wedding tasks</h2>
+        <h2 id="tasks-h" class="card-title">Planning tasks</h2>
         ${visibility('internal')}
         <span class="muted small">${done} of ${tasks.length} done</span>
       </div>
@@ -32,7 +32,7 @@ export function renderTasks(tasks, filters = {}) {
         ${select('ownerType', 'Owner', OWNER_TYPES)}
         ${select('status', 'Status', TASK_STATUSES)}
       </div>
-      ${!tasks.length ? emptyState({ title: 'No tasks yet', body: 'Tasks are created from the requirements and planner checklist.' })
+      ${!tasks.length ? emptyState({ title: 'No tasks yet', body: 'Add tasks from the requirements.' })
         : !shown.length ? emptyState({ title: 'No tasks match these filters' })
         : stages.map((stage) => html`
           <div class="task-group">
@@ -56,7 +56,7 @@ export function renderTasks(tasks, filters = {}) {
           <label class="field"><span class="field-label">Stage</span><input name="stage" required list="task-stages" placeholder="e.g. Logistics"></label>
           <datalist id="task-stages">${[...new Set(tasks.map((t) => t.stage))].map((s) => html`<option value="${esc(s)}">`)}</datalist>
           <label class="field"><span class="field-label">Due</span><input type="date" name="due" required></label>
-          <div class="row-end form-span"><span class="muted small">Added to this preview only — not saved.</span><button class="btn" type="submit">Add task</button></div>
+          <div class="row-end form-span"><span class="muted small">Preview only · not saved.</span><button class="btn" type="submit">Add task</button></div>
         </form>
       </details>
     </section>`;

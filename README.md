@@ -1,6 +1,6 @@
 # The Royal Knot — UI module
 
-Presentation layer only for the wedding planning management system. Every screen renders from **mock data held in browser memory**. There is no authentication, session, database, API, Google Meet, transcript capture, e-signing, payments or document generation yet. Buttons that would call one of those show a "Preview only" notice.
+Presentation layer only for the wedding planning management system. Every screen renders from **mock data held in browser memory**. There is no authentication, persistent session storage, database, API, Google Meet, transcript capture, e-signing, payments or document generation yet. Buttons that would call one of those show a "Preview only" notice.
 
 ## Run
 
@@ -13,12 +13,12 @@ Open http://localhost:3000. That's the developer preview hub, not a login.
 
 | Route | Interface |
 | --- | --- |
-| `/couple` | Couple portal (chapters by hash: `#details`, `#consultation`, `#plan`, `#agreement`, `#vendors`, `#events`, `#day`, plus `#payments`) |
+| `/couple` | Couple portal (chapters by hash: `#details`, `#consultation`, `#plan`, `#vendors`, `#agreement`, `#events`, `#day`, plus `#payments`) |
 | `/agent/weddings` | Agent: wedding cases list |
-| `/agent/weddings/:mockKey` | Agent: wedding workspace (`#overview`, `#meeting`, `#documents`, `#agreement`, `#vendors`, `#tasks`, `#schedule`, `#finance`) |
+| `/agent/weddings/:mockKey` | Agent: wedding workspace (`#overview`, `#meeting`, `#documents`, `#vendors`, `#agreement`, `#tasks`, `#schedule`, `#finance`) |
 | `/agent/season` | Agent: season overview |
 
-`:mockKey` (for example `sample-a`) is a route key for mock data only. It is **not** a workspace ID.
+`:mockKey` (`sample-a` or `sample-b`) selects a preview wedding record. It is **not** a persistent workspace ID.
 
 ### Previewing planning stages
 
@@ -44,7 +44,7 @@ public/js/garden/         garden.js — Three.js "Shared Garden" background
 
 - **Data:** replace the bodies of the functions in `public/js/data/source.js` with API calls. Components only receive plain objects and arrays.
 - **Couple privacy:** the couple portal only imports `couple-mock.js`. Agent notes, transcripts, internal vendor comments and arrival tracking aren't in that file. The real API should apply the same projection on the server.
-- **Future modules** are marked in the UI with a dashed "Connects later · …" tag. To add a section, add a row to the `SECTIONS` array in the page script and a view function.
+- **Future modules** are marked in the UI with a dashed "Planned · …" tag. To add a section, add a row to the `SECTIONS` array in the page script and a view function.
 - **Progress:** `core/progress.js` defines the milestones. Pages call `publishProgress(p)`, and the garden listens for the `rk:progress` event.
 
 ## Couple experience
@@ -54,8 +54,8 @@ The portal is one journey in eight chapters:
 1. Your story
 2. Meeting your planner
 3. Your plan, in writing
-4. Our agreement
-5. Choosing your vendors
+4. Choosing your vendors
+5. Our agreement
 6. Bringing it together
 7. The wedding day
 8. After the celebration
@@ -75,17 +75,12 @@ The first chapter asks only optional questions. Traditions are a single open que
 
 ## Planner workspace
 
-- **`/agent/weddings`:** the case list. It shows couple, wedding date and countdown, stage, planner, next action with deadline, and next payment. Attention filters (needs attention, due this week, unassigned, payment overdue) double as the workload indicators. Search, planner and phase filters, and sorting sit above the list. A rose edge marks overdue or unassigned work.
-- **`/agent/weddings/:mockKey`:** a single case file.
-  - The header is the only place the stage appears.
-  - The overview leads with "Needs your attention" and "Coming up". Beside them sit what the couple shared, the case record and a small preview of the couple's garden.
-  - Sections: meeting and notes, requirements, agreement, vendors and proposals, tasks, schedule with a day-of run sheet, and payments and closeout.
-  - Every area carries an **Internal** or **Shared with couple** badge.
-- **`/agent/season`:** upcoming weddings by month, planner workload against capacity (with a suggestion for who can take an unassigned enquiry), money due from couples, cases needing attention, and vendor reliability.
+- **`/agent/weddings`:** two sample wedding records, each with its own route key and workspace. Their dates, planners, plans, notes and workflow stages differ; changes are preview-only and are not stored in a database.
+- **`/agent/weddings/:mockKey`:** the selected wedding case file. Its overview shows up to three priority actions and a compact couple summary. Meeting notes, requirements, vendor proposals, agreement, tasks, schedule, and payments stay in their own sections.
+- **`/agent/season`:** a compact view of both sample workspaces. Portfolio metrics remain hidden because these are demo records.
 - **Mobile:** the sidebar becomes a slide-in menu, and workspace sections are also available from a section picker.
 
 Mock data uses a fixed reference date, `AS_OF` (31 Oct 2026, in `public/js/data/agency-mock.js`), so deadlines read the same on any day.
-
 ## The Shared Garden
 
 - `public/js/garden/garden.js`: the Three.js scene. It is drawn from one progress value between 0 and 1 and only animates when progress changes; it never replays on load.

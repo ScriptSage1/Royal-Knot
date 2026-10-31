@@ -16,7 +16,7 @@ export function renderRequirementsDoc(req, { audience = 'agent' } = {}) {
             <ul>${s.items.map((i) => html`<li>${i}</li>`)}</ul>
           </section>`)}
       </article>`
-    : emptyState({ icon: 'doc', title: 'No requirements document yet', body: audience === 'agent' ? 'The document will be drafted from the consultation. Automated drafting is a later module.' : 'Your planner prepares this after your consultation.' });
+    : emptyState({ icon: 'doc', title: 'No requirements document yet', body: audience === 'agent' ? 'Draft after the consultation.' : 'Shared after your consultation.' });
 
   return html`
     <section class="card" aria-labelledby="req-h">
@@ -29,7 +29,7 @@ export function renderRequirementsDoc(req, { audience = 'agent' } = {}) {
       ${audience === 'agent' ? html`
         <div class="row-end">
           <button class="btn btn-ghost" type="button" data-action="generate-doc">Draft from meeting</button>
-          <button class="btn btn-ghost" type="button" data-action="send-doc">Send to couple for approval</button>
+          <button class="btn btn-ghost" type="button" data-action="send-doc">Send for approval</button>
         </div>` : ''}
     </section>`;
 }
@@ -48,6 +48,6 @@ export function renderChecklist(items) {
                 <span>${it.label}</span>
               </label>
             </li>`)}
-        </ul>` : emptyState({ title: 'Checklist not started', body: 'Checklist items will be created from the requirements document.' })}
+        </ul>` : emptyState({ title: 'Checklist not started', body: 'Add items from the requirements.' })}
     </section>`;
 }

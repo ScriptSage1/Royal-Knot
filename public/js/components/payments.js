@@ -7,7 +7,7 @@ const KIND_LABEL = { booking: 'Booking', advance: 'Advance', final: 'Final', ext
 export function renderPaymentTimeline(milestones, { audience = 'couple' } = {}) {
   if (!milestones.length) {
     return html`<section class="card"><div class="card-head"><h2 class="card-title">Payment timeline</h2>${futureTag('Payments')}</div>
-      ${emptyState({ icon: 'coin', title: 'No payment milestones yet', body: audience === 'couple' ? 'Your payment schedule appears here once your agreement is shared.' : 'Milestones are added from the service agreement.' })}</section>`;
+      ${emptyState({ icon: 'coin', title: 'No payment milestones yet', body: audience === 'couple' ? 'Available with your agreement.' : 'Added from the service agreement.' })}</section>`;
   }
   const total = milestones.reduce((n, m) => n + m.amount, 0);
   const paid = milestones.filter((m) => m.status === 'Paid').reduce((n, m) => n + m.amount, 0);
@@ -38,7 +38,7 @@ export function renderPaymentTimeline(milestones, { audience = 'couple' } = {}) 
             </div>
           </li>`)}
       </ol>
-      <p class="muted small">${audience === 'couple' ? 'Online payment isn’t connected yet. Your planner will share how to pay each milestone.' : 'Payment collection and reconciliation are later modules. Statuses shown are mock values.'}</p>
+      <p class="muted small">${audience === 'couple' ? 'Online payments coming later. Your planner will share instructions.' : 'Preview data · payment collection coming later.'}</p>
     </section>`;
 }
 
@@ -52,7 +52,7 @@ export function renderVendorCosts(bills, extras) {
           <thead><tr><th scope="col">Vendor</th><th scope="col">Category</th><th scope="col" class="num">Amount</th><th scope="col" class="num">Paid</th><th scope="col">Due</th><th scope="col">Status</th></tr></thead>
           <tbody>${bills.map((b) => html`<tr><td>${b.vendor}</td><td>${b.category}</td><td class="num">${inr(b.amount)}</td><td class="num">${inr(b.paid)}</td><td>${fmtDate(b.due)}</td><td>${pill(b.status)}</td></tr>`)}</tbody>
           <tfoot><tr><th scope="row" colspan="2">Total</th><td class="num">${inr(billTotal)}</td><td class="num">${inr(bills.reduce((n, b) => n + b.paid, 0))}</td><td colspan="2"></td></tr></tfoot>
-        </table></div>` : emptyState({ icon: 'coin', title: 'No vendor bills yet', body: 'Bills appear once vendors are booked.' })}
+        </table></div>` : emptyState({ icon: 'coin', title: 'No vendor bills yet', body: 'Added after vendor booking.' })}
     </section>
     <section class="card" aria-labelledby="ex-h">
       <div class="card-head"><h2 id="ex-h" class="card-title">Extra costs</h2>${visibility('internal')}</div>
@@ -75,7 +75,7 @@ export function renderCloseout(w) {
         <li><span>Known costs</span><strong>${inr(costs)}</strong></li>
         <li><span>Indicative margin</span><strong>${income ? inr(income - costs) : '—'}</strong></li>
       </ul>
-      <p class="muted small">Indicative figures from mock data. Profit review is calculated in a later module after the event.</p>
-      <ul class="checklist checklist-static">${steps.map((s) => html`<li><span class="check-box" aria-hidden="true"></span>${s} <span class="muted small">· after the event</span></li>`)}</ul>
+      <p class="muted small">Preview figures · final review after the event.</p>
+      <ul class="checklist checklist-static">${steps.map((s) => html`<li><span class="check-box" aria-hidden="true"></span>${s}</li>`)}</ul>
     </section>`;
 }

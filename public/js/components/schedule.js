@@ -8,14 +8,14 @@ export const ARRIVAL_FLOW = ['Not confirmed', 'Expected', 'Arrived', 'Delayed'];
 export function renderAgentSchedule(days) {
   if (!days.length) {
     return html`<section class="card"><div class="card-head"><h2 class="card-title">Wedding schedule</h2></div>
-      ${emptyState({ icon: 'calendar', title: 'No events scheduled yet', body: 'Add functions and days once the requirements are approved.' })}</section>`;
+      ${emptyState({ icon: 'calendar', title: 'No events scheduled yet', body: 'Add events after plan approval.' })}</section>`;
   }
   const vendorsTotal = days.flatMap((d) => d.events.flatMap((e) => e.vendors));
   const arrived = vendorsTotal.filter((v) => v.status === 'Arrived').length;
   return html`
     <section class="card" aria-labelledby="sch-h">
       <div class="card-head">
-        <h2 id="sch-h" class="card-title">Wedding schedule &amp; day-of tracking</h2>
+        <h2 id="sch-h" class="card-title">Wedding schedule</h2>
         ${visibility('shared', 'Times shared · arrivals internal')}
         <span class="muted small">${days.length} days · ${arrived}/${vendorsTotal.length} arrivals checked in</span>
         ${futureTag('Live day-of updates')}
@@ -37,7 +37,7 @@ export function renderAgentSchedule(days) {
                         <span class="arrival-time">Arrive ${v.arrival}</span>
                         <button class="pill-btn" type="button" data-action="arrival" data-day="${di}" data-event="${ei}" data-vendor="${vi}" title="Change arrival status (preview)">${pill(v.status)}<span class="sr-only">, change arrival status</span></button>
                       </li>`)}
-                  </ul>` : html`<p class="muted small">No vendors assigned.</p>`}
+                  </ul>` : html`<p class="muted small">No vendors</p>`}
               </div>
             </article>`)}
         </div>`)}
@@ -45,7 +45,7 @@ export function renderAgentSchedule(days) {
 }
 
 export function renderCoupleEvents(days, { dayOf = [], final = false } = {}) {
-  if (!days.length) return emptyState({ icon: 'calendar', title: 'Your events will appear here', body: 'Once your vendors are confirmed, your planner will build the schedule.' });
+  if (!days.length) return emptyState({ icon: 'calendar', title: 'Your events will appear here', body: 'Your planner will add events after vendors are confirmed.' });
   return html`
     <div class="couple-events">
       ${days.map((d) => html`
@@ -64,7 +64,7 @@ export function renderCoupleEvents(days, { dayOf = [], final = false } = {}) {
 ${dayOf.length ? html`      <section class="card card-soft" aria-labelledby="dayof-h">
         <div class="card-head"><h3 id="dayof-h" class="card-title">On the day</h3>${pill(final ? 'Confirmed' : 'Draft', final ? 'Final' : 'Draft schedule')}</div>
         <ul class="list">${dayOf.map((p) => html`<li class="list-row"><span class="muted">${p.role}</span><strong>${p.name}</strong></li>`)}</ul>
-        <p class="muted small">Contact details will be shared closer to the date.</p>
+        <p class="muted small">Contacts shared closer to the date.</p>
       </section>` : ''}
     </div>`;
 }

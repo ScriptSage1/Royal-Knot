@@ -19,9 +19,9 @@ export function renderWorkspaceContainer(w) {
       </div>
       <div class="ws-id">
         <span class="ws-id-label">Workspace ID</span>
-        <span class="ws-id-value">Workspace ID will be assigned in a later module.</span>
+        <span class="ws-id-value">Assigned when the workspace is created.</span>
       </div>
-      <p class="muted small">Everything below is grouped here for preview. In a later module it becomes one persistent wedding record.</p>
+      <p class="muted small">Preview record · persistence coming later.</p>
       <ul class="ws-counts">
         ${counts.map(([k, v]) => html`<li><strong>${v}</strong><span>${k}</span></li>`)}
       </ul>
@@ -43,7 +43,7 @@ export function renderCaseFacts(w) {
 }
 
 export function renderPeople(people) {
-  if (!people.length) return html`<p class="muted small">No contacts shared yet. Names are optional.</p>`;
+  if (!people.length) return html`<p class="muted small">No contacts shared.</p>`;
   return html`<ul class="people">${people.map((p) => html`<li><span class="avatar" aria-hidden="true">${p.name.slice(0, 1)}</span><span><strong>${p.name}</strong><small>${p.role}</small></span></li>`)}</ul>`;
 }
 

@@ -36,8 +36,8 @@ export function renderAgreement(a, { audience = 'agent' } = {}) {
           ${a.summary.length ? html`
             <dl class="kv kv-tight">${a.summary.map(([k, v]) => html`<div><dt>${k}</dt><dd>${v}</dd></div>`)}</dl>
             <div class="doc-lines" aria-hidden="true"><span></span><span></span><span></span><span class="short"></span></div>
-            <p class="muted small">Sample preview. The full agreement document is generated in a later module.</p>`
-          : emptyState({ icon: 'doc', title: 'No agreement drafted yet', body: audience === 'agent' ? 'Drafting from the requirements document is a later module.' : 'Your planner will share the agreement after your plan summary is approved.' })}
+            <p class="muted small">Sample · full document coming later.</p>`
+          : emptyState({ icon: 'doc', title: 'No agreement drafted yet', body: audience === 'agent' ? 'Draft from approved requirements.' : 'Shared after plan approval.' })}
         </article>
 
         <div class="attach ${signed ? 'attach-ready' : ''}">
@@ -45,14 +45,14 @@ export function renderAgreement(a, { audience = 'agent' } = {}) {
           ${a.file
             ? html`<p>${a.file.name}</p><button class="btn btn-ghost" type="button" data-action="agreement-download">Download</button>`
             : html`<p class="muted small">${signed
-                ? 'Marked as signed in this preview. The signed file will be attached here automatically once the digital signing module is connected.'
-                : 'The signed file will be attached here after signing. Digital signing is not connected yet.'}</p>`}
+                ? 'Preview marked signed · file attachment coming later.'
+                : 'Signed file appears here after signing.'}</p>`}
         </div>
       </div>
 
       <div class="row-end">
         ${audience === 'agent' && agentAction ? html`<button class="btn" type="button" data-action="agreement-advance">${agentAction}</button>` : ''}
-        ${audience === 'agent' && signed ? html`<span class="muted small">Agreement complete.</span>` : ''}
+
         ${audience === 'couple' && (a.status === 'Sent' || a.status === 'Viewed') ? html`<button class="btn" type="button" data-action="agreement-sign">Review &amp; sign</button>` : ''}
       </div>
     </section>`;

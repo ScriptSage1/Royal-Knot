@@ -18,28 +18,28 @@ export function renderMeeting(m) {
       <div class="placeholder-row">
         <div>
           <p class="placeholder-title">Google Meet link</p>
-          <p class="muted small">${m.meetLink ? m.meetLink : 'No link yet. A meeting link will appear here once the Google Meet integration is connected.'}</p>
+          <p class="muted small">${m.meetLink ? m.meetLink : 'No link yet.'}</p>
         </div>
         <button class="btn btn-ghost" type="button" data-action="meet-link" ${m.meetLink ? '' : 'aria-disabled=true'}>Join meeting</button>
       </div>
     </section>
     <section class="card" aria-labelledby="tr-h">
       <div class="card-head"><h2 id="tr-h" class="card-title">Meeting transcript</h2>${visibility('internal')}${futureTag('Transcript capture')}</div>
-      ${m.transcript ? html`<pre class="transcript">${m.transcript}</pre>` : emptyState({ icon: 'doc', title: 'No transcript captured', body: 'Transcript capture is a later module. When connected, the private meeting transcript will appear here for the agency only.' })}
+      ${m.transcript ? html`<pre class="transcript">${m.transcript}</pre>` : emptyState({ icon: 'doc', title: 'No transcript yet' })}
     </section>`;
 }
 
 export function renderAgentNotes(notes) {
   return html`
     <section class="card card-internal" aria-labelledby="notes-h">
-      <div class="card-head"><h2 id="notes-h" class="card-title">Agent notes</h2>${visibility('internal', 'Internal only · never shown to the couple')}</div>
+      <div class="card-head"><h2 id="notes-h" class="card-title">Agent notes</h2>${visibility('internal', 'Internal only')}</div>
       <form class="note-form" data-form="add-note">
         <label class="field">
           <span class="field-label">Add a note</span>
-          <textarea name="note" rows="3" placeholder="Observations, follow-ups, sensitivities to remember…"></textarea>
+          <textarea name="note" rows="3" placeholder="Add a private note…"></textarea>
         </label>
         <div class="row-end">
-          <span class="muted small">Notes stay in this browser tab — saving is a later module.</span>
+          <span class="muted small">Preview only · not saved.</span>
           <button class="btn" type="submit">Add note</button>
         </div>
       </form>
@@ -50,6 +50,6 @@ export function renderAgentNotes(notes) {
               <p>${n.text}</p>
               <span class="muted small">${n.author} · ${n.at ? new Date(n.at).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }) : ''}${n.unsaved ? html` · <span class="pill pill-warn">Not saved</span>` : ''}</span>
             </li>`)}
-        </ul>` : emptyState({ title: 'No notes yet', body: 'Notes you add here are visible to the agency team only.' })}
+        </ul>` : emptyState({ title: 'No notes yet' })}
     </section>`;
 }

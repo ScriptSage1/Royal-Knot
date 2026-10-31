@@ -102,6 +102,13 @@
 .story-step { border: 0; margin: 0; padding: 0; min-height: 180px; }
 .story-legend { font-family: var(--font-display); font-weight: 400; font-size: 26px; padding: 0; margin-bottom: 18px; outline: none; }
 .story-checks { display: grid; gap: 12px; }
+.story-inspiration { margin-top: 22px; border-top: 1px solid var(--line); padding-top: 16px; color: var(--ink-2); }
+.story-inspiration summary { width: fit-content; cursor: pointer; color: var(--accent); font-weight: 700; }
+.story-inspiration > p { margin: 10px 0 12px; color: var(--muted); font-size: 13px; }
+.story-examples { display: grid; gap: 8px; }
+.story-example { border: 1px solid var(--line); border-radius: 12px; background: #fff; color: var(--ink-2); padding: 11px 14px; text-align: left; font: inherit; font-size: 14px; line-height: 1.45; cursor: pointer; transition: border-color .15s, background .15s; }
+.story-example:hover { border-color: var(--gold-deep); background: #FFF8EC; }
+.story-answer { white-space: pre-wrap; }
 .story-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 26px; padding-top: 20px; border-top: 1px solid var(--line); }
 .story-foot .btn[hidden] + .story-count { margin-left: 0; }
 .story-count { color: var(--muted); font-size: 13px; margin-right: auto; }
