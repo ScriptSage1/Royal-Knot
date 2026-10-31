@@ -42,9 +42,7 @@ app.get('/agent/weddings/:mockKey', (req, res) => {
   });
 });
 
-app.get('/agent/season', (req, res) => {
-  res.render('agent/season', { title: 'Season overview', iface: 'agent', nav: 'season' });
-});
+app.get('/agent/season', (req, res) => res.redirect(301, '/agent/weddings'));
 
 app.use((req, res) => {
   res.status(404).render('index', { title: 'Not found', iface: 'dev', notFound: true });

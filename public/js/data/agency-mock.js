@@ -231,8 +231,3 @@ export function weddingDetail(mockKey) {
   return row && detail ? { ...row, ...detail } : null;
 }
 
-// Preview records only; portfolio metrics are intentionally omitted.
-export const SEASON = {
-  label: 'Two-wedding preview',
-  weddings: CASES,
-};

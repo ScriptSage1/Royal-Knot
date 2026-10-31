@@ -16,7 +16,6 @@ Open http://localhost:3000. That's the developer preview hub, not a login.
 | `/couple` | Couple portal (chapters by hash: `#details`, `#consultation`, `#plan`, `#vendors`, `#agreement`, `#events`, `#day`, plus `#payments`) |
 | `/agent/weddings` | Agent: wedding cases list |
 | `/agent/weddings/:mockKey` | Agent: wedding workspace (`#overview`, `#meeting`, `#documents`, `#vendors`, `#agreement`, `#tasks`, `#schedule`, `#finance`) |
-| `/agent/season` | Agent: season overview |
 
 `:mockKey` (`sample-a` or `sample-b`) selects a preview wedding record. It is **not** a persistent workspace ID.
 
@@ -36,7 +35,7 @@ public/js/core/           ui.js (escaping html``, pills, toasts), progress.js (m
 public/js/data/           source.js  ← integration boundary
                           agency-mock.js (internal), couple-mock.js (couple-safe projection)
 public/js/components/     journey, workspace, meeting, documents, agreement, payments, proposals, tasks, schedule
-public/js/pages/          couple.js, agent-cases.js, agent-workspace.js, agent-season.js
+public/js/pages/          couple.js, agent-cases.js, agent-workspace.js
 public/js/garden/         garden.js — Three.js "Shared Garden" background
 ```
 
@@ -77,7 +76,6 @@ The first chapter asks only optional questions. Traditions are a single open que
 
 - **`/agent/weddings`:** two sample wedding records, each with its own route key and workspace. Their dates, planners, plans, notes and workflow stages differ; changes are preview-only and are not stored in a database.
 - **`/agent/weddings/:mockKey`:** the selected wedding case file. Its overview shows up to three priority actions and a compact couple summary. Meeting notes, requirements, vendor proposals, agreement, tasks, schedule, and payments stay in their own sections.
-- **`/agent/season`:** a compact view of both sample workspaces. Portfolio metrics remain hidden because these are demo records.
 - **Mobile:** the sidebar becomes a slide-in menu, and workspace sections are also available from a section picker.
 
 Mock data uses a fixed reference date, `AS_OF` (31 Oct 2026, in `public/js/data/agency-mock.js`), so deadlines read the same on any day.

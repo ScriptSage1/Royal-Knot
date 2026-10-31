@@ -5,7 +5,7 @@
 // Each function returns a deep copy so screens can mutate their in-memory
 // state freely for preview interactions. Nothing is persisted.
 
-import { CASES, SEASON, PLANNERS, AS_OF, weddingDetail } from './agency-mock.js';
+import { CASES, PLANNERS, AS_OF, weddingDetail } from './agency-mock.js';
 import { COUPLE } from './couple-mock.js';
 
 const copy = (v) => structuredClone(v);
@@ -27,11 +27,6 @@ export const asOf = () => AS_OF;
 export async function loadWedding(mockKey) {
   const w = weddingDetail(mockKey);
   return w ? copy(w) : null;
-}
-
-// INTEGRATION: GET /api/agent/season
-export async function loadSeason() {
-  return copy(SEASON);
 }
 
 // INTEGRATION: GET /api/couple/workspace (couple-safe projection only)

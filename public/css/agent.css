@@ -165,17 +165,6 @@
 .runsheet td, .runsheet th { padding: 10px 12px; }
 .runsheet .rs-day td { background: #FBF8F1; font-family: var(--font-display); font-size: 16px; padding-top: 14px; }
 
-/* ---------- season ---------- */
-.season-layout { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 22px; align-items: start; }
-.season-cal { display: grid; gap: 18px; }
-.season-month h3 { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--ag-gold-ink); margin: 0 0 4px; }
-.season-row { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--ag-line); position: relative; }
-.season-row:last-child { border-bottom: 0; }
-.season-row .agenda-date { padding: 6px 0; }
-.season-row a { font-family: var(--font-display); font-size: 16.5px; color: var(--ag-ink); text-decoration: none; }
-.season-row a::after { content: ""; position: absolute; inset: 0; }
-.season-row a:hover { color: var(--ag-indigo-2); }
-.season-row:focus-within { outline: 2px solid var(--ag-indigo-2); outline-offset: 2px; border-radius: 6px; }
 .load { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; align-items: center; }
 .load-bar { grid-column: 1 / -1; height: 6px; border-radius: 3px; background: var(--ag-bg); overflow: hidden; }
 .load-bar span { display: block; height: 100%; background: var(--ag-indigo-2); border-radius: 3px; }
@@ -192,7 +181,7 @@
 
 /* ---------- responsive ---------- */
 @media (max-width: 1180px) {
-  .ws-layout, .season-layout { grid-template-columns: 1fr; }
+  .ws-layout { grid-template-columns: 1fr; }
   .ws-grid, .ws-grid-wide { grid-template-columns: 1fr; }
 }
 @media (max-width: 979px) {
@@ -268,7 +257,7 @@
   .session-card-bottom .btn { align-self: flex-start; }
   .ws-overview > .card { padding: 18px; }
 }
-.single-case, .season-single { max-width: 920px; }
+.single-case { max-width: 920px; }
 .single-case .card-head { align-items: flex-start; }
 .single-case-facts { margin-top: 18px; }
 .single-case-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 20px; }
@@ -280,8 +269,6 @@
 .family-note { margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--ag-line); }
 .family-note summary { cursor: pointer; color: var(--ag-indigo-2); font-size: 13px; font-weight: 600; }
 .family-note[open] summary { margin-bottom: 10px; }
-.season-case-link { color: inherit; text-decoration: none; }
-.season-case-link:hover { color: var(--ag-indigo-2); text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 760px) {
   .single-case-actions { grid-template-columns: 1fr; }
 }
