@@ -117,8 +117,7 @@ export function viewVendors(ctx, shell) {
       <button class="link-btn" type="button" data-action="decide" data-id="${o.id}" data-decision="${o.decision === 'declined' ? '' : 'declined'}">${o.decision === 'declined' ? 'Undo not for us' : 'Not for us'}</button>
     </div>`;
   return shell({ title: 'Your vendor shortlist', lede: `${plannerName(d)} has shortlisted these for you. Compare, ask anything, and choose what feels right.` }, html`
-    ${tabs}
-    <h2 class="card-title">${cat.category}</h2>
+    ${tabs || html`<h2 class="card-title">${cat.category}</h2>`}
     ${renderComparison({ options: cat.options, audience: 'couple', footer })}
     <section class="questions" aria-labelledby="q-h">
       <h3 id="q-h" class="sub-h">Questions for your planner</h3>

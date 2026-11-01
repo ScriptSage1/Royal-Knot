@@ -111,7 +111,7 @@ function eventFields(e = {}) {
 
 function eventsView(c) {
   const extra = (e) => html`
-    <p class="small muted">${e.ownerLabel ? `Owner: ${e.ownerLabel} · ` : ''}${e.shared ? visibility('shared', 'Shared') : visibility('internal', 'Agency only')}</p>
+    <p class="small muted">${e.ownerLabel ? `Owner: ${e.ownerLabel}` : ''}${e.shared ? '' : html` ${visibility('internal', 'Agency only')}`}</p>
     ${e.internalNote ? html`<p class="small internal-text">${e.internalNote}</p>` : ''}
     <details class="mini-edit"><summary>Edit</summary><form data-form="event-edit" data-id="${e.id}" class="form-grid">${eventFields(e)}
       <div class="row-end form-span"><button class="link-btn text-risk" type="button" data-action="event-delete" data-id="${e.id}">Delete</button><button class="btn btn-small" type="submit">Save</button></div></form></details>`;

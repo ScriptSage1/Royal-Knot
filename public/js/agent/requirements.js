@@ -112,7 +112,7 @@ function current(ctx) {
   }
   const shared = d.sharedAt;
   return card({ title: 'Requirements', kind: shared ? 'shared' : 'internal', label: shared ? 'Shared with couple' : 'Approved · not shared yet', extra: head }, html`
-    ${renderRequirementsDoc(d)}
+    ${renderRequirementsDoc(d, { label: `Requirements for ${ctx.c.wedding.coupleLabel || "the couple"}` })}
     ${d.coupleResponse ? html`<div class="callout ${d.coupleResponse === 'changes_requested' ? 'callout-warn' : ''}">
       <strong>${d.coupleResponse === 'confirmed' ? 'The couple confirmed this plan' : 'The couple asked for changes'}</strong> · ${fmtDateTime(d.coupleRespondedAt)}
       ${d.coupleComment ? html`<p class="pre">${d.coupleComment}</p>` : ''}</div>` : ''}

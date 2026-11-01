@@ -23,7 +23,7 @@
         <figcaption>Photo: <%= story.detail.author %> · <a href="<%= story.detail.licenceUrl %>" rel="license noopener" target="_blank"><%= story.detail.licence %></a> · <a href="<%= story.detail.source %>" rel="noopener" target="_blank">source</a></figcaption>
       </figure>
       <p class="story-credit">Top photo: <%= story.hero.author %> · <a href="<%= story.hero.licenceUrl %>" rel="license noopener" target="_blank"><%= story.hero.licence %></a> · <a href="<%= story.hero.source %>" rel="noopener" target="_blank">source</a></p>
-      <section class="cta-band cta-inline">
+      <section class="cta-band cta-inline rk-folio rk-clasp">
         <h2 class="section-title">Imagine yours</h2>
         <p>Tell us what you love about this idea, and what you’d make your own.</p>
         <a class="cx-btn" href="<%= coupleSignedIn ? '/couple' : '/signup' %>"><%= coupleSignedIn ? 'Go to your planning space' : 'Start planning' %></a>

@@ -83,7 +83,7 @@ function shell({ title, lede = '' }, body) {
         <h1 class="chapter-title" id="chapter-title" tabindex="-1">${title}</h1>
         ${lede ? html`<p class="chapter-lede">${lede}</p>` : ''}
       </header>
-      <div class="paper">${body}</div>
+      <div class="paper rk-folio rk-clasp">${body}</div>
     </article>`;
 }
 

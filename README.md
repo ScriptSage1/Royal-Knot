@@ -177,6 +177,28 @@ public/js/garden/              the Three.js Shared Garden
 public/img/inspiration/        optimised photos + CREDITS.md
 ```
 
+## Design system
+
+The visual language comes from the burgundy invitation panel. The tokens and shared components live at the top of `public/css/base.css`, with one stylesheet per area: `site.css`, `couple.css` and `agent.css`.
+
+- **Colour roles:**
+  - Garnet: the primary action, and anything that needs attention.
+  - Antique gold: rules, ornament and quiet labels, never large fills.
+  - Ivory: paper surfaces.
+  - Ink: text.
+  - Garden green: positive status only (paid, confirmed, done).
+
+  Use the role tokens (`--accent`, `--rule`, `--surface`, `--ok`, `--risk`) rather than raw colours.
+- **Type:** two families only. DM Serif Display is for headings, documents and figures; Manrope is for interface text. Keep uppercase and wide letter spacing for the logo.
+- **Geometry:**
+  - Ordinary panels (`.card`) are square, with a hairline border and a rule under the title.
+  - Controls have a 3px radius.
+  - Status tags are squared, with a small diamond.
+  - Tabs are underlined text, not pills.
+- **Feature surfaces:** add `rk-folio` to get cut corners, an inner gold rule and paper grain, and `rk-clasp` for the small diamond. `.next-card`, `.doc-preview` and `.acceptance` already use the folio. Recolour a folio with `--folio-bg`, `--folio-texture`, `--folio-edge` and `--folio-inner`, as the couple's burgundy `.paper` does.
+- **Materials:** `--grain` (paper), `--lattice` (a faint jaali on dark lacquer) and `--ledger` (ruled lines). Agency-only panels (`.card-internal`) sit on ledger paper with a garnet margin line, so they never look like something a couple or vendor can see.
+- **Restraint:** use one folio or primary action per view. Mark only the exceptions (for example "Agency only" on an unshared event), and keep patterns behind text at low contrast.
+
 ## Logo
 
 The mark is one continuous thread. An R and a K share a single stem, and the arm and leg wrap once around it (over on the way in, under on the way out), like a thread tied to a post.

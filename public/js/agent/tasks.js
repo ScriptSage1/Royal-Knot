@@ -13,7 +13,7 @@ function row(t, today) {
       <span class="task-title">${t.title}${t.notes ? html`<small class="cell-sub">${t.notes}</small>` : ''}</span>
       <span class="task-owner"><span class="owner-type owner-${t.ownerType}">${OWNER[t.ownerType]}</span>${t.ownerLabel}</span>
       <span class="task-due ${late ? 'is-late' : ''}">${t.dueDate ? fmtDate(t.dueDate) : 'No date'}</span>
-      <button class="link-btn vis-toggle" type="button" data-action="task-share" data-id="${t.id}" data-shared="${t.shared ? 'false' : 'true'}" title="${t.shared ? 'Visible to the couple. Click to make internal.' : 'Agency only. Click to share with the couple.'}">${t.shared ? visibility('shared', 'Shared') : visibility('internal', 'Internal')}</button>
+      <button class="link-btn vis-toggle" type="button" data-action="task-share" data-id="${t.id}" data-shared="${t.shared ? 'false' : 'true'}" title="${t.shared ? 'Visible to the couple. Click to make internal.' : 'Agency only. Click to share with the couple.'}">${t.shared ? visibility('shared', 'Shared') : html`<span class="vis-quiet">Share</span>`}</button>
       <label class="task-status"><span class="sr-only">Status for ${t.title}</span>
         <select data-action="task-status" data-id="${t.id}">${Object.entries(TASK_STATUS).map(([v, l]) => html`<option value="${v}" ${t.status === v ? 'selected' : ''}>${l}</option>`)}</select></label>
     </li>`;

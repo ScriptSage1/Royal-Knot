@@ -2,7 +2,7 @@
 <body class="site site-auth">
   <main class="auth">
     <%- include('partials/logo', { tone: 'on-dark', href: '/', cls: 'auth-brand' }) %>
-    <section class="auth-card" aria-labelledby="err-h">
+    <section class="auth-card rk-folio rk-clasp" aria-labelledby="err-h">
       <p class="site-eyebrow"><%= status %></p>
       <h1 id="err-h" class="auth-title"><%= status === 404 ? 'That page isn’t here' : status === 403 ? 'This isn’t available to you' : 'Something went wrong' %></h1>
       <p class="auth-lede"><%= message %></p>
