@@ -2,6 +2,60 @@
 
 A wedding-planning product for a premium Indian wedding agency. Couples move from a first enquiry to a fully coordinated plan in a private planning space. Planners work each wedding as one case file, and invited vendors quote through their own portal.
 
+![The Royal Knot landing page: “Your celebration, beautifully held.”](docs/screenshots/01-landing.jpg)
+
+## A look at the product
+
+All screenshots use the demo data from the development seed. The inspiration photographs are openly licensed images by independent photographers, not Royal Knot client weddings (see [Photo credits](public/img/inspiration/CREDITS.md)).
+
+### For prospective couples
+
+| | |
+| :-: | :-: |
+| ![Wedding inspiration: four stories, the lead one framed, the others in arched windows](docs/screenshots/02-celebrations.jpg) | ![An inspiration story set like a printed programme: setting, mood, a meaningful detail, what makes it distinctive](docs/screenshots/03-story.jpg) |
+| **Celebrations we love.** Ideas to start the conversation, each labelled honestly as inspiration. | **An inspiration story.** The setting, the mood, a meaningful detail, and a clear next step. |
+| ![Sign-up as an invitation on garnet lacquer](docs/screenshots/04-sign-in.jpg) | |
+| **Start planning.** Create a private wedding space, or join a partner's with an invite code. | |
+
+### The couple's planning space
+
+| | |
+| :-: | :-: |
+| ![The couple's home: one moment beside the Shared Garden, with a single next step](docs/screenshots/05-couple-home.jpg) | ![The plan, in writing: an ivory document inside the burgundy invitation folio](docs/screenshots/06-couple-plan.jpg) |
+| **One moment at a time.** Where you are, what your planner is handling, and one next step. The garden grows with real progress. | **Your plan, in writing.** Read it, confirm it, or ask for changes. |
+| ![The vendor shortlist compared side by side](docs/screenshots/07-couple-shortlist.jpg) | ![The agreement with its acceptance record](docs/screenshots/08-couple-agreement.jpg) |
+| **Your vendor shortlist.** Compare options, ask questions, then choose, defer or decline. | **Our agreement.** A dignified document, with a recorded acceptance (not a certified e-signature). |
+
+### The planner's case file
+
+| | |
+| :-: | :-: |
+| ![The planner's wedding list as one ledger: new enquiries and assigned weddings](docs/screenshots/09-planner-weddings.jpg) | ![A case file: the next action as the focal point, milestones as diamonds on a thread](docs/screenshots/10-planner-case-file.jpg) |
+| **Your weddings.** New enquiries to take on, and each wedding's next step. | **One wedding, one case file.** The next action first; everything else in its own section. |
+| ![Requirements: draft with Claude or start from the template](docs/screenshots/14-planner-draft-requirements.jpg) | ![Vendor proposals compared, with internal comments kept agency-only](docs/screenshots/11-planner-proposals.jpg) |
+| **Draft the requirements.** With the local Claude CLI, or by hand from a template. Nothing is shared until the planner approves it. | **Proposals.** Shortlist, decline, add internal comments and notes for the couple, then share. |
+| ![The payment timeline as a gold thread with milestones](docs/screenshots/12-planner-payments.jpg) | ![The day-of run sheet, agency only](docs/screenshots/13-planner-run-sheet.jpg) |
+| **Payments.** Milestones, recorded payments and optional provider links. No gateway is connected. | **Schedule and run sheet.** Shared events for the couple; arrivals and cues stay agency-only. |
+
+### The vendor portal
+
+![A vendor's request: the brief set as a quotation, with the proposal form below](docs/screenshots/15-vendor-portal.jpg)
+
+Vendors see only the briefs they were invited to, with the city, date and guest numbers they need to quote. They never see the couple's names or the planner's notes.
+
+### On a phone
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/screenshots/m1-landing.jpg" width="200" alt="Landing page on a phone"><br><sub>Landing page</sub></td>
+    <td align="center"><img src="docs/screenshots/m2-couple-home.jpg" width="200" alt="The couple's home on a phone, with the garden above"><br><sub>Couple home</sub></td>
+    <td align="center"><img src="docs/screenshots/m3-couple-plan.jpg" width="200" alt="The couple's plan on a phone"><br><sub>Your plan</sub></td>
+    <td align="center"><img src="docs/screenshots/m4-planner-case-file.jpg" width="200" alt="A planner's case file on a phone"><br><sub>Planner case file</sub></td>
+  </tr>
+</table>
+
+To refresh these images, run the app with the demo data, then capture the same views at 1440×900 (desktop) and 390×844 (phone). Save them over the files in `docs/screenshots/`.
+
 **Stack:**
 - Node.js 22.13+ (tested on 24) and Express
 - EJS templates

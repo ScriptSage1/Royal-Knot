@@ -214,7 +214,9 @@
   .moment-lede { font-size: 16px; margin: 16px 0 24px; }
   .moment-planner { margin-bottom: 22px; }
   .chapter { padding: 38vh 14px 60px; padding-top: 38svh; }
-  .chapter-head { margin: 14px 0 20px; max-width: none; }
+  .chapter-head { margin: 10px -14px 18px; max-width: none; padding: 12px 14px 14px; background: linear-gradient(180deg, rgba(var(--scrim), .66), rgba(var(--scrim), .86)); }
+  /* the chapter title stays readable when it scrolls over the garden */
+  .chapter-back { text-shadow: 0 1px 10px rgba(var(--scrim), .95); }
   .paper { max-width: none; --cut: 12px; padding: 30px 18px; }
   .story-progress button { font-size: 0; padding-top: 6px; }
   .story-summary { grid-template-columns: 1fr; }
